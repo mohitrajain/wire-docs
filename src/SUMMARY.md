@@ -1,4 +1,4 @@
-# Table of contents
+# Summary
 
 * [Wire-docs](README.md)
 * [diagrams](diagrams/README.md)
