@@ -128,7 +128,7 @@ helm upgrade --install minio-external wire/minio-external -f values/minio-extern
 
 AWS SNS is required to send notifications to clients. SQS is used to get notified of any devices that have discontinued using Wire (e.g. if you uninstall the app, the push notification token is removed, and the wire-server will get feedback for that using SQS).
 
-Note: *for using real SQS for real native push notifications instead, see also :ref:\`pushsns\`.*
+Note: *for using real SQS for real native push notifications instead, see also `pushsns`{.interpreted-text role="ref"}.*
 
 If you use the fake-aws version, clients will use the websocket method to receive notifications, which keeps connections to the servers open, draining battery.
 
