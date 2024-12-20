@@ -1,8 +1,8 @@
 # Wire-docs
 
-Source files for wire-server documentation hosted on https://docs.wire.com
+Source files for wire-server documentation hosted on [docs.wire.com](https://docs.wire.com)
 
-# Welcome to Wire's documentation!
+## Welcome to Wire's documentation
 
 If you are a Wire end-user, please check out our [support pages](https://support.wire.com/).
 
@@ -16,10 +16,11 @@ If you are a developer, you may want to check out the "Notes for developers" fir
 
 Release notes of `wire-server` can be found [here](https://github.com/wireapp/wire-server/releases).
 
-# Content
-* [Security responses](security-responses/index.md)
-* [Release Notes](changelog/index.md)
-* [Installation](how-to/install/index.md)
-* [Administration](how-to/administrate/index.md)
-* [Reference](understand/index.md)
-* [Developers Notes](developer/index.md)
+## Content
+
+- [Security responses](security-responses/index.md)
+- [Release Notes](changelog/index.md)
+- [Installation](how-to/install/index.md)
+- [Administration](how-to/administrate/index.md)
+- [Reference](understand/index.md)
+- [Developers Notes](developer/index.md)

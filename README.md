@@ -1,10 +1,10 @@
 # Wire-docs
 
-Source files for wire-server documentation hosted on https://docs.wire.com
+Source files for wire-server documentation hosted on <https://docs.wire.com>
 
 ## Reading the documentation
 
-Visit https://docs.wire.com/
+Visit <https://docs.wire.com/>
 
 ## Making contributions
 
@@ -114,7 +114,6 @@ If the command succeeds, the static content can be viewed in the browser directl
 ```
 firefox /nix/store/isjbzhmm34kr1i1xdgwfrrn98s4hgj43-wire-docs/html/index.html
 ```
-
 
 ### Upload to S3
 
