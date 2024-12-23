@@ -1,1 +1,4 @@
-# changelog
+# Releases
+
+## Contents
+- [Releases](changelog.md)
