@@ -67,17 +67,17 @@ multiple actions having the same combination of HTTP method and URL path.
 Internal APIs are not under version control.
 
 - Unversioned:
-    - [`brig` - **internal** (private)
+  - [`brig` - **internal** (private)
     endpoints](https://staging-nginz-https.zinfra.io/api-internal/swagger-ui/brig)
-    - [`cannon` - **internal** (private)
+  - [`cannon` - **internal** (private)
     endpoints](https://staging-nginz-https.zinfra.io/api-internal/swagger-ui/cannon)
-    - [`cargohold` - **internal** (private)
+  - [`cargohold` - **internal** (private)
     endpoints](https://staging-nginz-https.zinfra.io/api-internal/swagger-ui/cargohold)
-    - [`galley` - **internal** (private)
+  - [`galley` - **internal** (private)
     endpoints](https://staging-nginz-https.zinfra.io/api-internal/swagger-ui/galley)
-    - [`gundeck` - **internal** (private)
+  - [`gundeck` - **internal** (private)
     endpoints](https://staging-nginz-https.zinfra.io/api-internal/swagger-ui/gundeck)
-    - [`spar` - **internal** (private)
+  - [`spar` - **internal** (private)
     endpoints](https://staging-nginz-https.zinfra.io/api-internal/swagger-ui/spar)
 
 The URL pattern is similar to that of public endpoints for latest version:

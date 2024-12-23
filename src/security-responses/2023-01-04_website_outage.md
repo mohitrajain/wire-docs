@@ -3,12 +3,15 @@
 Last updated: 2023-01-19
 
 ## What happened?
-On Tuesday, 2023-01-04, the Wire website wire.com was affected by an outage caused by a Denial-of-Service attack. This outage only concerns the wire.com website and none of the services provided by Wire. 
+
+On Tuesday, 2023-01-04, the Wire website wire.com was affected by an outage caused by a Denial-of-Service attack. This outage only concerns the wire.com website and none of the services provided by Wire.
 
 ## What was the impact identified?
+
 Several outages of short periods (7min, 2min, 3min, 4min) have been identified beginning from UTC 05:13.
 
 ## Are Wire installations affected?
+
 Wire/wire-server was not affected by the wire.com website outage.
 
 ## Timeline

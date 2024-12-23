@@ -12,8 +12,7 @@ SCIM user data is validated by the spar service and stored as brig users.  All f
 
 Time stamps `created_at` and `last_updated_at` for the SCIM metadata are stored in `spar.scim_user_times`.  The are kept in sync with the users that are otherwise stored in brig.  (Rationale: we briefly considered using `select writetime(*) from brig.user` for last update and `select writetime(activated) from brig.user` for creation, but this has a drawback: we don't have the time stamps when storing the record, so the `POST` handler would need to do a database write and a consecutive lookup, or an `insert if not exists`.)
 
-Users created by SCIM set the `ManagedBy` field in brig to `ManagedByScim`.  This *should* lead to brig disallowing certain update operations (since the single source of truth should be the SCIM peer that has created and is updating the user), but we never got around to implementing that (as of Wed 15 Jul 2020 10:59:11 AM CEST).  See also {@SparBrainDump} (grep for `ManagedBy`).
-
+Users created by SCIM set the `ManagedBy` field in brig to `ManagedByScim`.  This _should_ lead to brig disallowing certain update operations (since the single source of truth should be the SCIM peer that has created and is updating the user), but we never got around to implementing that (as of Wed 15 Jul 2020 10:59:11 AM CEST).  See also {@SparBrainDump} (grep for `ManagedBy`).
 
 ## Storing SCIM tokens {#DevScimStorageTokens}
 

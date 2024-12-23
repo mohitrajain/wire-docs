@@ -16,7 +16,7 @@ Note that you should not trust this page (or your execution of it) to allow for 
 
 ## Backing up
 
-By nature, a significant part of a Wire installation is ephemeral, and not meant to be stored long-term or recovered: in case of trouble, those parts can just be started fresh with minimal impact on user experience. 
+By nature, a significant part of a Wire installation is ephemeral, and not meant to be stored long-term or recovered: in case of trouble, those parts can just be started fresh with minimal impact on user experience.
 
 The exceptions to this rule, are what you want to back up. In particular:
 
@@ -223,7 +223,7 @@ You can then manually run the file with:
 As a test, run the script manually to make sure it actually properly does its job without any errors.
 
 Then, you can add this to your cron file (by running `crontab -e`) to make sure this commands gets executed on a regular basis (here we will use an hourly backup):
-                                                                                                                                                                                               
+
     # Edit this file to introduce tasks to be run by cron.
     # 
     # m h  dom mon dow   command
@@ -282,7 +282,7 @@ Next, ssh into the Cassandra Virtual Machine and cd to the snapshot folder:
     ssh user@cassandra-vm.your-domain.com
     cd /mnt/cassandra/data/data/catalogkeyspace/journal-296a2d30c22a11e9b1350d927649052c/
 
-Next run 
+Next run
 
     ls -lh
 
@@ -331,4 +331,3 @@ Where:
 
 * `user` is the user you used to install Wire on this server, typically `wire` or `root`
 * `minio-vm.your-domain.com` is the domain name or IP address for the server with your MinIO node
-

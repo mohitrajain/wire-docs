@@ -1,4 +1,5 @@
 # User Registration
+
 (RefRegistration)=
 
 _Authors: Artyom Kazak, Matthias Fischmann_
@@ -8,6 +9,7 @@ _Authors: Artyom Kazak, Matthias Fischmann_
 This page describes the "normal" user registration flow. Autoprovisioning is covered separately.
 
 ## Summary
+
 (RefRegistrationSummary)=
 
 The vast majority of our API is only available to Wire users. Unless a user is autoprovisioned, they have to register an account by calling the `POST /register` endpoint.
@@ -18,6 +20,7 @@ an email address with Wire. This can happen either before or after registration.
 users.
 
 ## Standard registration flow
+
 (RefRegistrationStandard)=
 
 During the standard registration flow, the user first calls [`POST /activate/send`](RefActivationRequest) to pre-verify their email address.
@@ -73,6 +76,7 @@ If the code is incorrect or if an incorrect code has been tried enough times, th
 ```
 
 ## Registration without pre-verification
+
 (RefRegistrationNoPreverification)=
 
 _NOTE: This flow is currently not used by any clients. At least this was the state on 2020-05-28_
@@ -115,8 +119,8 @@ Set-Cookie: zuid=...
 A verification email will be sent to the email address (if provided).
 
 ## Anonymous registration, aka "Wireless"
-(RefRegistrationWireless)=
 
+(RefRegistrationWireless)=
 
 A user can be created without email, in which case only `"name"` is required.
 The `"name"` does not have to be unique. This feature is used for [guest
@@ -158,7 +162,7 @@ Set-Cookie: zuid=...
 
 You can find the exhaustive list of all routes here:
 
-https://github.com/wireapp/wire-server-deploy/blob/de7e3e8c709f8baaae66b1540a1778871044f170/charts/nginz/values.yaml#L35-L371
+<https://github.com/wireapp/wire-server-deploy/blob/de7e3e8c709f8baaae66b1540a1778871044f170/charts/nginz/values.yaml#L35-L371>
 
 The paths not cryptographically authenticated can be found by searching for the `disable_zauth:` flag (must be true for `env: prod` or `env: all`).
 
@@ -173,12 +177,12 @@ These end-points support 5 flows:
 2. new personal (teamless) account
 3. invitation code from team, new member
 4. ephemeral user
-5. [not supported by clients] new *inactive* user account
+5. [not supported by clients] new _inactive_ user account
 
 We need an option to block 1, 2, 5 on-prem; 3, 4 should remain available (no block option).  There are also provisioning flows via SAML or SCIM, which are not critical. In short, this could refactored into:
 
- * Allow team members to register (via email or SSO)
- * Allow ephemeral users
+- Allow team members to register (via email or SSO)
+- Allow ephemeral users
 
 During registration, we can take advantage of [NewUserOrigin](https://github.com/wireapp/wire-server/blob/a89b9cd818997e7837e5d0938ecfd90cf8dd9e52/libs/wire-api/src/Wire/API/User.hs#L625); we're particularly interested in `NewUserOriginTeamUser` --> only `NewTeamMember` or `NewTeamMemberSSO` should be accepted. In case this is a `Nothing`, we need to check if the user expires, i.e., if the user has no identity (and thus `Ephemeral`).
 

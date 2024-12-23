@@ -10,7 +10,6 @@ and operation.  it should probably be sorted into different places in
 the future, but if you can't find any more well-structured
 documentation answering your questions, look here!
 
-
 ## related documentation
 
 - [list of howtos for supported SAML IdP vendors](https://docs.wire.com/how-to/single-sign-on/index.html)
@@ -18,7 +17,6 @@ documentation answering your questions, look here!
 - [official docs for team admin from customer support](https://support.wire.com/hc/en-us/categories/360000248538?section=administration%3Fsection%3Dadministration)  (skip to "Authentication")
 - [talk scim using curl](https://github.com/wireapp/wire-server/blob/develop/docs/reference/provisioning/scim-via-curl.md)
 - if you want to work on our saml/scim implementation and do not have access to [https://github.com/zinfra/backend-issues/issues?q=is%3Aissue+is%3Aopen+label%3Aspar] and [https://github.com/wireapp/design-specs/tree/master/Single%20Sign%20On], please get in touch with us.
-
 
 ## operations
 
@@ -28,7 +26,6 @@ if you have sso disabled by default, you need to turn on the feature
 for every team that wants to use it.  you can do this in the stern
 service (aka backoffice).  look for `get/put
 /teams/{tid}/features/sso`
-
 
 ### registering an idp with a team via curl
 
@@ -67,7 +64,6 @@ using this idp.  see
 [here](https://support.wire.com/hc/en-us/articles/360000954617-Login-with-SSO)
 on how to use the login code.
 
-
 ### updating an idp via curl
 
 Your IdP metadata may change over time (eg., because a certificate
@@ -93,7 +89,6 @@ export IDP_ID=...
 
 Copy the new metadata file to one of your spar instances.
 
-
 Ssh into it.  If you can't, {ref}`the sso docs <sso-main-documentation>` explain how you can create a
 bearer token if you have the admin's login credentials.  If you follow
 that approach, you need to replace all mentions of `-H'Z-User ...'`
@@ -111,8 +106,8 @@ Effects:
   from team-settings, and users will have no way of using it for
   authentication.
 - If the has no account on the new IdP, she won't be able to login.
-- If a user has an account on the new IdP, *but not with exactly the
-  same user name* (SAML NameID), she will not be logged in to their
+- If a user has an account on the new IdP, _but not with exactly the
+  same user name_ (SAML NameID), she will not be logged in to their
   old account.  Instead, depending on your setup, a second account is
   created for them, or they are blocked (both not what you want).
 
@@ -124,7 +119,7 @@ curl -v \
      -d@"${METADATA_FILE}"
 ```
 
-#### Option 2: Create a second IdP, and mark it as replacing the old one.
+#### Option 2: Create a second IdP, and mark it as replacing the old one
 
 Effects:
 
@@ -142,12 +137,12 @@ Effects:
 - This doesn't currently work if you are using SCIM for provisioning,
   because SCIM requires you to have exactly one IdP configured in your
   wire team.  (Internal details:
-  https://github.com/zinfra/backend-issues/issues/1365,
-  https://github.com/zinfra/backend-issues/issues/1377).
+  <https://github.com/zinfra/backend-issues/issues/1365>,
+  <https://github.com/zinfra/backend-issues/issues/1377>).
 - If you go to team settings, you will see the old IdP and the new
   one, and there is currently no way to distinguish between replaced
   and active IdPs.  (Internal details:
-  https://github.com/wireapp/wire-team-settings/issues/3465).
+  <https://github.com/wireapp/wire-team-settings/issues/3465>).
 
 ```
 curl -v \
@@ -156,7 +151,6 @@ curl -v \
      -H'Content-type: application/xml' \
      -d@"${METADATA_FILE}"
 ```
-
 
 ### deleting an idp via curl
 
@@ -182,8 +176,7 @@ curl -v
      -H'Content-type: application/json
 ```
 
-Haskell code: https://github.com/wireapp/wire-server/blob/d231550f67c117b7d100c7c8c6c01b5ad13b5a7e/services/spar/src/Spar/API.hs#L217-L271
-
+Haskell code: <https://github.com/wireapp/wire-server/blob/d231550f67c117b7d100c7c8c6c01b5ad13b5a7e/services/spar/src/Spar/API.hs#L217-L271>
 
 ### setting a default SSO code
 
@@ -200,30 +193,26 @@ This entry gets removed automatically when the corresponding idp is deleted. You
 
 Clients can then ask for the default SSO code on `/sso/settings` and use it to initiate single sign-on.
 
-
 ### common misconceptions
-
 
 #### an email address can be one of two things
 
 When users are SAML-authenticated with an email address under NameID,
 that email address is used by wire as an opaque identifier, not to
-send actual emails.  In order to *also* assign the user that email
+send actual emails.  In order to _also_ assign the user that email
 address, you can enable the feature flag `validateSAMLemails`.  This
 will trigger the regular email validation flow that is also triggered
 when the user changes their email themselves.
-
 
 #### scim, provisioning, metadata
 
 for changing the user information (name, handle, email, ...), saml
 isn't enough.  the identity management software (AD in this case, or
-some add-on) needs to support scim.  we *could* support doing that via
+some add-on) needs to support scim.  we _could_ support doing that via
 saml, but the part of the standards that are needed for that are even
 in worse shape than the ones for the authentication bits, and it would
 not lead to a good user experience.  so instead we require users to
 adopt the more robust and contemporary scim standard.
-
 
 ## application logic
 
@@ -252,21 +241,17 @@ Side note: Users in brig carry an enum type
 managing conflicts between changes via scim vs. changes from wire
 clients; and does currently not affect deletability of users.
 
-
 #### delete via deleting idp
 
 [Currently](https://github.com/wireapp/wire-server/blob/d231550f67c117b7d100c7c8c6c01b5ad13b5a7e/services/spar/src/Spar/API.hs#L217-L271), we only have the rest API for this.  Team settings will follow with a button.
-
 
 #### user deletes herself
 
 TODO
 
-
 #### delete in team settings
 
 TODO (probably little difference between this and "user deletes herself"?)
-
 
 #### delete via scim
 

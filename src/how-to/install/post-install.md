@@ -1,8 +1,8 @@
 (checks)=
+
 # Verifying your installation
 
 After a successful installation of wire-server and its components, there are some useful checks to be run to ensure the proper functioning of the system. Here's a non-exhaustive list of checks to run on the hosts:
-
 
 (ntp-check)=
 
@@ -49,7 +49,6 @@ if your output shows \_ONLY\_ the entry with a `.POOL.` as `refid` and a lot of 
 
 What should you do if this is the case? Ensure that `ntp` is installed and that the servers in the pool (typically at `/etc/ntp.conf`) are reachable.
 
-
 (logrotation-check)=
 
 ## Logs and Data Protection checks
@@ -71,7 +70,7 @@ kubectl -n "$NAMESPACE" logs <name-from-previous-command> -c nginz | head -10
 
 If the timestamp is more than 3 days in the past, your logs are kept for unnecessary long amount of time and you should configure log rotation.
 
-### I used your ansible scripts and prefer to have the default 72 hour maximum log availability configured automatically.
+### I used your ansible scripts and prefer to have the default 72 hour maximum log availability configured automatically
 
 You can use [the kubernetes_logging.yml ansible playbook](https://github.com/wireapp/wire-server-deploy/blob/develop/ansible/kubernetes_logging.yml)
 
@@ -93,7 +92,7 @@ The default will thus keep your logs around until reaching 250 MB per pod, which
 Create the file `/etc/logrotate.d/podlogs` with the following contents:
 
 % NOTE: in case you change these docs, also make sure to update the actual code
-% under https://github.com/wireapp/wire-server-deploy/blob/develop/ansible/kubernetes_logging.yml
+% under <https://github.com/wireapp/wire-server-deploy/blob/develop/ansible/kubernetes_logging.yml>
 
 ```
 "/var/lib/docker/containers/*/*.log"

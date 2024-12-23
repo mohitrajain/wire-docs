@@ -20,7 +20,6 @@ API](http://www.simplecloud.info/) to handle conversations.  For the
 time being, we hope you consider the approach explained here a decent
 work-around.
 
-
 ## Prerequisites
 
 We will talk to the backend using the API that the clients use, so we
@@ -62,7 +61,6 @@ curl -X GET --header "Authorization: Bearer $BEARER" \
   $WIRE_BACKEND/self
 ```
 
-
 ## Contact requests
 
 If `$WIRE_USER` is in a team, all other team members are implicitly
@@ -70,7 +68,6 @@ connected to it.  So for the users in your team, you don't have to do
 anything here.
 
 TODO: contact requests to users not on the team.
-
 
 ## Conversations
 
@@ -136,7 +133,6 @@ curl -X PUT --header "Authorization: Bearer $BEARER" \
 curl -X DELETE --header "Authorization: Bearer $BEARER" \
   $WIRE_BACKEND/teams/$WIRE_TEAMID/conversations/$CONV_ID
 ```
-
 
 ## Advanced topics
 

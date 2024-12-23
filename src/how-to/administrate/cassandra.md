@@ -5,25 +5,18 @@
 
 ```
 
-
 ```{eval-rst}
 {% include "includes/intro.rst" %}
 
 ```
 
-
 {% include "includes/intro.rst" %}
-
 
 This section only covers the bare minimum, for more information, see the [cassandra documentation](https://cassandra.apache.org/doc/latest/)
 
 (check-the-health-of-a-cassandra-node)=
 
-
-
-
 {% include "includes/intro.rst" %}
-
 
 ## Check the health of a Cassandra node
 

@@ -3,19 +3,22 @@
 The following assume you have a working developer environment with all the dependencies listed in [./dependencies.md](./dependencies.md) available to you.
 
 If you want to deploy to the CI kubernetes cluster (how-tos below), you need to set the `KUBECONFIG` env var, where `$cailleach_repo` is replaced by your local checkout of the `cailleach` repository.
+
 ```
 export KUBECONFIG=$cailleach_repo/environments/kube-ci/kubeconfig.dec
 ```
-Check that this file exists by running `ls $KUBECONFIG`.
 
+Check that this file exists by running `ls $KUBECONFIG`.
 
 ## How to look at the swagger docs / UI locally
 
 Terminal 1:
+
 * Set up backing services: `./deploy/dockerephemeral/run.sh`
 
 Terminal 2:
-* Build and start wire-server services: ` make c && ./dist/run-services`
+
+* Build and start wire-server services: `make c && ./dist/run-services`
 
 Open your browser at:
 [http://localhost:8080/api/swagger-ui](http://localhost:8080/api/swagger-ui) for a list of API verions.
@@ -23,7 +26,6 @@ Open your browser at:
 Also check out the docs for swagger in our staging environment:
 {ref}`swagger-api-docs`.  Replace the staging domain by
 `localhost:8080` to get to your local build.
-
 
 ## How to run federation tests across two backends
 
@@ -82,7 +84,6 @@ make kube-integration-setup
 
 This will create two full installations of wire-server on the kubernetes cluster you've configured to connect to, and should take ~10 minutes. The namespaces will be `$NAMESPACE` and `$NAMESPACE-fed2`.
 
-
 ##### Troubleshooting
 
 `make latest-tag` gives different tags for brig and nginz:
@@ -124,8 +125,6 @@ FUTUREWORK: this process is in development (update this section after it's confi
 3. Run tests using `make kind-integration-test`.
 4. Run end2end integration tests: `make kind-integration-e2e`.
 
-
-
 #### Deploy your local code to a kubernetes cluster
 
 This sections describes how partially update a release with a local build of a service, in this example `brig`.
@@ -145,11 +144,11 @@ Then build and push the `brig` image by running
 ```
 
 To update the release with brig's local image run
+
 ```
 ./hack/bin/set-chart-image-version.sh "$DOCKER_TAG_LOCAL_BUILD" brig
 ./hack/bin/integration-setup-federation.sh
 ```
-
 
 ### Run multi-backend tests
 
@@ -209,5 +208,6 @@ Note: Simply deleting the namespaces is insufficient, because it leaves some res
 ## How to manage RabbitMQ
 
 We support two different ways of managing the docker-compose instance of rabbitmq:
+
 * A web console interface is available [here](http://localhost:15672)
 * `rabbitmqadmin` CLI is made available in the dev environment

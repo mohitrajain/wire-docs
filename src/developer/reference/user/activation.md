@@ -12,6 +12,7 @@ address that has been verified by sending an activation code to it.
 A user that has been provisioned via single sign-on is always considered to be activated.
 
 ## Activated vs. non-activated users
+
 (RefActivationBenefits)=
 
 Non-activated users can not [connect](connection.md) to others, nor can connection requests be made to anonymous accounts from verified accounts. As a result:
@@ -21,9 +22,11 @@ Non-activated users can not [connect](connection.md) to others, nor can connecti
 The only flow where it makes sense for non-activated users to exist is the [wireless flow](RefRegistrationWireless) used for [guest rooms](https://wire.com/en/features/encrypted-guest-rooms/)
 
 ## API
+
 (RefActivationApi)=
 
 ### Requesting an activation code
+
 (RefActivationRequest)=
 
 During the [standard registration flow](RefRegistrationStandard), the user
@@ -53,6 +56,7 @@ requests, users should be warned that it might take up to a few minutes for an
 email to arrive.
 
 ### Activating an existing account
+
 (RefActivationSubmit)=
 
 If the account [has not been activated during verification](RefRegistrationNoPreverification), it can be activated afterwards by submitting an activation code to `POST /activate`. Sample request and response:
@@ -91,6 +95,7 @@ code `404 Not Found` with `"label": "invalid-code"`.
 There is a maximum of 3 activation attempts per activation code. On the third failed attempt the code is invalidated and a new one must be requested.
 
 ### Activation event
+
 (RefActivationEvent)=
 
 When the user becomes activated, they receive an event:
@@ -103,6 +108,7 @@ When the user becomes activated, they receive an event:
 ```
 
 ### Detecting activation in the self profile
+
 (RefActivationProfile)=
 
 In addition to the [activation event](RefActivationEvent), activation can be detected by polling the self profile:
@@ -125,6 +131,7 @@ GET /self
 If the profile includes `"email"`, the account is activated.
 
 ## Automating activation via email
+
 (RefActivationEmailHeaders)=
 
 Our email verification messages contain headers that can be used to automate the activation process.
@@ -145,6 +152,7 @@ X-Zeta-Code: 123456
 ```
 
 ## Email whitelist
+
 (RefActivationAllowlist)=
 
 The backend can be configured to only allow specific email address domains to register. The following option has to be set in `brig.yaml`:

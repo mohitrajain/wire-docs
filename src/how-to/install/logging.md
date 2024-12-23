@@ -24,7 +24,7 @@ You need to have wire-server installed, see either of
 Elasticsearch indexes the logs and makes them searchable. The following elasticsearch-ephemeral chart makes use of the disk space the pod happens to run on.
 
 ```
-$ helm install --namespace <namespace> wire/elasticsearch-ephemeral
+helm install --namespace <namespace> wire/elasticsearch-ephemeral
 ```
 
 Note that since we are not specifying a release name during helm
@@ -39,7 +39,7 @@ that your elasticsearch pod does not get too large, crash, and need to be
 re-built.
 
 ```
-$ helm install --namespace <namespace> wire/elasticsearch-curator
+helm install --namespace <namespace> wire/elasticsearch-curator
 ```
 
 Note that since we are not specifying a release name during helm
@@ -50,7 +50,7 @@ your pod names, you can see this name prepended to your pods in 'kubectl
 ### Deploying Kibana
 
 ```
-$ helm install --namespace <namespace> wire/kibana
+helm install --namespace <namespace> wire/kibana
 ```
 
 Note that since we are not specifying a release name during helm
@@ -61,7 +61,7 @@ your pod names, you can see this name prepended to your pods in 'kubectl
 ### Deploying fluent-bit
 
 ```
-$ helm install --namespace <namespace> wire/fluent-bit
+helm install --namespace <namespace> wire/fluent-bit
 ```
 
 ## Configuring fluent-bit
@@ -100,7 +100,7 @@ environment, get the helm name for the deployment (verb-noun prepended
 to the pod name), and
 
 ```
-$ helm upgrade <helm-name> --namespace <namespace> wire/fluent-bit
+helm upgrade <helm-name> --namespace <namespace> wire/fluent-bit
 ```
 
 Note that since we are not specifying a release name during helm
@@ -116,7 +116,7 @@ Get the pod name for your kibana instance (not the one set up with
 fluent-bit), and
 
 ```
-$ kubectl -n <namespace> port-forward <pod_name> 5601:5601
+kubectl -n <namespace> port-forward <pod_name> 5601:5601
 ```
 
 go to 127.0.0.1:5601 in your web browser.
@@ -134,7 +134,7 @@ Get the pod name for your kibana instance (not the one set up with
 fluent-bit), and
 
 ```
-$ kubectl -n <namespace> port-forward <pod_name> 5601:5601
+kubectl -n <namespace> port-forward <pod_name> 5601:5601
 ```
 
 Go to 127.0.0.1:5601 in your web browser.
@@ -143,7 +143,7 @@ Click on 'discover' to view data.
 
 (nuking-it-all)=
 
-## Nuking it all.
+## Nuking it all
 
 Find the names of the helm releases for your pods (look at `helm ls --all`
 and `kubectl -n <namespace> get pods` , and run

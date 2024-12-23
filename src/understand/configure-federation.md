@@ -1,4 +1,5 @@
 (configure-federation)=
+
 # Federation
 
 See also {ref}`federation-understand`, which explains the architecture and concepts.
@@ -12,22 +13,23 @@ The Federation development is work in progress.
 The steps needed to configure federation are as follows and they will be
 detailed in the sections below:
 
--   Choose a backend domain name
+- Choose a backend domain name
 
--   DNS setup for federation (including an `SRV` record)
+- DNS setup for federation (including an `SRV` record)
 
--   Generate and configure TLS certificates:
+- Generate and configure TLS certificates:
 
-    -   server certificates
-    -   client certificates
-    -   a selection of CA certificates you trust when interacting with
+  - server certificates
+  - client certificates
+  - a selection of CA certificates you trust when interacting with
         other backends
 
--   Configure helm charts : federator and ingress and webapp subcharts
+- Configure helm charts : federator and ingress and webapp subcharts
 
--   Test that your configurations work as expected.
+- Test that your configurations work as expected.
 
 (choose-backend-domain)=
+
 ## Choose a Backend Domain
 
 As of the release \[helm chart 0.129.0, Wire docker version 2.94.0\] from
@@ -49,13 +51,14 @@ breaking experience for all the users which are already using the
 backend.
 
 (consequences-backend-domain)=
+
 ## Consequences of the choice of a backend domain
 
--   You need control over a specific subdomain of this backend domain
+- You need control over a specific subdomain of this backend domain
     (to set an SRV DNS record as explained in the next section). Without
     this control, you cannot federate with anyone.
 
--   This backend domain becomes part of the underlying identity of all
+- This backend domain becomes part of the underlying identity of all
     users on your servers.
 
     Example: Let\'s say you choose `example.com` as your backend
@@ -72,7 +75,7 @@ backend.
     }
     ```
 
--   This domain is shown in the User Interface
+- This domain is shown in the User Interface
     alongside user information.
 
     Example: Using the same example as above, for backends you
@@ -92,8 +95,8 @@ change this backend domain. We do not intend to provide support if you
 change the backend domain.
 ```
 
-
 (dns-configure-federation)=
+
 ## DNS setup for federation
 
 ### SRV record
@@ -108,23 +111,23 @@ more information on the role of discovery in federation.
 
 The fields of the SRV record need to be populated as follows
 
--   `service`: `wire-server-federator`
--   `proto`: `tcp`
--   `name`: \<backend-domain\>
--   `TTL`: e.g. 600 (10 minutes) in an initial phase. This can be set to
+- `service`: `wire-server-federator`
+- `proto`: `tcp`
+- `name`: \<backend-domain\>
+- `TTL`: e.g. 600 (10 minutes) in an initial phase. This can be set to
     a higher value (e.g. 86400) if your systems are stable and DNS
     records don\'t change a lot.
--   `priority`: anything. A good default value would be 0
--   `weight`: \>0 for your server to be reachable. A good default value
+- `priority`: anything. A good default value would be 0
+- `weight`: \>0 for your server to be reachable. A good default value
     could be 10
--   `port`: `443`
--   `target`: the infrastructure domain
+- `port`: `443`
+- `target`: the infrastructure domain
 
 To give an example, assuming
 
--   your federation
+- your federation
     {ref}`Backend Domain <glossary_backend_domain>` is `example.com`
--   your domains for other services already set up follow the convention
+- your domains for other services already set up follow the convention
     `<service>.wire.example.org`
 
 then your federation
@@ -151,6 +154,7 @@ also needs to point to the IP of your ingress, i.e. the IP you want to
 provide services on.
 
 (federation-certificate-setup)=
+
 ## Generate and configure TLS server and client certificates
 
 Are your servers on the public internet? Then you have the option of
@@ -194,7 +198,6 @@ restrictions on key sizes anymore), those are tracked internally under
 FS-33 and FS-49 (tickets only visible to Wire employees).
 
 ```
-
 
 ### (A) Let\'s encrypt TLS server and client certificate generation and renewal
 
@@ -435,19 +438,19 @@ More information about individual remote connections is stored in
 brig's cassandra, and maintained via internal brig api end-points by
 the sysadmin:
 
-* [`POST`](https://staging-nginz-https.zinfra.io/api-internal/swagger-ui/brig/#/brig/post_i_federation_remotes)
+- [`POST`](https://staging-nginz-https.zinfra.io/api-internal/swagger-ui/brig/#/brig/post_i_federation_remotes)
 
   - after adding a new remote backend, wait for the other end to do
     the same with you, and then wait a few moments for things to
     stabilize (at least `update_interval * 2`; see below).
 
-* [`GET`](https://staging-nginz-https.zinfra.io/api-internal/swagger-ui/brig/#/brig/get_i_federation_remotes)
+- [`GET`](https://staging-nginz-https.zinfra.io/api-internal/swagger-ui/brig/#/brig/get_i_federation_remotes)
 
   - this serves an object with 3 fields:
-     - `remotes` (from cassandra): the list of remote domains with search policy (and
+    - `remotes` (from cassandra): the list of remote domains with search policy (and
        possibly other information in the future);
-     - `strategy` (from config): federation strategy; one of `allowNone`, `allowDynamic`, `allowAll` (see above)
-     - `update_interval` (from config): the suggested update frequency with which calling
+    - `strategy` (from config): federation strategy; one of `allowNone`, `allowDynamic`, `allowAll` (see above)
+    - `update_interval` (from config): the suggested update frequency with which calling
        services should refresh their information.
 
   - It doesn't serve the local domain, which needs to be configured
@@ -459,9 +462,9 @@ the sysadmin:
    short update interval (<10s), you should monitor brig's service and
    database load closely in the beginning.
 
-* [`PUT`](https://staging-nginz-https.zinfra.io/api-internal/swagger-ui/brig/#/brig/put_i_federation_remotes__domain_)
+- [`PUT`](https://staging-nginz-https.zinfra.io/api-internal/swagger-ui/brig/#/brig/put_i_federation_remotes__domain_)
 
-* **NOTE:** De-federating (`DELETE`) has been removed from the API to
+- **NOTE:** De-federating (`DELETE`) has been removed from the API to
    avoid a scalability issue.  Watch out for a fix in the changelog!
 
 The `remotes` list looks like this:
@@ -605,6 +608,7 @@ tls:
 ```
 
 (configure-federation-allow-list)=
+
 ### Configure the allow list
 
 By default, federation is turned off (allow list set to the empty list):
@@ -685,9 +689,9 @@ Alternative Names) and not have expired.
 
 Prerequisites:
 
--   You need two backends with federation configured and enabled.
--   They both need to have each other in the allow list.
--   They both need to trust each other\'s CA certificate.
+- You need two backends with federation configured and enabled.
+- They both need to have each other in the allow list.
+- They both need to trust each other\'s CA certificate.
 
 Create user accounts on both backends.
 

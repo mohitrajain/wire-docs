@@ -141,8 +141,6 @@ Hit **Save** and afterwards hit **Add New Mapping**
 Select the Azure AD Source attribute you want to map, and map it to the custom **Target Attribute** that you just added.
 ![image](https://user-images.githubusercontent.com/628387/119978316-c5018c00-bfb9-11eb-9290-2076ac1a05df.png)
 
-
-
 ## Limitations {#RefRichInfoLimitations}
 
 * The whole of user-submitted information (field names and values) cannot exceed 5000 characters in length. There are no limitations on the number of fields, or the maximum of individual field names or values.

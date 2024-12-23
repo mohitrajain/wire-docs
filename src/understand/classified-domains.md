@@ -30,7 +30,6 @@ This is not only a `backend` configuration, but also a `team` configuration/feat
 This means that different combinations of configurations will have different results.
 ```
 
-
 Here is a table to navigate the possible configurations:
 
 | Backend Config enabled/disabled | Backend Config Domains                         | Team Config enabled/disabled | Team Config Domains     | User's view                      |

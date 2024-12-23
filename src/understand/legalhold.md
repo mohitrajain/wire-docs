@@ -20,7 +20,7 @@ A typical installation of Legal Hold looks like this:
 
 ## Installing Legal Hold
 
-To install and run Legal Hold, you need a server dedicated to the service. 
+To install and run Legal Hold, you need a server dedicated to the service.
 
 Here we will use Ubuntu 18.04 as it is the system wire-server is installed on, but other systems should be possible.
 
@@ -97,7 +97,6 @@ Once in the interface, select `Customization` in the menu on the left:
 ![Customization](img/legalhold-step01-click-customization.png)
 
 </div>
-
 
 On the customization page, go to `Legal Hold`:
 

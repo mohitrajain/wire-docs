@@ -175,12 +175,12 @@ settings:
 ### TeamFeature searchVisibilityInbound
 
 The team feature flag `searchVisibilityInbound` affects if the team's users are
-searchable by users from _other_ teams. The default setting is
+searchable by users from *other* teams. The default setting is
 `searchable-by-own-team` which hides users from search results by users from
 other teams. If it is set to `searchable-by-all-teams` then users of this team
 may be included in the results of search queries by other users.
 
-Note: The configuration of this flag does _not_ affect search results when the
+Note: The configuration of this flag does *not* affect search results when the
 search query matches the handle exactly. If the handle is provdided then any user on the instance can find users.
 
 This team feature flag can only by toggled by site-administrators with direct access to the galley instance:
@@ -216,9 +216,10 @@ The `conferenceCalling` feature flag controls whether a user can initiate a conf
 
 The `conferenceCalling` section in `featureFlags` defines the state of the `conferenceCalling` feature flag for all personal users (users that don't belong to a team). For personal users there is no way to toggle the flag, so the setting of the config section wholly defines the state of `conferenceCalling` flag for all personal users.
 
-The `conferenceCalling` section in `featureFlags` also defines the _initial_ state of the `conferenceCalling` flag for all teams. After the flag is set for the first time for a team via the internal endpoint the value from the config section will be ignored.
+The `conferenceCalling` section in `featureFlags` also defines the *initial* state of the `conferenceCalling` flag for all teams. After the flag is set for the first time for a team via the internal endpoint the value from the config section will be ignored.
 
 Example value for the config section:
+
 ```yaml
 conferenceCalling:
   defaults:
@@ -326,7 +327,7 @@ The MLS end-to-end identity team feature adds an extra level of security and pra
 
 When a client first tries to fetch or renew a certificate, they may need to login to an identity provider (IdP) depending on their IdP domain authentication policy. The user may have a grace period during which they can “snooze” this login. The duration of this grace period (in seconds) is set in the `verificationDuration` parameter, which is enforced separately by each client. After the grace period has expired, the client will not allow the user to use the application until they have logged to refresh the certificate. The default value is 1 day (86400s).
 
-The client enrolls using the Automatic Certificate Management Environment (ACME) protocol [RFC 8555](https://www.rfc-editor.org/rfc/rfc8555.html). The `acmeDiscoveryUrl` parameter must be set to the HTTPS URL of the ACME server discovery endpoint for this team. It is of the form "https://acme.{backendDomain}/acme/{provisionerName}/discovery". For example: `https://acme.example.com/acme/provisioner1/discovery`.
+The client enrolls using the Automatic Certificate Management Environment (ACME) protocol [RFC 8555](https://www.rfc-editor.org/rfc/rfc8555.html). The `acmeDiscoveryUrl` parameter must be set to the HTTPS URL of the ACME server discovery endpoint for this team. It is of the form "<https://acme.{backendDomain}/acme/{provisionerName}/discovery>". For example: `https://acme.example.com/acme/provisioner1/discovery`.
 
 `useProxyOnMobile` is an optional field. If `true`, mobile clients should use the CRL proxy. If missing, null or false, mobile clients should not use the CRL proxy.
 
@@ -371,7 +372,6 @@ To get the public key run:
 ```shell
 openssl ec -in private.pem -pubout --out public.pem
 ```
-
 
 ### Federation Domain
 
@@ -418,6 +418,7 @@ See {ref}`configure-federation-strategy-in-brig` (since [PR#3260](https://github
 
 When a federator connects with another federator, it does so over HTTPS. There
 are a few options to configure the CA for this:
+
 1. `useSystemCAStore`: Boolean. If set to `True` it will use the system CA.
 2. `remoteCAStore`: Maybe Filepath. This config option can be used to specify
    multiple certificates from either a single file (multiple PEM formatted
@@ -544,7 +545,7 @@ what's in `defaultForNew`.
 When a `null` value is encountered, it is assumed to be
 `defaultForNull`.
 
-(Introduced in https://github.com/wireapp/wire-server/pull/1811.)
+(Introduced in <https://github.com/wireapp/wire-server/pull/1811>.)
 
 ### SFT configuration
 
@@ -601,7 +602,6 @@ sft:
 
 ### Locale
 
-
 #### setDefaultLocale (deprecated / ignored)
 
 The brig server config option `setDefaultLocale` has been replaced by `setDefaultUserLocale` and `setDefaultTemplateLocale`. Both settings are optional and `setDefaultTemplateLocale` defaults to `EN` and `setDefaultLocale` defaults to `setDefaultTemplateLocale`. If `setDefaultLocale` was not set or set to `EN` before this change, nothing needs to be done. If `setDefaultLocale` was set to any other language other than `EN` the name of the setting should be changed to `setDefaultTemplateLocale`.
@@ -644,13 +644,11 @@ optSettings:
 
 any key package whose expiry date is set further than 15 days after upload time will be rejected.
 
-
 ### Federated domain specific configuration settings
 
 #### Restrict user search
 
 See {ref}`configure-federation-strategy-in-brig` (since [PR#3260](https://github.com/wireapp/wire-server/pull/3260)).
-
 
 ### API Versioning
 
@@ -755,7 +753,6 @@ assets. The Haddock of
 [`CargoHold.Options.AWSOpts`](https://github.com/wireapp/wire-server/blob/develop/services/cargohold/src/CargoHold/Options.hs#L64)
 provides a lot of useful information.
 
-
 ## Multi-Ingress setup
 
 In a multi-ingress setup the backend is reachable via several domains, each
@@ -765,8 +762,8 @@ see domains and IPs that do not obviously relate to each other.
 Each of these backend domains represents a virtual backend. N.B. these backend
 domains are *DNS domains* only, not to be confused of the "backend domain" term used for federation (see {ref}`configure-federation`). In single-ingress setups the backend DNS domain and federation backend domain is usually be the same, but this is not true for multi-ingress setups.
 
-
 For a multi-ingress setup multiple services need to be configured:
+
 ### Nginz
 
 nginz sets [CORS
@@ -804,12 +801,10 @@ nginx_conf:
 
 ### Cargohold
 
-
 The backend domain of a download request is defined by its `Z-Host` header which
 is set by `nginz`. Multi-ingress handling only applies to download requests as
 these are implemented by redirects to the S3 assets host for local assets.
 Uploads are handled by cargohold directly itself.
-
 
 For a multi-ingress setup `aws.multiIngress` needs to be configured as a map from backend domain (`Z-Host` header value) to a S3 download endpoint. The `Z-Host` header is set by `nginz` to the
 value of the incoming requests `Host` header. If there's no config map entry for
@@ -835,7 +830,6 @@ aws:
     - nginz-https.blue.example.com: https://assets.blue.example.com
     - nginz-https.green.example.com: https://assets.green.example.com
 ```
-
 
 This sequence diagram illustrates how users on different virtual backends
 (represented by different Kubernetes ingresses) download local assets according
@@ -909,6 +903,7 @@ configure client-side TLS-encrypted connections (where the Wire backend is the
 client), a **C**ertificate **A**uthority in PEM format needs to be configured.
 
 The ways differ regarding the kind of program:
+
 - *Services* expect a `cassandra.tlsCa: <filepath>` attribute in their config file.
 - *\*-schema CLI commands* accept a `--tls-ca-certificate-file <filepath>` parameter.
 - *brig-index migrate-data* accepts a `--cassandra-ca-cert <filepath>` parameter.
@@ -1029,7 +1024,6 @@ brig:
       # addtionalTlsCaSecretRef: <similar to tlsCaSecretRef>
 ```
 
-
 **WARNING:** Please do this only if you know what you're doing.
 
 In case it is not possible to verify TLS certificate of the elasticsearch
@@ -1076,7 +1070,6 @@ gundeck:
 **NOTE**: `redisAddtiionalWriteUsername` follows same restrictions as
 `redisUsername` when using legacy auth.
 
-
 ## Configure TLS for Redis
 
 If the redis instance requires TLS, it can be configured like this:
@@ -1122,7 +1115,6 @@ gundeck:
       # tlsCa: <similar to tlsCa>
       # tlsCaSecretRef: <similar to tlsCaSecretRef>
 ```
-
 
 **WARNING:** Please do this only if you know what you're doing.
 

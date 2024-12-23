@@ -1,4 +1,5 @@
 (federation-architecture)=
+
 # Federation Achitecture
 
 (glossary_backend)=
@@ -58,9 +59,9 @@ other backends.
 
 Its functions are:
 
--   to terminate TLS connections
--   to perform mutual {ref}`authentication` as part of the TLS connection establishment
--   to forward requests to the local {ref}`federator` instance, along with the
+- to terminate TLS connections
+- to perform mutual {ref}`authentication` as part of the TLS connection establishment
+- to forward requests to the local {ref}`federator` instance, along with the
     remote backend\'s client certificate
 
 (federator)=
@@ -80,11 +81,11 @@ Additionally, it requires a connection to a DNS resolver to
 When receiving a request from an internal component, the *Federator*
 will:
 
-1.  If enabled, ensure the target domain is in the allow list,
-2.  Discover the other backend,
-3.  Establish a {ref}`mutually authenticated channel <authentication>` to the other backend using its client certificate,
-4.  Send the request to the other backend and
-5.  Forward the response back to the originating component (and
+1. If enabled, ensure the target domain is in the allow list,
+2. Discover the other backend,
+3. Establish a {ref}`mutually authenticated channel <authentication>` to the other backend using its client certificate,
+4. Send the request to the other backend and
+5. Forward the response back to the originating component (and
     eventually to the originating Wire client).
 
 The *Federator* also implements the authorization logic for incoming
@@ -93,14 +94,14 @@ the internal components. The *Federator* will, for incoming requests
 from remote backends (forwarded via the local
 {ref}`Federation Ingress <federation_ingress>`):
 
-1.  Discover the mapping
+1. Discover the mapping
     between backend domain claimed by the remote backend and its infra
     domain,
-2.  Verify that the discovered infrastructure domain matches the domain in the
+2. Verify that the discovered infrastructure domain matches the domain in the
     remote backend\'s client certificate,
-3.  If enabled, ensure that the backend domain of the other backend is
+3. If enabled, ensure that the backend domain of the other backend is
     in the allow list.
-4.  Forward requests to other wire-server components.
+4. Forward requests to other wire-server components.
 
 (other-wire-server)=
 
@@ -112,9 +113,9 @@ non-federation related external services. See [source code
 documentation](https://github.com/wireapp/wire-server). In the context
 of federation, their functions include:
 
--   For incoming requests from other backends:
+- For incoming requests from other backends:
     {ref}`per-request authorization<per-request-authorization>`
--   Outgoing requests to other backends are always sent via a local
+- Outgoing requests to other backends are always sent via a local
     Federator instance.
 
 For more information of the functionalities provided to remote backends

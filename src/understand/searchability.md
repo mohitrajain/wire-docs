@@ -118,8 +118,6 @@ This default value applies to all teams for which no explicit configuration of t
 
 - Out-Bound search restrictions (`searchSameTeamOnly`, `TeamSearchVisibility`) do not apply to federated searches
 
-
-
 ### Table of possible outcomes
 
 In the following table, user `uA` on backend A is searching for user `uB` on team `tB` on backend B.
@@ -145,7 +143,6 @@ The default setting is `searchable-by-own-team` which hides users from search
 results by users from other teams. If it is set to `searchable-by-all-teams`
 then users of this team may be included in the results of search queries by
 other users.
-
 
 The default setting that applies to all teams on the instance can be defined at configuration.
 

@@ -30,7 +30,7 @@ A deep link is a special link a user can click on after installing wire, but bef
 
 In addition to connect to a custom backend a user can specify a socks proxy to add another layer to the network and make the api calls go through the proxy.
 
-## From a user's perspective:
+## From a user's perspective
 
 1. First, a user installs the app from the store
 2. The user clicks on a deep link, which is formatted similar to: `wire://access/?config=https://eu-north2.mycustomdomain.de/configs/backend1.json` (notice the protocol prefix: `wire://`)
@@ -46,7 +46,7 @@ In addition to the previous points
 7. The app will remember the (proxy host, proxy port, if the proxy need authentication)
 8. In the login page the user will see new section to add the proxy credentials if the proxy need authentication
 
-## From the administrator's (your) perspective:
+## From the administrator's (your) perspective
 
 You need to host two static files, then let your users know how to connect. There are three options listed (in order of recommendation) for hosting the static files.
 

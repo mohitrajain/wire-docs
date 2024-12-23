@@ -84,9 +84,9 @@ And that's it!  You are now ready to set up your wire team for SAML SSO with the
 
 - technical concepts overview:
   : - <https://docs.microsoft.com/en-us/azure/active-directory/develop/active-directory-saml-protocol-reference>
-    - <https://docs.microsoft.com/en-us/azure/active-directory/develop/single-sign-on-saml-protocol>
+  - <https://docs.microsoft.com/en-us/azure/active-directory/develop/single-sign-on-saml-protocol>
 - how to create an app:
   : - <https://docs.microsoft.com/en-us/azure/active-directory/develop/quickstart-register-app>
 - how to configure SAML2.0 SSO:
   : - <https://docs.microsoft.com/en-us/azure/active-directory/manage-apps/what-is-single-sign-on#saml-sso>
-    - <https://docs.microsoft.com/en-us/azure/active-directory/manage-apps/configure-single-sign-on-non-gallery-applications>
+  - <https://docs.microsoft.com/en-us/azure/active-directory/manage-apps/configure-single-sign-on-non-gallery-applications>

@@ -26,6 +26,7 @@ Therefore it is not necessary to add them to OpenSSL based configurations.
 ## Ingress Traffic (wire-server)
 
 TLS ciphers for incoming requests is by default configured as a [limted set of ciphers](https://github.com/wireapp/wire-server/blob/master/charts/ingress-nginx-controller/values.yaml) (for general server-certificates, both for federation and client API), and can be overridden on your installation if needed.
+
 ```{grepinclude} ../charts/ingress-nginx-controller/values.yaml ssl-protocols:
 ---
 lines-before: 0
@@ -37,6 +38,7 @@ language: yaml
 ## Egress Traffic (wire-server/federation)
 
 The list of ciphers for outgoing federation requests is currently restricted to a subset of "Wire default" [TLSv1.2 ciphers](https://github.com/wireapp/wire-server/blob/develop/services/federator/src/Federator/Monitor/Internal.hs#L397) in accordance with BSI recommendations. TLSv1.3 is not supported as of yet.
+
 ```{grepinclude} ../services/federator/src/Federator/Monitor/Internal.hs blessedTLS12Ciphers =
 ---
 lines-before: 0

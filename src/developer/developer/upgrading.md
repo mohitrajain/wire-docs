@@ -9,6 +9,7 @@ Here are some workflow suggestions when you're trying to upgrade packages (or GH
 - You can explore our nix derivations via `nix repl` and then `:l ./nix` to load the attrset in `./nix/default.nix`. For example to see which version of `aeson` will be used you can evaluate `wireServer.haskellPackages.aeson.version`. TAB-autocompletion also tells you if multiple versions of a package are included in the `nixpkgs` pin, e.g. `aeson_1_5_6_0`, `aeson_2_1_1_0`, which can be used in `manual-overrides.nix` to overwrite the default, e.g. `aeson`.
 
 - Your goal is to make all packages compile again with nix. Start small by trying to build single packages, e.g. `wire-api` or any external dependencies.
+
 ```
 nix-build ./nix -A wireServer.haskellPackagesUnoptimizedNoDocs.wire-api
 ```

@@ -87,6 +87,7 @@ downtime, the process is documented [below](#recreate-an-index-requires-downtime
 This can be done in 4 steps:
 
 Before starting, please set these environment variables
+
 ```bash
 ES_HOST=<YOUR_HOST>
 ES_PORT=<YOUR_PORT> # default is 9200
@@ -99,6 +100,7 @@ REFRESH_INTERVAL=<REFRESH_INTERVAL_IN_SECONDS>
 ```
 
 1. Create the new index
+
    ```bash
    docker run "quay.io/wire/brig-index:$WIRE_VERSION" create \
        --elasticsearch-server "http://$ES_HOST:$ES_PORT" \
@@ -107,14 +109,17 @@ REFRESH_INTERVAL=<REFRESH_INTERVAL_IN_SECONDS>
        --elasticsearch-replicas "$REPLICAS" \
        --elasticsearch-refresh-interval "$REFRESH_INTERVAL"
    ```
+
 1. Redeploy brig with `elasticsearch.additionalWriteIndex` set to the name of new index. Make sure no old brigs are running.
 1. Reindex data to the new index
+
    ```bash
    docker run "quay.io/wire/brig-index:$WIRE_VERSION" reindex-from-another-index \
        --elasticsearch-server "http://$ES_HOST:$ES_PORT" \
        --source-index "$ES_SRC_INDEX" \
        --destination-index "$ES_DEST_INDEX"
    ```
+
    Optionally, `--timeout <NUMBER_OF_SECONDS>` can be added to increase/decrease from the default timeout of 10 minutes.
 1. Redeploy brig without `elasticsearch.additionalWriteIndex` and with `elasticsearch.index` set to the name of new index
 
@@ -158,6 +163,7 @@ BRIG_CASSANDRA_KEYSPACE=<YOUR_C*_KEYSPACE>
 ```
 
 1. Create the new index
+
    ```bash
    docker run "quay.io/wire/brig-index:$WIRE_VERSION" create \
        --elasticsearch-server "http://$ES_NEW_HOST:$ES_NEW_PORT" \
@@ -166,11 +172,13 @@ BRIG_CASSANDRA_KEYSPACE=<YOUR_C*_KEYSPACE>
        --elasticsearch-replicas "$REPLICAS" \
        --elasticsearch-refresh-interval "$REFRESH_INTERVAL"
    ```
+
 1. Redeploy brig with `elasticsearch.additionalWriteIndexUrl` set to the URL of
    the new cluster and `elasticsearch.additionalWriteIndex` set to
    `$ES_NEW_INDEX`.
 1. Make sure no old instances of brig are running.
 1. Reindex data to the new index
+
    ```bash
    docker run "quay.io/wire/brig-index:$WIRE_VERSION" migrate-data \
        --elasticsearch-server "http://$ES_NEW_HOST:$ES_NEW_PORT" \
@@ -181,6 +189,7 @@ BRIG_CASSANDRA_KEYSPACE=<YOUR_C*_KEYSPACE>
        --galley-host "$GALLEY_HOST"
        --galley-port "$GALLEY_PORT"
    ```
+
 1. Remove `elasticsearch.additionalWriteIndex` and
    `elasticsearch.additionalWriteIndexUrl` from brig config. Set
    `elasticsearch.url` to the URL of the new cluster and `elasticsearch.index`
@@ -200,6 +209,7 @@ to do when using [wire-server-deploy](https://github.com/wireapp/wire-server-dep
 Here are the steps:
 
 Before starting, please set these environment variables
+
 ```bash
 ES_HOST=<YOUR_HOST>
 ES_PORT=<YOUR_PORT> # default is 9200
@@ -207,6 +217,7 @@ ES_INDEX=<INDEX_NAME_ALREADY_IN_USE>
 ```
 
 ### Step 1: Delete the old index
+
 ```bash
 curl -XDELETE http://$ES_HOST:$ES_PORT/$ES_INDEX
 curl -XDELETE http://$ES_HOST:$ES_PORT/wire_brig_migrations
@@ -219,17 +230,19 @@ curl -XDELETE http://$ES_HOST:$ES_PORT/wire_brig_migrations
 Just redeploy the helm chart, new index will be created and after the deployment
 data migrations will refill the index with users.
 
-
 #### When not using helm charts from [wire-server-deploy](https://github.com/wireapp/wire-server-deploy)
 
 Set these extra environment variables:
+
 ```bash
 WIRE_VERSION=<VERSION_YOU_ARE_DEPLOYING>
 SHARDS=<NUMBER_OF_SHARDS_FOR_THE_INDEX>
 REPLICAS=<NUMBER_OF_REPLICAS_FOR_THE_INDEX>
 REFRESH_INTERVAL=<REFRESH_INTERVAL_FOR_THE_INDEX>
 ```
+
 1. Create the index
+
    ```bash
    docker run "quay.io/wire/brig-index:$WIRE_VERSION" create \
        --elasticsearch-server "http://$ES_HOST:$ES_PORT" \
@@ -238,4 +251,5 @@ REFRESH_INTERVAL=<REFRESH_INTERVAL_FOR_THE_INDEX>
        --elastcsearch-replicas "$REPLICAS" \
        --elastcsearch-refresh-interval "$REFRESH_INTERVAL"
    ```
+
 1. Refill the index as documented [above](#refill-es-documents-from-cassandra)

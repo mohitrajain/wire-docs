@@ -3,6 +3,7 @@
 # Federation API
 
 (qualified-identifiers-and-names)=
+
 ## Qualified Identifiers and Names
 
 The federated architecture is reflected in the structure of the various
@@ -26,15 +27,18 @@ qualified identities are encoded as objects, e.g.
 }
 
 ```
+
 In API path segments qualified identities are encoded with the domain first, e.g.
+
 ```
 POST /connections/b.example.com/d389b370-5f7d-4efd-9f9a-8d525540ad93
 ```
+
 to send a connection request to a user.
 
 Any identifier on a backend can be qualified:
 
-- conversation ids 
+- conversation ids
 - team ids
 - client ids
 - user ids
@@ -54,7 +58,6 @@ components across backends . The components talk to each other via the
 *Federator* in the originating domain and *Federator Ingress* in the receiving
 domain (for details see {ref}`backend-to-backend-communication`).
 
-
 ```{figure} ./img/federation-apis-flow.png
 ---
 width: 100%
@@ -63,7 +66,6 @@ Federators relaying a request between components. See {ref}`federation-back2back
 ```
 
 ### API From Components to Federator
-
 
 When making the call to the *Federator*, the components use HTTP2. They call the
 Federator's `Outward` service, which accepts `POST` requests with path
@@ -97,7 +99,6 @@ See {ref}`api-from-federator-to-components` for more details on RPCs and their p
 
 (api-from-components-to-federator)=
 
-
 (api-from-federator-to-components)=
 
 ### API From Federator to Components
@@ -127,7 +128,7 @@ attacks such as attempting to access `/federation/../users/by-handle`.
 ## List of Federation APIs exposed by Components
 
 Each component of the backend provides an API towards the *Federator*
-for access by other backends. 
+for access by other backends.
 
 ```{note}
 This reflects status of API endpoints as of 2023-01-10. For latest APIs please
@@ -142,25 +143,25 @@ In its current state, the primary purpose of the Brig API is to allow
 users of remote backends to create conversations with the local users of
 the backend.
 
--   `get-user-by-handle`: Given a handle, return the user profile
+- `get-user-by-handle`: Given a handle, return the user profile
     corresponding to that handle.
--   `get-users-by-ids`: Given a list of user ids, return the list of
+- `get-users-by-ids`: Given a list of user ids, return the list of
     corresponding user profiles.
--   `claim-prekey`: Given a user id and a client id, return a Proteus
+- `claim-prekey`: Given a user id and a client id, return a Proteus
     pre-key belonging to that user.
--   `claim-prekey-bundle`: Given a user id, return a prekey for each of
+- `claim-prekey-bundle`: Given a user id, return a prekey for each of
     the user\'s clients.
--   `claim-multi-prekey-bundle`: Given a list of user ids, return
+- `claim-multi-prekey-bundle`: Given a list of user ids, return
     prekeys of their respective clients.
--   `search-users`: Given a term, search the user database for matches
+- `search-users`: Given a term, search the user database for matches
     w.r.t. that term.
--   `get-user-clients`: Given a list of user ids, return the lists of
+- `get-user-clients`: Given a list of user ids, return the lists of
     clients of each of the users.
--   `get-user-clients`: Given a list of user ids, return a list of all their clients with public information
--   `send-connection-action`: Make and also respond to user connection requests
--   `on-user-deleted-connections`: Notify users that are connected to remote user about that user's deletion
--   `get-mls-clients`: Request all {ref}`MLS <mls-message-layer-security>`-capable clients for a given user
--   `claim-key-packages`: Claim a previously-uploaded KeyPackage of a remote user. User for adding users to MLS conversations.
+- `get-user-clients`: Given a list of user ids, return a list of all their clients with public information
+- `send-connection-action`: Make and also respond to user connection requests
+- `on-user-deleted-connections`: Notify users that are connected to remote user about that user's deletion
+- `get-mls-clients`: Request all {ref}`MLS <mls-message-layer-security>`-capable clients for a given user
+- `claim-key-packages`: Claim a previously-uploaded KeyPackage of a remote user. User for adding users to MLS conversations.
 
 See [the brig source
 code](https://github.com/wireapp/wire-server/blob/master/libs/wire-api-federation/src/Wire/API/Federation/API/Brig.hs)
@@ -219,6 +220,7 @@ their precise inputs and outputs.
 (end-to-end-flows)=
 
 ### Cargohold
+
 - `get-asset`: Check if asset owned by called backend is available to calling backend
 - `stream-asset`: Stream asset owned by the called backend
 
@@ -244,18 +246,18 @@ a distinct backend.
 In this flow, the user *Alice* at *a.example.com* tries to search for user
 *Bob* at *b.example.com*.
 
-1.  User *Alice* enters the qualified user name of the target
+1. User *Alice* enters the qualified user name of the target
     user *Bob* : `@bob@b.example.com` into the search field of their Wire client.
-2.  The client issues a query to `/search/contacts` of the Brig
+2. The client issues a query to `/search/contacts` of the Brig
     searching for *Bob* at *b.example.com*.
-3.  The Brig in *Alice*\'s backend asks its local *Federator* to query the
+3. The Brig in *Alice*\'s backend asks its local *Federator* to query the
     `search-users` endpoint in *Bob*\'s backend.
-4.  *Alice*\'s *Federator* queries *Bob*\'s Brig via *Bob*\'s *Federation
+4. *Alice*\'s *Federator* queries *Bob*\'s Brig via *Bob*\'s *Federation
     Ingress* and *Federator* as requested.
-5.  *Bob*\'s Brig replies with *Bob*\'s user name and qualified handle, the
+5. *Bob*\'s Brig replies with *Bob*\'s user name and qualified handle, the
     response goes through *Bob*\'s *Federator* and *Federation Ingress*,
     as well as *Alice*\'s *Federator* before it reaches *A*\'s Brig.
-6.  *Alice*\'s Brig forwards that information to *A*\'s client.
+6. *Alice*\'s Brig forwards that information to *A*\'s client.
 
 (conversation-establishment)=
 
@@ -264,27 +266,27 @@ In this flow, the user *Alice* at *a.example.com* tries to search for user
 After having discovered user *Bob* at *b.example.com*, user *Alice* at
 *a.example.com* wants to establish a conversation with *Bob*.
 
-1.  From the search results of a
+1. From the search results of a
     {ref}`user discovery<user-discovery>`
     process, *Alice* chooses to create a conversation with *Bob*.
-2.  *Alice*\'s client issues a `/users/b.example.com/<bobs-user-id>/prekeys` query to
+2. *Alice*\'s client issues a `/users/b.example.com/<bobs-user-id>/prekeys` query to
     *Alice*\'s Brig.
-3.  *Alice*\'s Brig asks its *Federator* to query the `claim-prekey-bundle`
+3. *Alice*\'s Brig asks its *Federator* to query the `claim-prekey-bundle`
     endpoint of *Bob*\'s backend using *Bob*\'s user id.
-4.  *Bob*\'s *Federation Ingress* forwards the query to the *Federator*,
+4. *Bob*\'s *Federation Ingress* forwards the query to the *Federator*,
     who in turn forwards it to the local Brig.
-5.  *Bob*\'s Brig replies with a prekey bundle for each of *Bob*\'s clients,
+5. *Bob*\'s Brig replies with a prekey bundle for each of *Bob*\'s clients,
     which is forwarded to *Alice*\'s Brig via *Bob*\'s *Federator* and
     *Federation Ingress*, as well as *Alice*\'s *Federator*.
-6.  *Alice*\'s Brig forwards that information to *A*\'s client.
-7.  *Alice*\'s client queries the `/conversations` endpoint of its Galley
+6. *Alice*\'s Brig forwards that information to *A*\'s client.
+7. *Alice*\'s client queries the `/conversations` endpoint of its Galley
     using *Bob*\'s user id.
-8.  *Alice*\'s Galley creates the conversation locally and queries the
+8. *Alice*\'s Galley creates the conversation locally and queries the
     `on-conversation-created` endpoint of *Bob*\'s Galley (again via its
     local *Federator*, as well as *Bob*\'s *Federation Ingress* and
     *Federator*) to inform it about the new conversation, including the
     conversation metadata in the request.
-9.  *Bob*\'s Galley registers the conversation locally and confirms the
+9. *Bob*\'s Galley registers the conversation locally and confirms the
     query.
 10. *Bob*\'s Galley notifies *Bob*\'s client of the creation of the
     conversation.
@@ -296,20 +298,20 @@ After having discovered user *Bob* at *b.example.com*, user *Alice* at
 Having established a conversation with user *Bob* at *b.example.com*, user
 *Alice* at *a.example.com* wants to send a message to user *Bob*.
 
-1.  In a conversation *\<conv-id-1\>@a.example.com* on *Alice*\'s backend with
+1. In a conversation *\<conv-id-1\>@a.example.com* on *Alice*\'s backend with
     users *Alice* and *Bob*, *Alice* sends a message
     by using the `/conversations/a.example.com/<conv-id-1>/proteus/messages`
     endpoint on *Alice*\'s Galley.
-2.  *Alice*\'s Galley checks if *A* included all necessary user devices in
+2. *Alice*\'s Galley checks if *A* included all necessary user devices in
     their request. For that it makes a `get-user-clients` request to
     *Bob*\'s Galley. *Alice*\'s Galley checks that the returned list of
     clients matches the list of clients the message was encrypted for.
-3.  *Alice*\'s Galley sends the message to all clients in the conversation
+3. *Alice*\'s Galley sends the message to all clients in the conversation
     that are part of *Alice*\'s backend.
-4.  *Alice*\'s Galley queries the `on-message-sent` endpoint on *Bob*\'s
+4. *Alice*\'s Galley queries the `on-message-sent` endpoint on *Bob*\'s
     Galley via its *Federator* and *Bob*\'s *Federation Ingress* and
     *Federator*.
-5.  *Bob*\'s Galley will propagate the message to all local clients
+5. *Bob*\'s Galley will propagate the message to all local clients
     involved in the conversation.
 
 ## Ownership

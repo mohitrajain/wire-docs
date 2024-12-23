@@ -3,8 +3,8 @@
 This document details the versioning scheme used for wire-server's HTTP APIs.
 This applies equally to:
 
- - the public-facing API (defined in `wire-api`)
- - the federation API (defined in `wire-api-federation`).
+- the public-facing API (defined in `wire-api`)
+- the federation API (defined in `wire-api-federation`).
 
 ## Supported and development versions
 
@@ -63,10 +63,10 @@ Some endpoints are unversioned. The backend will also accept versioned requests
 to them, but they all behave identically regardless of the version prefix. The
 unversioned endpoints are:
 
- - the `/api-version` endpoint itself; this is so that a client can dynamically
+- the `/api-version` endpoint itself; this is so that a client can dynamically
    determine which version to use based on the information returned by the
    backend;
- - the `/access` endpoint; this is so that access cookie paths can be set to
+- the `/access` endpoint; this is so that access cookie paths can be set to
    the same value regardless of the version, which avoids invalidating logins
    across version upgrades.
 
@@ -80,9 +80,9 @@ However, the development version is disabled in production, so whenever we need
 those changes to actually be deployed, we have to perform a version bump. That
 means a few things:
 
- - freezing the current contract of the development version (see below);
- - turning the development version into a stable version;
- - creating a new development version, which is an exact copy of the previous
+- freezing the current contract of the development version (see below);
+- turning the development version into a stable version;
+- creating a new development version, which is an exact copy of the previous
    development version at the time of the bump.
 
 To make this process easier, and to avoid unreasonable code duplication in the
@@ -216,12 +216,12 @@ production.
 Before making a request to the server, the client needs to have negotiated
 which version to use. The recommended flow is as follows:
 
- - query `GET /api-version` and retrieve the set of supported and development
+- query `GET /api-version` and retrieve the set of supported and development
    versions;
- - decide whether using a development version is unacceptable, and
+- decide whether using a development version is unacceptable, and
    if so, take it out of consideration;
- - use the latest (i.e. numerically largest) version that the client supports;
- - if no backend-supported version is supported by the client, return a
+- use the latest (i.e. numerically largest) version that the client supports;
+- if no backend-supported version is supported by the client, return a
    versioning error (either ask the user or the backend administrator to
    upgrade, depending on which versions are higher).
 

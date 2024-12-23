@@ -18,32 +18,32 @@
 
   Asset Host²          1        1            4            100
 
-  **Per-Server Totals  \-\--    13 CPU Cores 26 GB Memory 730 GB Disk
+**Per-Server Totals  \-\--    13 CPU Cores 26 GB Memory 730 GB Disk
   with Admin and Asset                                    Space
-  Hosts**                                                 
+  Hosts**
   ------------------------------------------------------------------------
 
--   ¹ Kubernetes hosts may need more ressources to support SFT
+- ¹ Kubernetes hosts may need more ressources to support SFT
     (Conference Calling). See \"Conference Calling Hardware
     Requirements\" below.
--   ² Admin and Asset Hosts can run on any one of the 3 servers, but
+- ² Admin and Asset Hosts can run on any one of the 3 servers, but
     that server must not allocate additional resources as indicated in
     the table above.
--   ³ Etcd is run inside of Kubernetes, hence no specific resource
+- ³ Etcd is run inside of Kubernetes, hence no specific resource
     allocation
--   ⁴ Restund may be hosted on only 2 of the 3 servers, or all 3. Two
+- ⁴ Restund may be hosted on only 2 of the 3 servers, or all 3. Two
     nodes are enough to ensure high availability of Restund services
 
 General Hardware Requirements
 
--   Minimum 3 physical servers required
--   Wire has a minimum requirement for a total of 16 Ubuntu 18.04
+- Minimum 3 physical servers required
+- Wire has a minimum requirement for a total of 16 Ubuntu 18.04
     virtual machines across the 3 servers (in accordance with the table
     above)
 
 Conference Calling Hardware Requirements
 
--   Kubernetes Hosts may need additional resources for SFT services. For
+- Kubernetes Hosts may need additional resources for SFT services. For
     concurrent SFT users (SFT = Selective Forwarding Turn-server, ie.
     Conference calling), we recommend an extra 3% of CPU allocation,
     evenly distributed across the nodes (i.e. 1% more CPU per kubernetes

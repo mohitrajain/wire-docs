@@ -69,12 +69,14 @@ by us or the people hosting on-premise, let's stick to `LocalQuorum` for the tim
 in your queries, unless there is a very good reason not to.***
 
 (batch-statements)=
+
 ## Guidelines for across-table (atomic) consistency
 
 Given that we have strong consistency for a single operation (see section above), in some cases your
 data access patterns mandate that you have multiple tables with seemingly duplicated data.
 
 Good ✅ example: For instance, a 'teamInvitation' needs to be queried
+
 * by team ID (for the team admin- which pending invitations exist?)
 * by email (during user registration), and
 * by code (to check whether an invitation is valid before embarking on the user registration).
@@ -139,10 +141,11 @@ User-A-chatX.
 * way 2: insert these rows separately in some order of your choosing.
 
 Now, if the Haskell process crashes midway, then we can have these outcomes:
-- with way 1: either the write succeeded or it didn't. So either User-A is in chat X (way-1-A) or
+
+* with way 1: either the write succeeded or it didn't. So either User-A is in chat X (way-1-A) or
   they are not (way-1-B). But either way it's in both tables or in none, depending on when the crash
   happened.
-- with way 2: there's a chance one write to one table went through but the other didn't.
+* with way 2: there's a chance one write to one table went through but the other didn't.
 
 So with way-1-A - 5 minutes later - both User-A looking at their conversation list sees chat X
 appear; and other members of chat X looking at the member list of that chat see User-A as a
@@ -285,6 +288,7 @@ FUTUREWORK.
 FUTUREWORK.
 
 (discover-and-repair)=
+
 ## We made a mistake. How to detect data inconsistency across some tables?
 
 This is a little time consuming to do. It involves writing a kind of script which does a paginated
@@ -328,7 +332,7 @@ of a `WHERE` clause: `SELECT some_field FROM some_table WHERE some_key = ?`.
 In some rare circumstances you might not easily think of a good primary key. In this case, you could
 for instance use a single default value that is hardcoded: `SELECT some_field FROM some_table WHERE
 some_key = 1`. We use this strategy in the `meta` table which stores the cassandra version migration
-information, and we use it for a 
+information, and we use it for a
 [default idp](https://github.com/wireapp/wire-server/blob/4814afd88b8c832c4bd8c24674886c5d295aff78/services/spar/schema/src/V7.hs).
 `some_field` might be of type `set`, which allows you to have some guarantees.
 See the implementation of unique claims and the
@@ -352,9 +356,10 @@ or if `mapConcurrently` is fine, we would ideally need load testing including pe
 Cassandra works best for write-once read-many scenarios.
 
 Read e.g.
-- <https://www.datastax.com/blog/cassandra-anti-patterns-queues-and-queue-datasets>
-- <https://www.instaclustr.com/support/documentation/cassandra/using-cassandra/managing-tombstones-in-cassandra/#>
-- search the internet some more for 'cassandra' and 'tombstones' and if you find good posts, add them here.
+
+* <https://www.datastax.com/blog/cassandra-anti-patterns-queues-and-queue-datasets>
+* <https://www.instaclustr.com/support/documentation/cassandra/using-cassandra/managing-tombstones-in-cassandra/#>
+* search the internet some more for 'cassandra' and 'tombstones' and if you find good posts, add them here.
 
 ## Understanding more about cassandra
 
@@ -364,7 +369,7 @@ Confused about primary key, partition key, and clustering key? See e.g. [this po
 
 ### optimizing parallel request performance
 
-See the thoughts in https://github.com/wireapp/wire-server/pull/1345#discussion_r567829234 - measuring overall and per-request performance and trying out different settings here might be worthwhile if increasing read or write performance is critical.
+See the thoughts in <https://github.com/wireapp/wire-server/pull/1345#discussion_r567829234> - measuring overall and per-request performance and trying out different settings here might be worthwhile if increasing read or write performance is critical.
 
 ## Cassandra schema migrations
 
@@ -398,7 +403,7 @@ During a deployment:
 
 * At time t=0, old schema, old code serves traffic; all good.
 * At time t=1, new schema, old code serves traffic: 500 server errors as the old code is still active, bit columns or tables have been deleted, so old queries of `SELECT x from my_table` cause exceptions / HTTP 5xx results.
-    * In the worst deployment scenario, this could raise an alarm and lead operators or automation to stop the deployment or roll back; but that doesn't solve the issue, 500s will continue being thrown until the new code is deployed.
+  * In the worst deployment scenario, this could raise an alarm and lead operators or automation to stop the deployment or roll back; but that doesn't solve the issue, 500s will continue being thrown until the new code is deployed.
 * At time t=2, new schema, old code AND new code serve traffic: partial 500s (all traffic still serves by old code)
 * At time t=3, new schema, new code serves traffic: all good again.
 
@@ -408,6 +413,6 @@ Options from most to least desirable:
 
 * Never make backwards-incompatbile changes to the database schema :)
 * Do changes in a two-step process:
-    * First make a change that stops the code from using queries involving `my_column` or `my_table` (assuming you wish to remove those), and deploy this all the way across all of your environments (staging, prod, customers, ...).
-    * After all deployments have gone through (this can take weeks or months), do the schema change removing that column or table from the database. Often there is no urgency with removal of data, so it's fine to do this e.g. 6 months later.
+  * First make a change that stops the code from using queries involving `my_column` or `my_table` (assuming you wish to remove those), and deploy this all the way across all of your environments (staging, prod, customers, ...).
+  * After all deployments have gone through (this can take weeks or months), do the schema change removing that column or table from the database. Often there is no urgency with removal of data, so it's fine to do this e.g. 6 months later.
 * Do changes in a one-step process, but accept partial service interruption for several minutes up to a few hours, accept communication overhead across teams to warn them about upcoming interruption or explain previous interruption; accept communication and documentation to warn all operators deploying that or a future version of the code, and accept some amount of frustration that may arise from a lack of said communication and understanding of what is happening.
