@@ -18,9 +18,10 @@ Release notes of `wire-server` can be found [here](https://github.com/wireapp/wi
 
 ## Content
 
-- [Security responses](security-responses/index.md)
-- [Release Notes](changelog/index.md)
 - [Installation](how-to/install/index.md)
 - [Administration](how-to/administrate/index.md)
 - [Reference](understand/index.md)
 - [Developers Notes](developer/index.md)
+- [Release Notes](changelog/index.md)
+- [Security responses](security-responses/index.md)
+

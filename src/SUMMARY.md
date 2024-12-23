@@ -1,9 +1,6 @@
 # Summary
 
 * [Wire-docs](README.md)
-* [changelog](changelog/README.md)
-  * [changelog](changelog/changelog.md)
-  * [Releases](changelog/README.md)
 * [developer](developer/README.md)
   * [Notes for developers](developer/README.md)
   * [developer](developer/developer/README.md)
@@ -141,3 +138,6 @@
     * [Troubleshooting during installation](how-to/install/troubleshooting.md)
     * [Required/Supported versions](how-to/install/version-requirements.md)
     * [Web app settings](how-to/install/web-app-settings.md)
+* [changelog](changelog/README.md)
+  * [changelog](changelog/changelog.md)
+  * [Releases](changelog/README.md)
