@@ -1,4 +1,4 @@
-# Wire-docs
+# Wire-documents-structure
 
 Source files for wire-server documentation hosted on <https://docs.wire.com>
 
