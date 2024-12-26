@@ -2,7 +2,7 @@
 
 ## HLint
 
-To run [HLint](https://github.com/ndmitchell/hlint) you need it's binary, e.g.
+To run [HLint](https://github.com/ndmitchell/hlint) you need it’s binary, e.g.
 by executing:
 
 ```sh
@@ -23,7 +23,7 @@ hlint services/federator
 
 ## Stan
 
-To run [Stan](https://github.com/kowainik/stan), you need it's binary compiled
+To run [Stan](https://github.com/kowainik/stan), you need it’s binary compiled
 by the same GHC version as used in the project.
 
 ```sh
@@ -34,7 +34,7 @@ Stan depends on [*hie*](https://www.haskell.org/ghc/blog/20190626-HIEFiles.html)
 database files that are created during compilation. To generate them for all
 packages add this to your `cabal.project.local` file:
 
-```
+```default
 package *
     ghc-options: -fwrite-ide-info -hiedir=.hie
 ```

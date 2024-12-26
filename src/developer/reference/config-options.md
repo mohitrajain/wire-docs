@@ -9,7 +9,7 @@ the Wire backend services.
 
 ## MLS private key paths
 
-Note: This developer documentation. Documentation for site operators can be found here: {ref}`mls-message-layer-security`
+Note: This developer documentation. Documentation for site operators can be found here: [Messaging Layer Security (MLS)](../../understand/mls.md#mls-message-layer-security)
 
 The `mlsPrivateKeyPaths` field should contain a mapping from *purposes* and
 signature schemes to file paths of corresponding x509 private keys in PEM
@@ -20,7 +20,7 @@ to sign external remove proposals.
 
 For example:
 
-```
+```default
   mlsPrivateKeyPaths:
     removal:
       ed25519: /etc/secrets/ed25519.pem
@@ -32,13 +32,13 @@ For example:
 A simple way to generate an ed25519 private key, discarding the corresponding
 certificate, is to run the following command:
 
-```
+```default
 openssl genpkey -algorithm ed25519
 ```
 
 ECDSA private keys can be generated with:
 
-```
+```default
 openssl genpkey -algorithm ec -pkeyopt ec_paramgen_curve:P-256
 ```
 
@@ -51,7 +51,7 @@ and similar (replace `P-256` with `P-384` or `P-521`).
 Feature flags can be used to turn features on or off, or determine the
 behavior of the features. Example:
 
-```
+```default
 # [galley.yaml]
 settings:
   featureFlags:
@@ -73,18 +73,18 @@ customer support / backoffice.  [Allowed
 values](https://github.com/wireapp/wire-server/blob/46713382a1a6544de3936eb03e987b9f76df3faa/libs/galley-types/src/Galley/Types/Teams.hs#L327-L329):
 `disabled-by-default`, `enabled-by-default`.
 
-IMPORTANT: if you change this from 'enabled-by-default' to
-'disabled-by-default' in production, you need to run [this migration
+IMPORTANT: if you change this from ‘enabled-by-default’ to
+‘disabled-by-default’ in production, you need to run [this migration
 script](https://github.com/wireapp/wire-server/tree/master/tools/db/migrate-sso-feature-flag)
-to fix all teams that have registered an idp.  (if you don't, the idp
-will keep working, but the admin won't be able to register new idps.)
+to fix all teams that have registered an idp.  (if you don’t, the idp
+will keep working, but the admin won’t be able to register new idps.)
 
 ### LegalHold
 
 Optionally block customer support / backoffice from enabling legal
 hold for individual teams.  [Allowed
 values](https://github.com/wireapp/wire-server/blob/46713382a1a6544de3936eb03e987b9f76df3faa/libs/galley-types/src/Galley/Types/Teams.hs#L332-L334):
-'disabled-permanently', 'disabled-by-default'.
+‘disabled-permanently’, ‘disabled-by-default’.
 
 IMPORTANT: If you switch this back to `disabled-permanently` from
 `disabled-by-default`, LegalHold devices may still be active in teams
@@ -121,7 +121,7 @@ another team member. The feature is disabled by default.
 
 To activate this feature two steps are needed. First, the team id (tid) has to
 be added to the list of teams for which this feature *can* be enabled
-(`exposeInvitationURLsTeamAllowlist`). This is done in `galley`'s `values.yaml`:
+(`exposeInvitationURLsTeamAllowlist`). This is done in `galley`’s `values.yaml`:
 
 ```yaml
 settings:
@@ -144,12 +144,12 @@ The team flag `searchVisibility` affects the outbound search of user
 searches. If it is set to `no-name-outside-team` for a team then all users of
 that team will no longer be able to find users that are not part of their team
 when searching. This also includes finding other users by by providing their
-exact handle. By default it is set to `standard`, which doesn't put any
+exact handle. By default it is set to `standard`, which doesn’t put any
 additional restrictions to outbound searches.
 
 The setting can be changed via endpoint:
 
-```
+```default
 GET /teams/{tid}/search-visibility
   -- Shows the current TeamSearchVisibility value for the given team
 
@@ -174,7 +174,7 @@ settings:
 
 ### TeamFeature searchVisibilityInbound
 
-The team feature flag `searchVisibilityInbound` affects if the team's users are
+The team feature flag `searchVisibilityInbound` affects if the team’s users are
 searchable by users from *other* teams. The default setting is
 `searchable-by-own-team` which hides users from search results by users from
 other teams. If it is set to `searchable-by-all-teams` then users of this team
@@ -185,7 +185,7 @@ search query matches the handle exactly. If the handle is provdided then any use
 
 This team feature flag can only by toggled by site-administrators with direct access to the galley instance:
 
-```
+```default
 PUT /i/teams/{tid}/features/search-visibility-inbound
 with JSON body {"status": "enabled"} or body {"status": disabled}
 ```
@@ -208,13 +208,13 @@ Individual teams can overwrite the default setting.
 
 ### Classified domains
 
-To enable classified domains, see the documentation on classified domains: {ref}`classified-domains`
+To enable classified domains, see the documentation on classified domains: classified-domains
 
 ### Conference Calling
 
 The `conferenceCalling` feature flag controls whether a user can initiate a conference call. The flag can be toggled between its states `enabled` and `disabled` per team via an internal endpoint.
 
-The `conferenceCalling` section in `featureFlags` defines the state of the `conferenceCalling` feature flag for all personal users (users that don't belong to a team). For personal users there is no way to toggle the flag, so the setting of the config section wholly defines the state of `conferenceCalling` flag for all personal users.
+The `conferenceCalling` section in `featureFlags` defines the state of the `conferenceCalling` feature flag for all personal users (users that don’t belong to a team). For personal users there is no way to toggle the flag, so the setting of the config section wholly defines the state of `conferenceCalling` flag for all personal users.
 
 The `conferenceCalling` section in `featureFlags` also defines the *initial* state of the `conferenceCalling` flag for all teams. After the flag is set for the first time for a team via the internal endpoint the value from the config section will be ignored.
 
@@ -243,12 +243,12 @@ fileSharing:
 
 These are all the possible combinations of `status` and `lockStatus`:
 
-| `status`   | `lockStatus` |                                                   |
-| ---------- | ------------ | ------------------------------------------------- |
-| `enabled`  | `locked`     | Feature enabled, cannot be disabled by team admin |
-| `enabled`  | `unlocked`   | Feature enabled, can be disabled by team admin    |
-| `disabled` | `locked`     | Feature disabled, cannot be enabled by team admin |
-| `disabled` | `unlocked`   | Feature disabled, can be enabled by team admin    |
+| `status`   | `lockStatus`   |                                                   |
+|------------|----------------|---------------------------------------------------|
+| `enabled`  | `locked`       | Feature enabled, cannot be disabled by team admin |
+| `enabled`  | `unlocked`     | Feature enabled, can be disabled by team admin    |
+| `disabled` | `locked`       | Feature disabled, cannot be enabled by team admin |
+| `disabled` | `unlocked`     | Feature disabled, can be enabled by team admin    |
 
 The lock status for individual teams can be changed via the internal API (`PUT /i/teams/:tid/features/fileSharing/(un)?locked`).
 
@@ -290,7 +290,7 @@ The `defaultCipherSuite` and `allowedCipherSuites` contain the default ciphersui
 
 If the MLS feature is disabled then clients will use the Proteus protocol with this backend.
 
-The default configuration that applies to all teams that didn't explicitly change their feature configuration can be given in galley's `featureFlags` section in the config file:
+The default configuration that applies to all teams that didn’t explicitly change their feature configuration can be given in galley’s `featureFlags` section in the config file:
 
 ```yaml
 # galley.yaml
@@ -301,8 +301,8 @@ mls:
       protocolToggleUsers: []
       defaultProtocol: mls
       supportedProtocols: [proteus, mls] # must contain defaultProtocol
-      allowedCipherSuites: [1]
-      defaultCipherSuite: 1
+      allowedCipherSuites: [2]
+      defaultCipherSuite: 2
     lockStatus: locked
 ```
 
@@ -317,8 +317,8 @@ mls:
     protocolToggleUsers: []
     defaultProtocol: mls
     supportedProtocols: [proteus, mls] # must contain defaultProtocol
-    allowedCipherSuites: [1]
-    defaultCipherSuite: 1
+    allowedCipherSuites: [2]
+    defaultCipherSuite: 2
 ```
 
 ### MLS End-to-End Identity
@@ -327,7 +327,7 @@ The MLS end-to-end identity team feature adds an extra level of security and pra
 
 When a client first tries to fetch or renew a certificate, they may need to login to an identity provider (IdP) depending on their IdP domain authentication policy. The user may have a grace period during which they can “snooze” this login. The duration of this grace period (in seconds) is set in the `verificationDuration` parameter, which is enforced separately by each client. After the grace period has expired, the client will not allow the user to use the application until they have logged to refresh the certificate. The default value is 1 day (86400s).
 
-The client enrolls using the Automatic Certificate Management Environment (ACME) protocol [RFC 8555](https://www.rfc-editor.org/rfc/rfc8555.html). The `acmeDiscoveryUrl` parameter must be set to the HTTPS URL of the ACME server discovery endpoint for this team. It is of the form "<https://acme.{backendDomain}/acme/{provisionerName}/discovery>". For example: `https://acme.example.com/acme/provisioner1/discovery`.
+The client enrolls using the Automatic Certificate Management Environment (ACME) protocol [RFC 8555](https://www.rfc-editor.org/rfc/rfc8555.html). The `acmeDiscoveryUrl` parameter must be set to the HTTPS URL of the ACME server discovery endpoint for this team. It is of the form “https://acme.{backendDomain}/acme/{provisionerName}/discovery”. For example: `https://acme.example.com/acme/provisioner1/discovery`.
 
 `useProxyOnMobile` is an optional field. If `true`, mobile clients should use the CRL proxy. If missing, null or false, mobile clients should not use the CRL proxy.
 
@@ -412,7 +412,7 @@ settings:
 
 ### Federation allow list
 
-See {ref}`configure-federation-strategy-in-brig` (since [PR#3260](https://github.com/wireapp/wire-server/pull/3260)).
+See [Configure federation strategy (whom to federate with) in brig](../../understand/configure-federation.md#configure-federation-strategy-in-brig) (since [PR#3260](https://github.com/wireapp/wire-server/pull/3260)).
 
 ### Federation TLS Config
 
@@ -465,6 +465,18 @@ federator:
     clientPrivateKey: client-key.pem
 ```
 
+### Federation protocols
+
+A backend can restrict creation of new federated conversations according to the protocol used (Proteus or MLS). This is controlled by the `federationProtocols` setting. For example:
+
+```yaml
+galley:
+  settings:
+    federationProtocols: ["mls"]
+```
+
+will prevent the creation of a Proteus conversation containing federated users, and will prevent federated users from joining a Proteus conversation on this backend. However, existing Proteus conversations with federated users will continue to function, and users of this backend will be allowed to join new and existing Proteus conversations on federated backends.
+
 ### Outlook calendar integration
 
 This feature setting only applies to the Outlook Calendar extension for Wire. As it is an external service, it should only be configured through this feature flag and otherwise ignored by the backend.
@@ -511,8 +523,7 @@ limitedEventFanout:
 
 Some features (as of the time of writing this: only
 `conferenceCalling`) allow to set defaults for personal accounts in
-brig. Those are taken into account in galley's end-points `GET
-/feature-configs*`.
+brig. Those are taken into account in galley’s end-points `GET /feature-configs*`.
 
 To be specific:
 
@@ -522,7 +533,7 @@ Two values can be configured for personal accounts: a default for when
 the user record contains `null` as feature config, and default that
 should be inserted into the user record when creating new users:
 
-```
+```default
 # [brig.yaml]
 settings:
   setFeatureFlags:
@@ -540,20 +551,20 @@ prior to the introduction of this change, while allowing site owners
 to postpone the decision about the default setting.
 
 When new users are created, their config will be initialized with
-what's in `defaultForNew`.
+what’s in `defaultForNew`.
 
 When a `null` value is encountered, it is assumed to be
 `defaultForNull`.
 
-(Introduced in <https://github.com/wireapp/wire-server/pull/1811>.)
+(Introduced in https://github.com/wireapp/wire-server/pull/1811.)
 
 ### SFT configuration
 
 Configuring SFT load balancing can be done in two (mutually exclusive) settings:
 
-1) Configuring a SRV DNS record based load balancing setting
+1. Configuring a SRV DNS record based load balancing setting
 
-```
+```default
 # [brig.yaml]
 sft:
   sftBaseDomain: sft.wire.example.com
@@ -564,9 +575,9 @@ sft:
 
 or
 
-2) Configuring a HTTP-based load balancing setting
+1. Configuring a HTTP-based load balancing setting
 
-```
+```default
 # [brig.yaml]
 settings:
   setSftStaticUrl: https://sft.wire.example.com
@@ -576,9 +587,9 @@ This setting assumes that the sft load balancer has been deployed with the `sftd
 
 Additionally if `setSftListAllServers` is set to `enabled` (disabled by default) then the `/calls/config/v2` endpoint will include a list of all servers that are load balanced by `setSftStaticUrl` at field `sft_servers_all`. This is required to enable calls between federated instances of Wire.
 
-Calls between federated SFT servers can be enabled using the optional boolean `multiSFT.enabled`. If provided, the field `is_federating` in the response of `/calls/config/v2` will reflect `multiSFT.enabled`'s value.
+Calls between federated SFT servers can be enabled using the optional boolean `multiSFT.enabled`. If provided, the field `is_federating` in the response of `/calls/config/v2` will reflect `multiSFT.enabled`’s value.
 
-```
+```default
 # [brig.yaml]
 multiSFT:
   enabled: true
@@ -588,7 +599,7 @@ Also, the optional object `sftToken` with its fields `ttl` and `secret` define w
 
 Example:
 
-```
+```default
 # [brig.yaml]
 sft:
   sftBaseDomain: sft.wire.example.com
@@ -610,7 +621,7 @@ The brig server config option `setDefaultLocale` has been replaced by `setDefaul
 
 This option determines the default locale for email templates. The language of the email communication is determined by the user locale (see above). Only if templates of the the locale of the user do not exist or if user locale is not set the `setDefaultTemplateLocale` is used as a fallback. If not set the default is `EN`. This setting should not be changed unless a complete set of templates is available for the given language.
 
-```
+```default
 # [brig.yaml]
 optSettings:
   setDefaultTemplateLocale: en
@@ -620,7 +631,7 @@ optSettings:
 
 This option determines which language to use for email communication. It is the default value if none is given in the user profile, or if no user profile exists (eg., if user is being provisioned via SCIM or manual team invitation via the team management app). If not set, `setDefaultTemplateLocale` is used instead.
 
-```
+```default
 # [brig.yaml]
 optSettings:
   setDefaultUserLocale: en
@@ -636,7 +647,7 @@ This option determines whether MLS is supported on this backend. When set to fal
 
 This option specifies the maximum accepted lifetime of a key package from the moment it is uploaded, in seconds. For example, when brig is configured as follows:
 
-```
+```default
 # [brig.yaml]
 optSettings:
   setKeyPackageMaximumLifetime: 1296000 # 15 days
@@ -648,13 +659,13 @@ any key package whose expiry date is set further than 15 days after upload time 
 
 #### Restrict user search
 
-See {ref}`configure-federation-strategy-in-brig` (since [PR#3260](https://github.com/wireapp/wire-server/pull/3260)).
+See [Configure federation strategy (whom to federate with) in brig](../../understand/configure-federation.md#configure-federation-strategy-in-brig) (since [PR#3260](https://github.com/wireapp/wire-server/pull/3260)).
 
 ### API Versioning
 
 ### OAuth
 
-For more information on OAuth please refer to <https://docs.wire.com/developer/reference/oauth.html>.
+For more information on OAuth please refer to [https://docs.wire.com/developer/reference/oauth.html](https://docs.wire.com/developer/reference/oauth.html).
 
 En-/Disable OAuth as follows (if not set the default is disabled):
 
@@ -692,7 +703,7 @@ optSettings:
   setOAuthRefreshTokenExpirationTimeSecs: 14515200 # 24 weeks
 ```
 
-For more information on what these settings mean in particular, please refer to <https://docs.wire.com/developer/reference/oauth.html>.
+For more information on what these settings mean in particular, please refer to [https://docs.wire.com/developer/reference/oauth.html](https://docs.wire.com/developer/reference/oauth.html).
 
 #### Max number of active refresh tokens
 
@@ -705,11 +716,52 @@ optSettings:
   setOAuthMaxActiveRefreshTokens: 10
 ```
 
+#### Password hashing options
+
+Since release 5.6.0, wire-server can hash passwords with
+[argon2id](https://datatracker.ietf.org/doc/html/rfc9106) to be stored at rest.
+If you do not do anything, the deployment will still use scrypt.
+
+The password hashing options are set for brig and galley:
+
+```yaml
+brig:
+  optSettings:
+    setPasswordHashingOptions:
+      algorithm: # argon2id or scrypt
+      # These options only apply to argon2id
+      iterations: ...
+      memory: ... # memory needed in KiB
+      parallelism: ...
+galley:
+  settings:
+    passwordHashingOptions:
+      algorithm: # argon2id or scrypt
+      # These options only apply to argon2id
+      iterations: ...
+      memory: ... # memory needed in KiB
+      parallelism: ...
+```
+
+**Performance implications:** argon2id typically takes longer and uses more
+memory than scrypt. So when migrating to it brig and galley pods must be
+allocated more resouces according to the chosen paramters.
+
+When configured to use argon2id, the DB will be migrated slowly over time as the
+users enter their passwords (either to login or to do other operations which
+require explicit password entry). This migration is **NOT** done in reverse,
+i.e., if a deployment started with argon2id as the algorithm then chose to move
+to scrypt, the passwords already stored will not get rehashed automatically,
+however the users will still be able to use them to login.
+
+**NOTE** It is highly recommended to move to argon2id as it will be made the
+only available choice for the `algorithm` config option in future.
+
 #### Disabling API versions
 
-It is possible to disable one ore more API versions. When an API version is disabled it won't be advertised on the `GET /api-version` endpoint, neither in the `supported`, nor in the `development` section. Requests made to any endpoint of a disabled API version will result in the same error response as a request made to an API version that does not exist.
+It is possible to disable one ore more API versions. When an API version is disabled it won’t be advertised on the `GET /api-version` endpoint, neither in the `supported`, nor in the `development` section. Requests made to any endpoint of a disabled API version will result in the same error response as a request made to an API version that does not exist.
 
-Each of the services brig, cannon, cargohold, galley, gundeck, proxy, spar should to be configured with the same set of disable API versions in each service's values.yaml config files.
+Each of the services brig, cannon, cargohold, galley, gundeck, proxy, spar should to be configured with the same set of disable API versions in each service’s values.yaml config files.
 
 For example to disable API version v3, you need to configure:
 
@@ -746,6 +798,38 @@ This setting is required to be present for all the services (brig, cannon, cargo
 
 The default value (provided under `charts/<service>/values.yaml`) is `[ development ]` and disables the development versions. To enable all versions including the development versions set the value to be empty: `[]`.
 
+### Team invitation URL for personal users
+
+To configure the team invitation URL for personal users that is sent vai email, `emailSMS.team.tExistingUserInvitationUrl` should be set to the desired URL, e.g.:
+
+```yaml
+brig:
+  config
+    emailSMS:
+      team:
+        tExistingUserInvitationUrl: '{{ .Values.accountUrl }}/accept-invitation/?team-code=${code}'
+```
+
+In some environments the `team` config section does not exist. In this case brig’s configmap constructs the URL from the account pages URL which then must be set under `externalUrls.accountPages` e.g. as follows:
+
+```yaml
+brig:
+  config:
+    externalUrls:
+      accountPages: https://account.wire.com
+```
+
+### Enterprise Login Audit Log
+
+Audit logs for any update (POST, PUT, DELETE) of a domain registration via the internal API are sent via email to the specified email address. If not specified no audit logs will be sent.
+
+```yaml
+brig:
+  config:
+    optSettings:
+      setAuditLogEmailRecipient: security@wire.com
+```
+
 ## Settings in cargohold
 
 AWS S3 (or an alternative provider / service) is used to upload and download
@@ -760,7 +844,7 @@ handled by a separate Kubernetes ingress. This is useful to obfuscate the
 relationship of clients to each other, as an attacker on TCP/IP-level could only
 see domains and IPs that do not obviously relate to each other.
 Each of these backend domains represents a virtual backend. N.B. these backend
-domains are *DNS domains* only, not to be confused of the "backend domain" term used for federation (see {ref}`configure-federation`). In single-ingress setups the backend DNS domain and federation backend domain is usually be the same, but this is not true for multi-ingress setups.
+domains are *DNS domains* only, not to be confused of the “backend domain” term used for federation (see [Federation](../../understand/configure-federation.md#configure-federation)). In single-ingress setups the backend DNS domain and federation backend domain is usually be the same, but this is not true for multi-ingress setups.
 
 For a multi-ingress setup multiple services need to be configured:
 
@@ -807,7 +891,7 @@ these are implemented by redirects to the S3 assets host for local assets.
 Uploads are handled by cargohold directly itself.
 
 For a multi-ingress setup `aws.multiIngress` needs to be configured as a map from backend domain (`Z-Host` header value) to a S3 download endpoint. The `Z-Host` header is set by `nginz` to the
-value of the incoming requests `Host` header. If there's no config map entry for
+value of the incoming requests `Host` header. If there’s no config map entry for
 a provided `Z-Host` in a download request for a local asset, then an error is
 returned. When configured the configuration of `s3DownloadEndpoint` is ignored.
 
@@ -835,7 +919,7 @@ This sequence diagram illustrates how users on different virtual backends
 (represented by different Kubernetes ingresses) download local assets according
 to the configuration example above:
 
-![Sequence Diagram: Alice and Bob download an asset](./multi-ingress-example-sequence.svg)
+![Sequence Diagram: Alice and Bob download an asset](developer/reference/multi-ingress-example-sequence.svg)
 
 <!--
 Unfortunately, kroki currently doesn't work on our CI: SQPIT-1810
@@ -864,12 +948,12 @@ When the webapp is loaded from one of those domains it first does a request to t
 Because of the single instance nature of the webapp, by default the configuration is static and the root url to the backend API can be set there (say `nginz-https.root.example.com`).
 In order to completely hide this root domain to the webapp, an environment variable can be set to allow the webapp hostname to be used to generate the API endpoint, team settings links, account page links and CSP headers.
 
-The "hostname" is the result of the domain name minus the `webapp.` part of it.
+The “hostname” is the result of the domain name minus the `webapp.` part of it.
 So querying the webapp on `webapp.red.example.com` will resolve to `red.example.com`.
 
 To enable dynamic hostname replacement, first set this variable:
 
-```
+```default
 ENABLE_DYNAMIC_HOSTNAME="true"
 ```
 
@@ -879,7 +963,7 @@ You may use the template variable `[[hostname]]` in any environment variable to 
 
 For example:
 
-```
+```default
 APP_BASE:                                         https://[[hostname]]
 BACKEND_REST:                                     https://nginz-https.[[hostname]]
 BACKEND_WS:                                       wss://nginz-ssl.[[hostname]]
@@ -905,7 +989,7 @@ client), a **C**ertificate **A**uthority in PEM format needs to be configured.
 The ways differ regarding the kind of program:
 
 - *Services* expect a `cassandra.tlsCa: <filepath>` attribute in their config file.
-- *\*-schema CLI commands* accept a `--tls-ca-certificate-file <filepath>` parameter.
+-  *\*-schema CLI commands* accept a `--tls-ca-certificate-file <filepath>` parameter.
 - *brig-index migrate-data* accepts a `--cassandra-ca-cert <filepath>` parameter.
 
 When a CA PEM file is configured, all Cassandra connections are opened with TLS
@@ -929,7 +1013,7 @@ the example `cert-manager` generates a `Certificate` including Java KeyStores,
 then `trust-manager` creates synchronized `Secret`s to make only the CA PEM
 accessible to services (and not the private key.)
 
-The corresponding Cassandra options are described in Cassandra's documentation:
+The corresponding Cassandra options are described in Cassandra’s documentation:
 [client_encryption_options](https://cassandra.apache.org/doc/stable/cassandra/configuration/cass_yaml_file.html#client_encryption_options)
 
 ## Configure Elasticsearch basic authentication
@@ -937,7 +1021,7 @@ The corresponding Cassandra options are described in Cassandra's documentation:
 When the Wire backend is configured to work against a custom Elasticsearch
 instance, it may be desired to enable basic authentication for the internal
 communication between the Wire backend and the ES instance. To do so the
-Elasticsearch credentials can be set in wire-server's secrets for `brig` and
+Elasticsearch credentials can be set in wire-server’s secrets for `brig` and
 `elasticsearch-index` as follows:
 
 ```yaml
@@ -1024,7 +1108,7 @@ brig:
       # addtionalTlsCaSecretRef: <similar to tlsCaSecretRef>
 ```
 
-**WARNING:** Please do this only if you know what you're doing.
+**WARNING:** Please do this only if you know what you’re doing.
 
 In case it is not possible to verify TLS certificate of the elasticsearch
 server, it can be turned off without tuning off TLS like this:
@@ -1116,7 +1200,7 @@ gundeck:
       # tlsCaSecretRef: <similar to tlsCaSecretRef>
 ```
 
-**WARNING:** Please do this only if you know what you're doing.
+**WARNING:** Please do this only if you know what you’re doing.
 
 In case it is not possible to verify TLS certificate of the redis
 server, it can be turned off without tuning off TLS like this:
@@ -1153,7 +1237,7 @@ rabbitmq:
   insecureSkipVerifyTls: false
 ```
 
-**WARNING:** Please do this only if you know what you're doing.
+**WARNING:** Please do this only if you know what you’re doing.
 
 In case it is not possible to verify the TLS certificate of the RabbitMQ
 server, verification can be turned off by settings `insecureSkipVerifyTls` to

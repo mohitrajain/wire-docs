@@ -1,8 +1,32 @@
 # OAuth
 
-```{contents}
-:depth: 3
-```
+> ##### Contents
+> 
+> * [OAuth](#oauth)
+>   * [Introduction and overview](#introduction-and-overview)
+>     * [Roles](#roles)
+>     * [Supported OAuth flow](#supported-oauth-flow)
+>   * [OAuth client developer reference](#oauth-client-developer-reference)
+>     * [Registering an OAuth client](#registering-an-oauth-client)
+>     * [Authorization request](#authorization-request)
+>     * [Retrieve access and refresh token](#retrieve-access-and-refresh-token)
+>     * [Accessing a resource](#accessing-a-resource)
+>     * [Refresh access token](#refresh-access-token)
+>     * [Revoke a refresh token](#revoke-a-refresh-token)
+>   * [Wire client developer reference (ZAuth authorized API)](#wire-client-developer-reference-zauth-authorized-api)
+>     * [Retrieve OAuth client info](#retrieve-oauth-client-info)
+>     * [Retrieve a list of 3rd party apps with account access](#retrieve-a-list-of-3rd-party-apps-with-account-access)
+>     * [Revoke account access](#revoke-account-access)
+>   * [Site admin reference (Configuration)](#site-admin-reference-configuration)
+>     * [Enable/disable OAuth](#enable-disable-oauth)
+>     * [OAuth authorization code, access token, and refresh token expiration](#oauth-authorization-code-access-token-and-refresh-token-expiration)
+>     * [Maximum number of active refresh tokens](#maximum-number-of-active-refresh-tokens)
+>   * [Enable 3rd party apps for teams](#enable-3rd-party-apps-for-teams)
+>   * [Implementation details](#implementation-details)
+>     * [Token handling](#token-handling)
+>     * [Scopes](#scopes)
+>     * [Steps for adding a new scope (making an endpoint accessible via OAuth)](#steps-for-adding-a-new-scope-making-an-endpoint-accessible-via-oauth)
+>     * [Public/private keys](#public-private-keys)
 
 ## Introduction and overview
 
@@ -26,7 +50,7 @@ The user is the resource owner who gives permission to the OAuth client to acces
 
 #### 3rd party application (OAuth client)
 
-A 3rd party app is attempting to get access a resource on behalf of the user. It needs to get permission from the user in order to do so.  The terminology is a bit fuzzy here: we use the terms app, application, client synonymous.  To disambiguate, we qualify with "oauth" (*oauth* client, ...).
+A 3rd party app is attempting to get access a resource on behalf of the user. It needs to get permission from the user in order to do so.  The terminology is a bit fuzzy here: we use the terms app, application, client synonymous.  To disambiguate, we qualify with “oauth” (*oauth* client, …).
 
 #### Resource server
 
@@ -34,14 +58,13 @@ The resource server is the API server the 3rd party app attempts to access on be
 
 #### Authorization server
 
-The authorization server does the authentication of the user and establishes whether the user approves or denies the client's access request. In this case the authorization server is the same server as the resource server which is `wire-server`.
+The authorization server does the authentication of the user and establishes whether the user approves or denies the client’s access request. In this case the authorization server is the same server as the resource server which is `wire-server`.
 
 ### Supported OAuth flow
 
 `wire-server` currently only supports the [Authorization Code Flow with Proof Key for Code Exchange (PKCE)](https://www.rfc-editor.org/rfc/rfc7636) which is optimized for public clients such as Outlook Calendar Extension.
 
-```{image} oauth.svg
-```
+![image](developer/reference/oauth.svg)
 
 ## OAuth client developer reference
 
@@ -61,7 +84,7 @@ A new OAuth client can be register *only* via the internal API of `brig` by prov
 Parameters:
 
 | Parameter          | Description                                                                                          |
-| ------------------ | ---------------------------------------------------------------------------------------------------- |
+|--------------------|------------------------------------------------------------------------------------------------------|
 | `redirect_url`     | The URL to which Wire app will redirect the browser after authorization has been granted by the user |
 | `application_name` | The name of the application that will be shown on the consent page                                   |
 
@@ -80,17 +103,17 @@ These credentials have to be stored in a safe place and cannot be recovered if t
 
 When the user wants to use the 3rd party app for the first time, they need to authorize it to access Wire resources on their behalf.
 
-They first need to click on the "Login" (or similar) button (1. in OAuth 2.0 authorization code flow diagram above) which will redirect them to a Wire login page to authenticate (2.-3. in diagram above). Once authenticated, they are redirected to the consent page.
+They first need to click on the “Login” (or similar) button (1. in OAuth 2.0 authorization code flow diagram above) which will redirect them to a Wire login page to authenticate (2.-3. in diagram above). Once authenticated, they are redirected to the consent page.
 
 If the user is already logged in the authentication will be skipped and they are directly shown the consent page.
 
-On the consent page, the user is asked to authorize the client's access request. They can either grant or deny the request and the corresponding scope, a list of permissions to give to the 3rd party app, (4. in diagram above).
+On the consent page, the user is asked to authorize the client’s access request. They can either grant or deny the request and the corresponding scope, a list of permissions to give to the 3rd party app, (4. in diagram above).
 
 The client needs to create a unique `code_verifier` as described in [RFC 7636 section 4.1](https://www.rfc-editor.org/rfc/rfc7636#section-4.1) and send a `code_challenge`, which is the unpadded base64url-encoded SHA256 hash of the code verifier as described in [RFC 7636 section 4.2](https://www.rfc-editor.org/rfc/rfc7636#section-4.2). The `code_challenge` must be included in the request. The `S256` code challenge method is mandatory. The `code_verifier` must not be included in the request.
 
 Example request:
 
-```
+```default
 GET /authorize?
   scope=read%3Aself%20write%3Aconversation&
   response_type=code&
@@ -104,7 +127,7 @@ GET /authorize?
 Url encoded query parameters:
 
 | Parameter               | Description                                                                                                                                                                                                                                                                |
-| ----------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+|-------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `scope`                 | Required. The scope of the access request.                                                                                                                                                                                                                                 |
 | `response_type`         | Required. Value MUST be set to `code`.                                                                                                                                                                                                                                     |
 | `client_id`             | Required. The client identifier.                                                                                                                                                                                                                                           |
@@ -139,12 +162,12 @@ curl -s -X POST server.example.com/oauth/token \
 Parameters:
 
 | Parameter       | Description                                                                             |
-| --------------- | --------------------------------------------------------------------------------------- |
+|-----------------|-----------------------------------------------------------------------------------------|
 | `code`          | Required. The authorization code received from the authorization server.                |
 | `client_id`     | Required. The client identifier.                                                        |
 | `grant_type`    | Required. Value MUST be set to `authorization_code`.                                    |
 | `redirect_uri`  | Required. The value MUST be identical to the one provided in the  authorization request |
-| `code_verifier` | Required. The code verifier as described above.                                        |
+| `code_verifier` | Required. The code verifier as described above.                                         |
 
 Example response:
 
@@ -178,11 +201,11 @@ curl -s -X POST server.example.com/oauth/token \
 Parameters:
 
 | Parameter       | Description                                       |
-| --------------- | ------------------------------------------------- |
+|-----------------|---------------------------------------------------|
 | `refresh_token` | Required. The refresh token issued to the client. |
 | `client_id`     | Required. The client identifier.                  |
 | `grant_type`    | Required. Value MUST be set to `refresh_token`.   |
-| `client_secret` | Required. The client's secret.                    |
+| `client_secret` | Required. The client’s secret.                    |
 
 Example response:
 
@@ -212,14 +235,14 @@ curl -i -s -X POST localhost:8080/oauth/revoke \
 Parameters:
 
 | Parameter       | Description                                       |
-| --------------- | ------------------------------------------------- |
+|-----------------|---------------------------------------------------|
 | `client_id`     | Required. The client identifier.                  |
 | `refresh_token` | Required. The refresh token issued to the client. |
-| `client_secret` | Required. The client's secret.                    |
+| `client_secret` | Required. The client’s secret.                    |
 
 Example response:
 
-```
+```default
 HTTP/1.1 200 OK
 (empty-response-body)
 ```
@@ -300,7 +323,7 @@ nginz:
         }
 ```
 
-Note that the JWK is a sensitive configuration value, so it is recommended to use Helm's support for managing secrets instead of including it in a plaintext `values.yaml` file.
+Note that the JWK is a sensitive configuration value, so it is recommended to use Helm’s support for managing secrets instead of including it in a plaintext `values.yaml` file.
 
 ### OAuth authorization code, access token, and refresh token expiration
 
@@ -334,7 +357,7 @@ brig:
 
 ## Enable 3rd party apps for teams
 
-3rd party apps are enabled based on the team's payment plan by `ibis`.
+3rd party apps are enabled based on the team’s payment plan by `ibis`.
 
 ## Implementation details
 
@@ -342,7 +365,7 @@ brig:
 
 #### Authorization code
 
-The authorization code is stored as plain text rather than a "scrypted" hash because it is the key to look up the associated information like the client ID, the user ID, the scope and the redirect URL. An authorization code can only be used once and has a very short time to live.
+The authorization code is stored as plain text rather than a “scrypted” hash because it is the key to look up the associated information like the client ID, the user ID, the scope and the redirect URL. An authorization code can only be used once and has a very short time to live.
 
 #### Access token
 
@@ -395,9 +418,9 @@ Endpoints that support OAuth have the required scope listed in the swagger docum
 
 #### Scope implementation details
 
-To enable OAuth access for a resource a scope has to be defined in the nginx location config that matches the endpoint's path.
+To enable OAuth access for a resource a scope has to be defined in the nginx location config that matches the endpoint’s path.
 
-The current convention is that scope names should match the resource's paths separated by an underscore. E.g. `/conversations/:cid/code` becomes `conversations_code` (path parameters are omitted).
+The current convention is that scope names should match the resource’s paths separated by an underscore. E.g. `/conversations/:cid/code` becomes `conversations_code` (path parameters are omitted).
 
 Furthermore, the scope must be prefixed (separated by a colon) with
 

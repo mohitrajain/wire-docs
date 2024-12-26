@@ -2,19 +2,19 @@
 
 Reference: {#RefRichInfo}
 
-_Author: Artyom Kazak_
+*Author: Artyom Kazak*
 
 ---
 
-This page describes a part of the user profile called "Rich info". The corresponding feature is called "Rich profiles".
+This page describes a part of the user profile called “Rich info”. The corresponding feature is called “Rich profiles”.
 
 ## Summary {#RefRichInfoSummary}
 
-For every team user we can store a list of key-value pairs that are displayed in the user profile. This is similar to "custom profile fields" in Slack and other enterprise messengers.
+For every team user we can store a list of key-value pairs that are displayed in the user profile. This is similar to “custom profile fields” in Slack and other enterprise messengers.
 
 Different users can have different sets of fields; there is no team-wide schema for fields. All field values are strings. Fields are passed as an ordered list, and the order information is preserved when displaying fields in client apps.
 
-Only team members and partners can see the user's rich info.
+Only team members and partners can see the user’s rich info.
 
 ## API {#RefRichInfoApi}
 
@@ -57,7 +57,7 @@ Otherwise, if the rich info is missing, an empty field list is returned:
 
 **Not implemented yet.**
 
-When user's rich info changes, the backend sends out an event to all team members:
+When user’s rich info changes, the backend sends out an event to all team members:
 
 ```json
 {
@@ -68,7 +68,7 @@ When user's rich info changes, the backend sends out an event to all team member
 }
 ```
 
-Connected users who are not members of user's team will not receive an event (nor can they query user's rich info by other means).
+Connected users who are not members of user’s team will not receive an event (nor can they query user’s rich info by other means).
 
 ## SCIM support {#RefRichInfoScim}
 
@@ -88,7 +88,7 @@ PUT /scim/v2/Users/:id
 
 Here is an example for `PATCH`:
 
-```
+```default
 PATCH /scim/v2/Users/:id
 
 {
@@ -123,12 +123,12 @@ Go to your provisioning page
 
 ![image](https://user-images.githubusercontent.com/628387/119977043-393b3000-bfb8-11eb-9e5b-18a955ca3181.png)
 
-Click "Edit attribute mappings"
+Click “Edit attribute mappings”
 
-Then click "Mappings" And then click **Synchronize Azure Active Directory Users to _appname_**
+Then click “Mappings” And then click **Synchronize Azure Active Directory Users to *appname***
 ![image](https://user-images.githubusercontent.com/628387/119977488-c9797500-bfb8-11eb-81b8-46376f5fdadb.png)
 
-Click "Show Advanced options" and then **Edit attribute list for _appname_**
+Click “Show Advanced options” and then **Edit attribute list for *appname***
 ![image](https://user-images.githubusercontent.com/628387/119977905-3f7ddc00-bfb9-11eb-90e2-28da82c6f13e.png)
 
 Add a new attribute name. The type should be `String` and the name should be prefixed with `urn:ietf:params:scim:schemas:extension:wire:1.0:User:`
@@ -144,5 +144,4 @@ Select the Azure AD Source attribute you want to map, and map it to the custom *
 ## Limitations {#RefRichInfoLimitations}
 
 * The whole of user-submitted information (field names and values) cannot exceed 5000 characters in length. There are no limitations on the number of fields, or the maximum of individual field names or values.
-
 * Field values can not be empty (`""`). If they are empty, the corresponding field will be removed.

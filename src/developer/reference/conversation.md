@@ -2,7 +2,7 @@
 
 Reference: {#RefCreateAndPopulateConvs}
 
-_Author: Matthias Fischmann_
+*Author: Matthias Fischmann*
 
 ---
 
@@ -25,7 +25,7 @@ work-around.
 We will talk to the backend using the API that the clients use, so we
 need a pseudo-user that we can authenticate as.  We assume this user
 has been created by other means.  For the sake of testing, you could
-just use the team admin (but you don't need admin privileges for this
+just use the team admin (but you don’t need admin privileges for this
 user).
 
 So here is some shell environment we will need:
@@ -50,11 +50,11 @@ export BEARER=$(curl -X POST \
 
 This token will be good for 15 minutes; after that, just repeat.
 
-If you don't want to install [jq](https://stedolan.github.io/jq/), you
+If you don’t want to install [jq](https://stedolan.github.io/jq/), you
 can just call the `curl` command and copy the access token into the
 shell variable manually.
 
-Here is a quick test that you're logged in:
+Here is a quick test that you’re logged in:
 
 ```bash
 curl -X GET --header "Authorization: Bearer $BEARER" \
@@ -64,7 +64,7 @@ curl -X GET --header "Authorization: Bearer $BEARER" \
 ## Contact requests
 
 If `$WIRE_USER` is in a team, all other team members are implicitly
-connected to it.  So for the users in your team, you don't have to do
+connected to it.  So for the users in your team, you don’t have to do
 anything here.
 
 TODO: contact requests to users not on the team.

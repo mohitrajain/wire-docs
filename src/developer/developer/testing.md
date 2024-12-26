@@ -6,7 +6,7 @@ named `test` or `test*`.  Ideally, there are at least unit tests
 integration tests (eg. `test/integration`) for packages with
 executables (`/services`).
 
-See also: {ref}`run-wire-server-integration-tests-inside-kubernetes-using-helm`
+See also: [Run wire-server integration tests inside kubernetes using helm](processes.md#run-wire-server-integration-tests-inside-kubernetes-using-helm)
 
 ## General rule
 
@@ -16,7 +16,7 @@ function instead, and call if from an effectful function.
 
 ## Unit tests
 
-All data types that are serialized ([`ToByteString`](https://hackage.haskell.org/package/amazonka-core-1.6.1/docs/Network-AWS-Data-ByteString.html#t:ToByteString), [`ToByteString`](https://hackage.haskell.org/package/aeson/docs/Data-Aeson.html#t:ToJSON), swagger, cassandra, ...) should have roundtrip quickcheck tests like [here](https://github.com/wireapp/wire-server/blob/develop/libs/wire-api/test/unit/Test/Wire/API/Roundtrip/Aeson.hs#L235).
+All data types that are serialized ([`ToByteString`](https://hackage.haskell.org/package/amazonka-core-1.6.1/docs/Network-AWS-Data-ByteString.html#t:ToByteString), [`ToByteString`](https://hackage.haskell.org/package/aeson/docs/Data-Aeson.html#t:ToJSON), swagger, cassandra, …) should have roundtrip quickcheck tests like [here](https://github.com/wireapp/wire-server/blob/develop/libs/wire-api/test/unit/Test/Wire/API/Roundtrip/Aeson.hs#L235).
 All pure functions `f` that do something interesting should have a couple of tests of the form `shouldBe (f <args>) <result>` to cover corner cases.
 If code is refactored, all the effects should be mocked with polysemy or mtl, the old implementation should be moved to the test suite, and there should be quickcheck tests running the new implementation against the old and comparing results ([example](https://github.com/wireapp/wire-server/blob/develop/services/gundeck/test/unit/MockGundeck.hs)).
 
