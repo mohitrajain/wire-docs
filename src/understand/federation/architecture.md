@@ -20,7 +20,7 @@ from other backends, which are then forwarded to the *Federator*. The
 *Federator* forwards requests to internal components. It also acts as a *egress*
 point for requests from internal backend components to other, remote backends.
 
-![image](understand/federation/img/federated-backend-architecture.png)
+![image](img/federated-backend-architecture.png)
 
 <a id="backend-domains"></a>
 

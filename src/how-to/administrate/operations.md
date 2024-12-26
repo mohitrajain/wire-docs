@@ -122,14 +122,14 @@ v2022-01-18).
 Visit [the release notes of that release](https://github.com/wireapp/wire-server/releases/v2022-01-18).
 Click on the commit hash:
 
-![image](fig1.png)
+![image](operations/fig1.png)
 
 Click on the 3 dots:
 
-![image](fig2.png)
+![image](operations/fig2.png)
 
 Now you can see a (possibly rather long) list of tags, some of then
 have the form `chart=N.NNN.0,image=N.NNN.0`.  Pick the one with the
 largest number.
 
-![image](fig3.png)
+![image](operations/fig3.png)

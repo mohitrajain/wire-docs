@@ -123,7 +123,7 @@ Curl
 <a id="term-Spar"></a>
 
 Spar
-: The Wire backend software stack is composed of different services, [running as pods](../overview.html#focus-on-pods) in a kubernetes cluster.
+: The Wire backend software stack is composed of different services, [running as pods](../../overview.md#focus-on-pods) in a kubernetes cluster.
   <br/>
   One of those pods is the “spar” service. That service/pod is dedicated to the providing [SSO](#term-SSO) (using [SAML](#term-SAML)) and [SCIM](#term-SCIM) services. This page is the manual for this service.
   <br/>
