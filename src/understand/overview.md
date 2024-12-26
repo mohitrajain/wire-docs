@@ -1,4 +1,4 @@
-(overview)=
+<a id="overview"></a>
 
 # Architecture Overview
 
@@ -6,11 +6,10 @@
 
 In a simplified way, the server components for Wire involve the following:
 
-```{image} img/architecture-server-simplified.png
-```
+![image](understand/img/architecture-server-simplified.png)
 
-The Wire clients (such as the Wire app on your phone) connect either directly (or via a load balancer) to the "Wire Server". By "Wire Server" we mean multiple API server components that connect to each other, and which also connect to a few databases. Both the API components and the databases are each in a "cluster", which means copies of the same program code runs multiple times. This allows any one component to fail without users noticing that there is a problem (also called
-"high-availability").
+The Wire clients (such as the Wire app on your phone) connect either directly (or via a load balancer) to the “Wire Server”. By “Wire Server” we mean multiple API server components that connect to each other, and which also connect to a few databases. Both the API components and the databases are each in a “cluster”, which means copies of the same program code runs multiple times. This allows any one component to fail without users noticing that there is a problem (also called
+“high-availability”).
 
 ## Architecture and networking
 
@@ -19,21 +18,19 @@ are installed with the rest and therefore included.
 
 ### Focus on internet protocols
 
-```{image} ./img/architecture-tls-on-prem-2020-09.png
-```
+![image](understand/img/architecture-tls-on-prem-2020-09.png)
 
 ### Focus on high-availability
 
 The following diagram shows a usual setup with multiple VMs (Virtual Machines):
 
-```{image} ../how-to/install/img/architecture-server-ha.png
-```
+![image](how-to/install/img/architecture-server-ha.png)
 
 Wire clients (such as the Wire app on your phone) connect to a load balancer.
 
-The load balancer forwards traffic to the ingress inside the kubernetes VMs. (Restund is special, see {ref}`understand-restund` for details on how Restund works.)
+The load balancer forwards traffic to the ingress inside the kubernetes VMs. (Restund is special, see [Restund (TURN) servers](restund.md#understand-restund) for details on how Restund works.)
 
-The nginx ingress pods inside kubernetes look at incoming traffic, and forward that traffic on to the right place, depending on what's inside the URL passed. For example, if a request comes in for `https://example-https.example.com`, it is forwarded to a component called `nginz`, which is the main entry point for the [wire-server API](https://github.com/wireapp/wire-server). If, however, a request comes in for `https://webapp.example.com`, it is forwarded to a component called [webapp](https://github.com/wireapp/wire-webapp), which hosts the graphical browser Wire client (as found when you open [https://app.wire.com](https://app.wire.com)).
+The nginx ingress pods inside kubernetes look at incoming traffic, and forward that traffic on to the right place, depending on what’s inside the URL passed. For example, if a request comes in for `https://example-https.example.com`, it is forwarded to a component called `nginz`, which is the main entry point for the [wire-server API](https://github.com/wireapp/wire-server). If, however, a request comes in for `https://webapp.example.com`, it is forwarded to a component called [webapp](https://github.com/wireapp/wire-webapp), which hosts the graphical browser Wire client (as found when you open [https://app.wire.com](https://app.wire.com)).
 
 Wire-server needs a range of databases. Their names are: cassandra, elasticsearch, minio, redis, etcd.
 
@@ -43,14 +40,13 @@ All the server components on one physical machine can connect to all the databas
 
 The Wire server backend is designed to run on a kubernetes cluster. From a high level perspective the startup sequence from machine power-on to the Wire server being ready to receive requests is as follow:
 
-1. *Kubernetes node power on*. Systemd starts the kubelet service which makes the worker node available to kubernetes. For more details about kubernetes startup refer to [the official kubernetes documentation](https://kubernetes.io/docs/reference/setup-tools/kubeadm/implementation-details/). For details about the installation and configuration of kubernetes and worker nodes for Wire server see {ref}`Installing kubernetes and databases on VMs with ansible <ansible-vms>`
-2. *Kubernetes workload startup*. Kubernetes will ensure that Wire server workloads installed via helm are scheduled on available worker nodes. For more details about workload scheduling refer to [the official kubernetes documentation](https://kubernetes.io/docs/concepts/scheduling-eviction/kube-scheduler/). For details about how to install Wire server with helm refer to {ref}`Installing wire-server (production) components using Helm <helm-prod>`.
-3. *Stateful workload startup*. Systemd starts the stateful services (cassandra, elasticsearch and minio). See for instance [ansible-cassandra role](https://github.com/wireapp/ansible-cassandra/blob/master/tasks/systemd.yml#L10) and other database installation instructions in {ref}`Installing kubernetes and databases on VMs with ansible <ansible-vms>`
+1. *Kubernetes node power on*. Systemd starts the kubelet service which makes the worker node available to kubernetes. For more details about kubernetes startup refer to [the official kubernetes documentation](https://kubernetes.io/docs/reference/setup-tools/kubeadm/implementation-details/). For details about the installation and configuration of kubernetes and worker nodes for Wire server see [Installing kubernetes and databases on VMs with ansible](../how-to/install/ansible-VMs.md#ansible-vms)
+2. *Kubernetes workload startup*. Kubernetes will ensure that Wire server workloads installed via helm are scheduled on available worker nodes. For more details about workload scheduling refer to [the official kubernetes documentation](https://kubernetes.io/docs/concepts/scheduling-eviction/kube-scheduler/). For details about how to install Wire server with helm refer to [Installing wire-server (production) components using Helm](../how-to/install/helm-prod.md#helm-prod).
+3. *Stateful workload startup*. Systemd starts the stateful services (cassandra, elasticsearch and minio). See for instance [ansible-cassandra role](https://github.com/wireapp/ansible-cassandra/blob/master/tasks/systemd.yml#L10) and other database installation instructions in [Installing kubernetes and databases on VMs with ansible](../how-to/install/ansible-VMs.md#ansible-vms)
 4. *Other services*. Systemd starts the restund docker container. See [ansible-restund role](https://github.com/wireapp/ansible-restund/blob/9807313a7c72ffa40e74f69d239404fd87db65ab/templates/restund.service.j2#L12-L19). For details about docker container startup [consult the official documentation](https://docs.docker.com/get-started/overview/#docker-architecture)
 
-```{note}
+#### NOTE
 For more information about Virual Machine startup or operating system level service startup, please consult your virtualisation and operating system documentation.
-```
 
 ### Focus on pods
 
@@ -61,13 +57,13 @@ This is a list of those pods as found in a typical installation.
 HTTPS Entry points:
 
 - `nginx-ingress-controller-controller`: [Ingress](https://kubernetes.github.io/ingress-nginx/) exposes HTTP and HTTPS routes from outside the cluster to services within the cluster.
-- `nginx-ingress-controller-default-backend`: [The default backend](https://kubernetes.github.io/ingress-nginx/user-guide/default-backend/) is a service which handles all URL paths and hosts the nginx controller doesn't understand (i.e., all the requests that are not mapped with an Ingress), that is 404 pages. Part of `nginx-ingress`.
+- `nginx-ingress-controller-default-backend`: [The default backend](https://kubernetes.github.io/ingress-nginx/user-guide/default-backend/) is a service which handles all URL paths and hosts the nginx controller doesn’t understand (i.e., all the requests that are not mapped with an Ingress), that is 404 pages. Part of `nginx-ingress`.
 
 Frontend pods:
 
-- `webapp`: The fully functioning Web client (like <https://app.wire.com>). [This pod](https://github.com/wireapp/wire-docs/blob/master/src/how-to/install/helm.rst#what-will-be-installed) serves the web interface itself, which then interfaces with other services/pods, such as the APIs.
+- `webapp`: The fully functioning Web client (like [https://app.wire.com](https://app.wire.com)). [This pod](https://github.com/wireapp/wire-docs/blob/master/src/how-to/install/helm.rst#what-will-be-installed) serves the web interface itself, which then interfaces with other services/pods, such as the APIs.
 - `account-pages`: [This pod](https://github.com/wireapp/wire-docs/blob/master/src/how-to/install/helm.rst#what-will-be-installed) serves Web pages for user account management (a few pages relating to e.g. password reset).
-- `team-settings`: Team management Web interface (like <https://teams.wire.com>).
+- `team-settings`: Team management Web interface (like [https://teams.wire.com](https://teams.wire.com)).
 
 Pods with an HTTP API:
 
@@ -82,21 +78,21 @@ Pods with an HTTP API:
 
 Supporting pods and data storage:
 
-- `cassandra-ephemeral` (or `cassandra-external`): [NoSQL Database management system](https://github.com/wireapp/wire-server/tree/develop/charts/cassandra-ephemeral) (<https://en.wikipedia.org/wiki/Apache_Cassandra>). Everything stateful in wire-server (cassandra is used by `brig`, `galley`, `gundeck` and `spar`) is stored in cassandra.
-  \* `cassandra-ephemeral` is for test clusters where persisting the data (i.e. loose users, conversations,...) does not matter, but this shouldn't be used in production environments.
+- `cassandra-ephemeral` (or `cassandra-external`): [NoSQL Database management system](https://github.com/wireapp/wire-server/tree/develop/charts/cassandra-ephemeral) ([https://en.wikipedia.org/wiki/Apache_Cassandra](https://en.wikipedia.org/wiki/Apache_Cassandra)). Everything stateful in wire-server (cassandra is used by `brig`, `galley`, `gundeck` and `spar`) is stored in cassandra.
+  \* `cassandra-ephemeral` is for test clusters where persisting the data (i.e. loose users, conversations,…) does not matter, but this shouldn’t be used in production environments.
   \* `cassandra-external` is used to point to an external cassandra cluster which is installed outside of Kubernetes.
-- `demo-smtp`: In "demo" installations, used to replace a proper external SMTP server for the sending of emails (for example verification codes). In production environments, an actual SMTP server is used directly instead of this pod. (<https://github.com/namshi/docker-smtp>)
-- `fluent-bit`: A log processor and forwarder, allowing collection of data such as metrics and logs from different sources. Not typically deployed. (<https://fluentbit.io/>)
-- `elastisearch-ephemeral` (or `elastisearch-external`): [Distributed search and analytics engines, stores some user information (name, handle, userid, teamid)](https://github.com/wireapp/wire-server/tree/develop/charts/elastisearch-external). Information is duplicated here from cassandra to allow searching for users. Information here can be re-populated from data in cassandra (albeit with some downtime for search functionality) (<https://www.elastic.co/what-is/elasticsearch>).
-  \* `elastisearch-ephemeral` is for test clusters where persisting the data doesn't matter.
+- `demo-smtp`: In “demo” installations, used to replace a proper external SMTP server for the sending of emails (for example verification codes). In production environments, an actual SMTP server is used directly instead of this pod. ([https://github.com/namshi/docker-smtp](https://github.com/namshi/docker-smtp))
+- `fluent-bit`: A log processor and forwarder, allowing collection of data such as metrics and logs from different sources. Not typically deployed. ([https://fluentbit.io/](https://fluentbit.io/))
+- `elastisearch-ephemeral` (or `elastisearch-external`): [Distributed search and analytics engines, stores some user information (name, handle, userid, teamid)](https://github.com/wireapp/wire-server/tree/develop/charts/elastisearch-external). Information is duplicated here from cassandra to allow searching for users. Information here can be re-populated from data in cassandra (albeit with some downtime for search functionality) ([https://www.elastic.co/what-is/elasticsearch](https://www.elastic.co/what-is/elasticsearch)).
+  \* `elastisearch-ephemeral` is for test clusters where persisting the data doesn’t matter.
   \* `elastisearch-external` refers to elasticsearch IPs located outside kubernetes by specifying IPs manually.
-- `fake-aws-s3`: Amazon-AWS-S3-compatible object storage using MinIO (<https://min.io/>), used by cargohold to store (encrypted) assets such as files, posted images, profile pics, etc.
+- `fake-aws-s3`: Amazon-AWS-S3-compatible object storage using MinIO ([https://min.io/](https://min.io/)), used by cargohold to store (encrypted) assets such as files, posted images, profile pics, etc.
 - `fake-aws-s3-reaper`: Creates the default S3 bucket inside fake-aws-s3.
 - `fake-aws-sns`. [Amazon Simple Notification Service (Amazon SNS)](https://docs.aws.amazon.com/AmazonS3/latest/userguide/NotificationHowTo.html), used to push messages to mobile devices or distributed services. SNS can publish a message once, and deliver it one or more times.
 - `fake-aws-sqs`: [Amazon Simple Queue Service (Amazon SQS) queue](https://docs.aws.amazon.com/AmazonS3/latest/userguide/NotificationHowTo.html), used to transmit any volume of data without requiring other services to be always available.
 - `redis-ephemeral`: Stores websocket connection assignments (part of the `gundeck` / `cannon` architecture).
 
-Short running jobs that run during installation/upgrade (these should usually be in the status 'Completed' except immediately after installation/upgrade):
+Short running jobs that run during installation/upgrade (these should usually be in the status ‘Completed’ except immediately after installation/upgrade):
 
 - `cassandra-migrations`: Used to initialize or upgrade the database schema in cassandra (for example when the software is upgraded to a new version).
 - `galley-migrate-data`: Used to upgrade data in `cassandra` when the data model changes (for example when the software is upgraded to a new version).
@@ -138,6 +134,5 @@ wire           webapp-54458f756c-r7l6x                                   1/1    
                   1/1     Running     0          3h54m
 ```
 
-```{note}
+#### NOTE
 This list is not exhaustive, and your installation may have additional pods running depending on your configuration.
-```

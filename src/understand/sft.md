@@ -1,4 +1,4 @@
-(understand-sft)=
+<a id="understand-sft"></a>
 
 # Conference Calling 2.0 (aka SFT)
 
@@ -15,22 +15,19 @@ then the SFT fans it out to the other clients. Because connections are not end-t
 With SFT it is thus possible to have conference calls with many participants
 without compromising end-to-end security.
 
-```{note}
+#### NOTE
 We will describe conferencing first in a single domain in this section.
 Conferencing in an environment with Federation is described in the
-{ref}`federated conferencing<federated-sft>` section.
-```
+[federated conferencing](#federated-sft) section.
 
 ## Architecture
 
 The following diagram is centered around SFT and its role within a calling setup. Restund is seen
 as a mere client proxy and its relation to and interaction with a client is explained
-{ref}`here <understand-restund>`. The diagram shows that a call resides on a single SFT instance
+[here](restund.md#understand-restund). The diagram shows that a call resides on a single SFT instance
 and that the instance allocates at least one port for media transport per participant in the call.
 
-```{figure} img/architecture-sft.png
-SFT signaling, and media sending from the perspective of one caller
-```
+![image](understand/img/architecture-sft.png)
 
 ## Establishing a call
 
@@ -38,13 +35,13 @@ SFT signaling, and media sending from the perspective of one caller
    The SFT server that is quickest to respond is the one that will be used by the client.
    (Request 1: `CONFCONN`)
 2. *Client A* gathers connection candidates (own public IP, public IP of the network the
-   client is in with the help of STUN, through TURN servers) [^footnote-1] for the SFT server to
+   client is in with the help of STUN, through TURN servers) <sup>[1](#footnote-1)</sup> for the SFT server to
    establish a media connection to *Client A*. These information are then being send again
    from *Client A* to the chosen SFT server via HTTPS request. (Request 2: `SETUP`)
 3. The SFT server tests which of the connection candidates actually work. Meaning, it
    goes through all the candidates until one leads to a successful media connection
    between itself and *client A*
-4. *Client A* sends an end-to-end encrypted message [^footnote-2] `CONFSTART` to all members of chat, which contains
+4. *Client A* sends an end-to-end encrypted message <sup>[2](#footnote-2)</sup> `CONFSTART` to all members of chat, which contains
    the URL of the SFT server that is being used for the call.
 5. Any other client that wants to join the call, does 1. + 2. with the exception of **only**
    contacting one SFT server i.e. the one that *client A* chose and told all other
@@ -55,22 +52,16 @@ and they continue talking to each other by using the data-channel, which uses th
 connection (i.e. no more HTTPS at that point). There are just 2 HTTPS request/response
 sequences per participant.
 
-[^footnote-1]: STUN & TURN are both part of a {ref}`Restund server <understand-restund>`
-
-[^footnote-2]: This encrypted message is sent in the same conversation, hidden from user's view but
-    interpreted by user's clients. It is sent via backend servers and forwarded to other
-    conversation participants, not to or via SFT.
-
 ## Prerequisites
 
 For Conference Calling to function properly, clients need to be able to reach the HTTPS interface
 of the SFT server(s) - either directly or through a load balancer sitting in front of the servers.
 This is only needed for the call initiation/joining part.
 Additionally, for the media connection, clients and SFT servers should be able to reach each other
-via UDP (see {ref}`Firewall rules <install-sft-firewall-rules>`).
+via UDP (see [Firewall rules](../how-to/install/sft.md#install-sft-firewall-rules)).
 If that is not possible, then at least SFT servers and Restund servers should be able to reach each
 other via UDP - and clients may connect via UDP and/or TCP to Restund servers
-(see {ref}`Protocols and open ports <understand-restund-protocal-and-ports>`), which in
+(see [Protocols and open ports](restund.md#understand-restund-protocal-and-ports)), which in
 turn will connect to the SFT server.
 In the unlikely scenario where no UDP is allowed whatsoever or SFT servers may not be able to reach
 the Restund servers that clients are using to make themselves reachable, an SFT server itself can
@@ -86,12 +77,12 @@ As a rule of thumb you will need 1vCPU of compute per 50 participants. SFT will 
 
 For more information about capacity planning and networking please refer to the [technical documentation](https://github.com/wireapp/wire-server/blob/eab0ce1ff335889bc5a187c51872dfd0e78cc22b/charts/sftd/README.md)
 
-(federated-sft)=
+<a id="federated-sft"></a>
 
 # Federated Conference Calling
 
 Conferencing in a federated environment assumes that each domain participating in a
-conference will use an SFT in its own domain. The SFT in the caller's domain is called
+conference will use an SFT in its own domain. The SFT in the caller’s domain is called
 the `anchor SFT`.
 
 ## Multi-SFT Architecture
@@ -105,24 +96,22 @@ no participants (federated SFTs or local clients).
 
 The following diagram shows SFTs in two different domains. In this example, Alice
 initiates a call in a federated conversation which contains herself, Adam also in domain
-A, and Bob and Beth in domain B. Alice's client first creates a conference and is
+A, and Bob and Beth in domain B. Alice’s client first creates a conference and is
 assigned a conference URL on SFT A2. Because the SFT is configured for federation, it
 assumes the role of anchor and also returns an IP address and port (the `anchor SFT tuple`)
 which can be used by any federated SFTs which need to connect. (Alice sets up her media
 connection with SFT A2 as normal).
 
-Alice's client forwards the conference URL and the anchor SFT tuple to the other
-participants in the conversation, end-to-end encrypted.  Bob's client examines the
-conference URL. Realizing this URL is not an SFT in its own domain, Bob's client opens
+Alice’s client forwards the conference URL and the anchor SFT tuple to the other
+participants in the conversation, end-to-end encrypted.  Bob’s client examines the
+conference URL. Realizing this URL is not an SFT in its own domain, Bob’s client opens
 a connection to its SFTs as if creating a new connection, but passes an additional
 parameter containing the anchor SFT URL and tuple. SFT B1 establishes a DTLS connection
-to the anchor SFT using the anchor SFT tuple and provides the SFT URL. (Bob's client
+to the anchor SFT using the anchor SFT tuple and provides the SFT URL. (Bob’s client
 also sets up media with SFT B1 normally.)  At this point all paths are established
 and the conference call can happen normally.
 
-```{figure} img/multi-sft-noturn.png
-Basic Multi-SFT conference initiated by Alice in domain A, with Bob in domain B
-```
+![image](understand/img/multi-sft-noturn.png)
 
 Because some customers do not wish to expose their SFTs directly to hosts on the public
 Internet, the SFTs can allocate a port on a TURN server. In this way, only the IP
@@ -132,9 +121,7 @@ this scenario.  In this configuration, SFT A2 requests an allocation from the fe
 TURN server in domain A before responding to Alice. The anchor SFT tuple is the address
 allocated on the federation TURN server in domain A.
 
-```{figure} img/multi-sft-turn.png
-Multi-SFT conference with TURN servers between federated SFTs
-```
+![image](understand/img/multi-sft-turn.png)
 
 Finally, for extremely restrictive firewall environments, the TURN servers used for
 federated SFT traffic can be further secured with a TURN to TURN mutually
@@ -149,6 +136,8 @@ this scenario.  Note that this TURN DTLS multiplexing is only used for SFT to SF
 communication into federated group calls, and does not affect the connectivity requirements for normal one-on-one
 calls.
 
-```{figure} img/multi-sft-turn-dtls.png
-Multi-SFT conference with federated TURN servers with DTLS multiplexing
-```
+![image](understand/img/multi-sft-turn-dtls.png)
+
+---
+* <a id='footnote-1'>**[1]**</a> STUN & TURN are both part of a [Restund server](restund.md#understand-restund)
+* <a id='footnote-2'>**[2]**</a> This encrypted message is sent in the same conversation, hidden from user’s view but interpreted by user’s clients. It is sent via backend servers and forwarded to other conversation participants, not to or via SFT.

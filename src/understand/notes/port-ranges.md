@@ -1,8 +1,4 @@
----
-orphan: true
----
-
-(port-ranges)=
+<a id="port-ranges"></a>
 
 # Note on port ranges
 
@@ -24,7 +20,7 @@ cat /proc/sys/net/ipv4/ip_local_port_range
 
 Or by finding the following line in your `/etc/sysctl.conf` file, if it exists:
 
-```
+```default
 # Allowed local port range
 net.ipv4.ip_local_port_range = 32768 61000
 ```

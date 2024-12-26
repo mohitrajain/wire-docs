@@ -3,7 +3,7 @@
 This feature is mostly for the operators of `app.wire.com`, but in
 principle it is applicable to any custom backend operator who has
 running backoffice/stern deployed and wants to redirect to other
-backends for login based on the user's email domain.
+backends for login based on the user’s email domain.
 
 If you are hosting your own custom backend, there is a way to allow
 users to login by getting redirected from a more visible backend

@@ -94,7 +94,7 @@ Once in the interface, select `Customization` in the menu on the left:
 
 <div style=" display: block; margin-left: auto; margin-right: auto; width: 75%;">
 
-![Customization](img/legalhold-step01-click-customization.png)
+![Customization](understand/img/legalhold-step01-click-customization.png)
 
 </div>
 
@@ -102,7 +102,7 @@ On the customization page, go to `Legal Hold`:
 
 <div style=" display: block; margin-left: auto; margin-right: auto; width: 75%;">
 
-![Legal Hold](img/legalhold-step02-goto-legalhold.png)
+![Legal Hold](understand/img/legalhold-step02-goto-legalhold.png)
 
 </div>
 
@@ -110,7 +110,7 @@ Under the Legal Hold section, click the small down-pointing blue arrow:
 
 <div style=" display: block; margin-left: auto; margin-right: auto; width: 75%;">
 
-![Arrow](img/legalhold-step03-click-arrow.png)
+![Arrow](understand/img/legalhold-step03-click-arrow.png)
 
 </div>
 
@@ -118,7 +118,7 @@ In the extended Legal Hold section, click on `Manage Configuration`:
 
 <div style=" display: block; margin-left: auto; margin-right: auto; width: 75%;">
 
-![Manage Configuration](img/legalhold-step04-click-manage-configuration.png)
+![Manage Configuration](understand/img/legalhold-step04-click-manage-configuration.png)
 
 </div>
 
@@ -126,7 +126,7 @@ From here, you can fill in the required configuration info:
 
 <div style=" display: block; margin-left: auto; margin-right: auto; width: 75%;">
 
-![Fill in configuration](img/legalhold-step05-fill-info.png)
+![Fill in configuration](understand/img/legalhold-step05-fill-info.png)
 
 </div>
 
@@ -140,4 +140,4 @@ Finally, click on `Save`.
 
 Here is the entire process animated:
 
-![Animated](img/legalhold-screencast.gif)
+![Animated](understand/img/legalhold-screencast.gif)
