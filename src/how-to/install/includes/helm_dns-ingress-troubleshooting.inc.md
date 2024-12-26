@@ -7,49 +7,49 @@ settings):
 
 You need
 
--   two DNS names for the so-called \"nginz\" component of wire-server
+- two DNS names for the so-called \"nginz\" component of wire-server
     (the main REST API entry point), these are usually called
     [nginz-https.\<domain\>]{.title-ref} and
     [nginz-ssl.\<domain\>]{.title-ref}.
--   one DNS name for the asset store (images, audio files etc. that your
+- one DNS name for the asset store (images, audio files etc. that your
     users are sharing); usually [assets.\<domain\>]{.title-ref} or
     [s3.\<domain\>]{.title-ref}.
--   one DNS name for the webapp (equivalent of <https://app.wire.com>,
+- one DNS name for the webapp (equivalent of <https://app.wire.com>,
     i.e. the javascript app running in the browser), usually called
     [webapp.\<domain\>]{.title-ref}.
--   one DNS name for the account pages (hosts some html/javascript pages
+- one DNS name for the account pages (hosts some html/javascript pages
     for e.g. password reset), usually called
     [account.\<domain\>]{.title-ref}.
--   (optional) one DNS name for SFTD support (conference calling),
+- (optional) one DNS name for SFTD support (conference calling),
     usually called [sftd.\<domain\>]{.title-ref}
--   (optional) one DNS name for team settings (to manage team membership
+- (optional) one DNS name for team settings (to manage team membership
     if using PRO accounts), usually called
     [teams.\<domain\>]{.title-ref}
--   (optional) two DNS names for audio/video calling servers, usually
+- (optional) two DNS names for audio/video calling servers, usually
     called [restund01.\<domain\>]{.title-ref} and
     [restund02.\<domain\>]{.title-ref}. Two are used so during upgrades,
     you can drain one and use the second while work is happening on the
     first.
--   (optional) one DNS name for the federator, usually called
+- (optional) one DNS name for the federator, usually called
     [federator.\<domain\>]{.title-ref}.
--   (optional) one DNS name for SFTD (conference calling), usually
+- (optional) one DNS name for SFTD (conference calling), usually
     called [sftd.\<domain\>]{.title-ref}.
 
 If you are on the most recent charts, these are your names:
 
--   nginz-https.\<domain\>
--   nginz-ssl.\<domain\>
--   webapp.\<domain\>
--   assets.\<domain\>
--   account.\<domain\>
+- nginz-https.\<domain\>
+- nginz-ssl.\<domain\>
+- webapp.\<domain\>
+- assets.\<domain\>
+- account.\<domain\>
 
 And optionally:
 
--   teams.\<domain\>
--   sftd.\<domain\>
--   restund01.\<domain\>
--   restund02.\<domain\>
--   federator.\<domain\>
+- teams.\<domain\>
+- sftd.\<domain\>
+- restund01.\<domain\>
+- restund02.\<domain\>
+- federator.\<domain\>
 
 All of these DNS records need to point to the same IP address, the IP
 you want to provide services on.
@@ -59,9 +59,9 @@ routing based on virtual hosting.
 
 The only expections to this are:
 
--   restund01, restund02 which need the appropriate DNS name pointed to
+- restund01, restund02 which need the appropriate DNS name pointed to
     them
--   sftd which needs to point to the external IPs you are providing
+- sftd which needs to point to the external IPs you are providing
     conference calling on
 
 So [sftd.\<domain\>]{.title-ref} should list both SFT servers, while
@@ -172,10 +172,10 @@ nodeport is listening on (31773), and, redirect port 80 to the nginz
 http port (31772) (for redirects only). To do that, you have two
 options:
 
--   Option 1: ssh into your kubernetes node, then execute:
-    -   `iptables -t nat -A PREROUTING -p tcp --dport 443 -j REDIRECT --to-port 31773`
-    -   `iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 31772`
--   Option 2: Use ansible to do that, run the [iptables
+- Option 1: ssh into your kubernetes node, then execute:
+  - `iptables -t nat -A PREROUTING -p tcp --dport 443 -j REDIRECT --to-port 31773`
+  - `iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 31772`
+- Option 2: Use ansible to do that, run the [iptables
     playbook](https://github.com/wireapp/wire-server-deploy/blob/master/ansible/iptables.yml)
 
 # Trying things out
@@ -205,9 +205,9 @@ browser (Firefox/Chrome/Safari only)
 There are multiple artifacts which combine to form a running wire-server
 deployment; these include:
 
--   docker images for each service
--   Kubernetes configs for each deployment (from helm charts)
--   configuration maps for each deployment (from helm charts)
+- docker images for each service
+- Kubernetes configs for each deployment (from helm charts)
+- configuration maps for each deployment (from helm charts)
 
 If you wish to get some information regarding the code currently running
 on your cluster you can run the following from `wire-server-deploy` (if
@@ -257,7 +257,7 @@ re-create a specific Helm release (list releases with
 helm delete --purge wire-server
 ```
 
-## It doesn\'t work, but my problem isn\'t listed here. Help!
+## It doesn\'t work, but my problem isn\'t listed here. Help
 
 Feel free to open a github issue or pull request
 [here](https://github.com/wireapp/wire-docs) and we\'ll try to improve

@@ -40,6 +40,7 @@ queries the endpoint:
   }
 }
 ```
+
 where the optional `config` field contains settings that are specific to the feature.
 
 The configurations for all features can be obtained all at once via `GET

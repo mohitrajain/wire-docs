@@ -22,13 +22,13 @@ Don't delete columns that are still used by versions that are deployed. If you d
 
 If a cassandra schema migration has been added then add this to the checklist:
 
- - [ ] Run **`make git-add-cassandra-schema`** to update the cassandra schema documentation
+- [ ] Run **`make git-add-cassandra-schema`** to update the cassandra schema documentation
 
 ### Incompatible schema migrations and data migrations
 
 If the PR contains a cassandra *schema* migration which is backwards incompatible, a changelog entry should be added to the release notes. See [notes on Cassandra](https://github.com/wireapp/wire-server/blob/develop/docs/developer/cassandra-interaction.md#cassandra-schema-migrations) for more details on how to implement such schema changes. A similar entry should be added if the PR contains a *data* migration.
 
- - [ ] Add a changelog entry in `0-release-notes` detailing measures to be taken by instance operators
+- [ ] Add a changelog entry in `0-release-notes` detailing measures to be taken by instance operators
 
 ## Adding new public endpoints
 
@@ -38,9 +38,9 @@ NB: The nginz paths are interpreted as *prefixes*.  If you add a new end-point t
 
 The following needs to be done, as part of a PR adding endpoints or changing endpoint paths.
 
- - [ ] Update nginz config in helm: `charts/nginz/values.yaml`
- - [ ] Update nginz config for the local integration tests: `services/nginz/integration-test/conf/nginz/nginx.conf`
- - [ ] Update the API change documentation on Confluece for the correct version, e.g., [v5 -> v6](https://wearezeta.atlassian.net/wiki/spaces/ENGINEERIN/pages/1035632650/API+changes+v5+v6)
+- [ ] Update nginz config in helm: `charts/nginz/values.yaml`
+- [ ] Update nginz config for the local integration tests: `services/nginz/integration-test/conf/nginz/nginx.conf`
+- [ ] Update the API change documentation on Confluece for the correct version, e.g., [v5 -> v6](https://wearezeta.atlassian.net/wiki/spaces/ENGINEERIN/pages/1035632650/API+changes+v5+v6)
 
 ### Helm configuration
 
@@ -81,20 +81,21 @@ Add to `charts/nginz/values.yaml`, under the `galley` section:
 
 If a PR adds new configuration options for say brig, the following files need to be edited:
 
-* [ ] The parser under `services/brig/src/Brig/Options.hs`
-* [ ] The integration test config: `services/brig/brig.integration.yaml`
-* [ ] The charts: `charts/brig/templates/configmap.yaml`
-* [ ] The default values: `charts/brig/values.yaml`
-* [ ] The values files for CI: `hack/helm_vars/wire-server/values.yaml.gotmpl`
-* [ ] The configuration docs: `docs/src/developer/reference/config-options.md`
+- [ ] The parser under `services/brig/src/Brig/Options.hs`
+- [ ] The integration test config: `services/brig/brig.integration.yaml`
+- [ ] The charts: `charts/brig/templates/configmap.yaml`
+- [ ] The default values: `charts/brig/values.yaml`
+- [ ] The values files for CI: `hack/helm_vars/wire-server/values.yaml.gotmpl`
+- [ ] The configuration docs: `docs/src/developer/reference/config-options.md`
 
 Additional configuration may also exist for services in the following locations.
-* [ ] `charts/$SERVICE/templates/tests/configmap.yaml`
+
+- [ ] `charts/$SERVICE/templates/tests/configmap.yaml`
 
 If any new configuration value is required and has no default, then:
 
-* [ ] Write a changelog entry in `0-release-notes` advertising the new configuration value
-* [ ] Update all the relevant environments
+- [ ] Write a changelog entry in `0-release-notes` advertising the new configuration value
+- [ ] Update all the relevant environments
 
 For wire Cloud, look into all the relevant environments (look for `helm_vars/wire-server/values.yaml.gotmpl` files in cailleach). Ideally, these configuration updates should be merged **before** merging the corresponding wire-server PR.
 

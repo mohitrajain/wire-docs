@@ -11,21 +11,21 @@
 In order for us to analyse and understand your problem, we need at least the following information up-front:
 
 - Have you followed the following instructions?
-    - {ref}`FAQ <trouble-shooting-faq>` (This document)
-    - [Howtos](https://docs.wire.com/how-to/single-sign-on/index.html) for supported vendors
-    - [General documentation on the setup flow](https://support.wire.com/hc/en-us/articles/360001285718-Set-up-SSO-externally)
+  - {ref}`FAQ <trouble-shooting-faq>` (This document)
+  - [Howtos](https://docs.wire.com/how-to/single-sign-on/index.html) for supported vendors
+  - [General documentation on the setup flow](https://support.wire.com/hc/en-us/articles/360001285718-Set-up-SSO-externally)
 - Which vendor (or product) are you using (octa, azure, centrica, other (which one)?)
 - Team ID (looks like eg. `2e9a9c9c-6f83-11eb-a118-3342c6f16f4e`, can be found in the team management app)
 - User ID of the account that has the problem (alternatively: handle, email address)
 - What do you expect to happen?
-    - e.g.: "I enter login code, authenticate successfully against IdP, get redirected, and see the wire landing page."
+  - e.g.: "I enter login code, authenticate successfully against IdP, get redirected, and see the wire landing page."
 - What does happen instead?
-    - Screenshots
-    - Copy the text into your report where applicable in addition to screenshots (for automatic processing).
-    - e.g.: "instead of being logged into wire, I see the following error page: ..."
+  - Screenshots
+  - Copy the text into your report where applicable in addition to screenshots (for automatic processing).
+  - e.g.: "instead of being logged into wire, I see the following error page: ..."
 - Screenshots of the Configuration (both SAML and SCIM, as applicable), including, but not limited to:
-    - If you are using SAML: SAML IdP metadata file
-    - If you are using SCIM for provisioning: Which attributes in the User schema are mapped?  How?
+  - If you are using SAML: SAML IdP metadata file
+  - If you are using SCIM for provisioning: Which attributes in the User schema are mapped?  How?
 - If you have successfully authenticated on your IdP and are
   redirected into wire, and then see a white page with an error
   message that contains a lot of machine-readable info: copy the full
@@ -44,12 +44,11 @@ response xml (either from the browser http logs via a more technically
 savvy customer; or from the "white page with an error" mentioned
 above.
 
-https://github.com/wireapp/saml2-web-sso supports writing [unit vendor
+<https://github.com/wireapp/saml2-web-sso> supports writing [unit vendor
 compatibility
 tests](https://github.com/wireapp/saml2-web-sso/blob/ff9b9f445475809d1fa31ef7f2932caa0ed31613/test/Test/SAML2/WebSSO/APISpec.hs#L266-L329)
 against that response value.  Once that test passes, it should all
 work fine.
-
 
 ## Can I use SCIM without SAML?
 
@@ -58,13 +57,13 @@ Yes.  Scim is a technology for onboarding alternative to the team management app
 How does it work?  Make sure your team has no SAML IdPs registered.  Set up your SCIM peer to provision users with valid email addresses as `externalIds`.  Newly provisioned users will be created in status `PendingInvitation`, and an invitation email will be sent.  From here on out, the flow is exactly the same as if you had added the user to your team in the team management app.
 
 Upcoming features:
+
 - support for the `emails` field in the scim user record (so you can choose non-email `externalId` values).
 - flexible mapping between any number of SAML IdPs and any number of SCIM tokens in team management.
 
 ## Can I use SAML without SCIM?
 
 Yes, but this is not recommended.  User (de-)provisioning requires more manual work without SCIM, and some of the account information cannot be provisioned at all via SAML.
-
 
 ## Can I use the same SSO login code for multiple teams?
 
@@ -147,18 +146,15 @@ always be globally unique.
 
 [V15](https://github.com/wireapp/wire-server/blob/b97439756cfe0721164934db1f80658b60de1e5e/services/spar/schema/src/V15.hs#L29-L43)
 
-
 ## Can an existing user without IdP (or with a different IdP) be bound to a new IdP?
 
 Yes, you can, by updating the user via SCIM.  (If you use SAML without
 SCIM, there is a way in theory, but there are no plans to implement
 it.)
 
-
 ## Can the SSO feature be disabled for a team?
 
 No, this is [not implemented](https://github.com/wireapp/wire-server/blob/7a97cb5a944ae593c729341b6f28dfa1dabc28e5/services/galley/src/Galley/API/Error.hs#L215).  But the team admin can remove all IdPs, which will effectively disable all SAML logins.
-
 
 ## Do I need to change any firewall settings in order to use SAML?
 
@@ -167,7 +163,6 @@ No.
 There is nothing to be done here.  There is no internet traffic
 between your SAML IdP and the wire service.  All communication happens
 via the browser or app.
-
 
 ## Why does the team owner have to keep using password?
 
@@ -394,7 +389,6 @@ redirect from the wire cloud to your on-prem instance), your browser
 may decide to not trust the wire app with the results of the IdP login
 procedure.  In order to circumvent this issue your IdP needs to be
 configured to add "wire://*" to the "form-action" CSP value.
-
 
 See also:
 [1](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/form-action),

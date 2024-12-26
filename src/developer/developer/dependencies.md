@@ -22,20 +22,24 @@ This page documents how to install necessary dependencies to work with the wire-
    installation, which is an option when using the binary distribution tarball).
 2. Add the `wire-server` Cachix cache to your system. On NixOS, this can be
    done by adding the following snippet to your system configuration:
+
    ```nix
    {
      nix.binaryCachePublicKeys = [ "wire-server.cachix.org-1:fVWmRcvdsqzKek3X5Ad8nYNsBSjKZ9Um2NMLfMLS77Y=" ];
      nix.binaryCaches = [ "https://wire-server.cachix.org" ];
    }
    ```
+
    On non-NixOS systems, these need to be manually added to your `nix.conf`
    (this is at `~/.config/nix/nix.conf` for single-user installations, and
    `/etc/nix/nix.conf` for multi-user installations; you can create this file if
    it doesn't exist):
+
    ```
    substituters = https://cache.nixos.org https://wire-server.cachix.org
    trusted-public-keys = wire-server.cachix.org-1:fVWmRcvdsqzKek3X5Ad8nYNsBSjKZ9Um2NMLfMLS77Y= cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY=
    ```
+
 3. Install [Direnv](https://direnv.net/).
    On Debian, you can install the `direnv` package. On MacOS use `brew install direnv`.
    * Make sure direnv is hooked into your shell via its appripriate `rc` file.
@@ -56,21 +60,22 @@ This page documents how to install necessary dependencies to work with the wire-
    submodule update --init --recursive` once.
 
 #### Stack's Nix Integration
+
 Using Stack's
 [Nix integration](https://docs.haskellstack.org/en/stable/nix_integration/),
 Stack will take care of installing any system dependencies automatically -
 including `cryptobox-c`. If new system dependencies are needed, add them to the
 `stack-deps.nix` file in the project root.
 
-### Fedora:
+### Fedora
 
 ```bash
 sudo dnf install -y pkgconfig haskell-platform libstdc++-devel libstdc++-static gcc-c++ libtool automake openssl-devel libsodium-devel ncurses-compat-libs libicu-devel libxml2-devel snappy-devel protobuf-compiler
 ```
 
-### Ubuntu / Debian:
+### Ubuntu / Debian
 
-_Note_: Debian is not recommended due to this issue when running local integration tests: [#327](https://github.com/wireapp/wire-server/issues/327). This issue does not occur with Ubuntu.
+*Note*: Debian is not recommended due to this issue when running local integration tests: [#327](https://github.com/wireapp/wire-server/issues/327). This issue does not occur with Ubuntu.
 
 ```bash
 sudo apt install pkg-config libsodium-dev openssl-dev libtool automake build-essential libicu-dev libsnappy-dev protobuf-compiler libxml2-dev zlib1g-dev libtinfo-dev liblzma-dev libpcre3 libpcre3-dev -y
@@ -78,7 +83,7 @@ sudo apt install pkg-config libsodium-dev openssl-dev libtool automake build-ess
 
 If `openssl-dev` does not work for you, try `libssl-dev`.
 
-### Arch:
+### Arch
 
     ```
     # You might also need 'sudo pacman -S base-devel' if you haven't
@@ -86,13 +91,13 @@ If `openssl-dev` does not work for you, try `libssl-dev`.
     sudo pacman -S snappy icu openssl ncurses-compat-libs
     ```
 
-### macOS:
+### macOS
 
 ```bash
 brew install pkg-config libsodium openssl automake icu4c snappy protobuf
 ```
 
-_Note_: macOS users will need to make sure to link Haskell services against a more recent version of OpenSSL than what ships with the OS by default. Additionally, `icu4c` is installed in a non-standard location by `homebrew`. Add the following to your `.stack/config.yaml`:
+*Note*: macOS users will need to make sure to link Haskell services against a more recent version of OpenSSL than what ships with the OS by default. Additionally, `icu4c` is installed in a non-standard location by `homebrew`. Add the following to your `.stack/config.yaml`:
 
 ```yaml
 extra-include-dirs:
@@ -104,7 +109,7 @@ extra-lib-dirs:
 - /usr/local/opt/icu4c/lib
 ```
 
-_Note_: if you're getting `fatal error: 'libxml/parser.h' file not found` and you're on macOS Mojave, try doing:
+*Note*: if you're getting `fatal error: 'libxml/parser.h' file not found` and you're on macOS Mojave, try doing:
 
 ```bash
 sudo installer -pkg /Library/Developer/CommandLineTools/Packages/macOS_SDK_headers_for_macOS_10.14.pkg -target /
@@ -123,7 +128,8 @@ stack upgrade --binary-version <version>
 ```
 
 ### Ubuntu / Debian
-_Note_: The packaged versions of `haskell-stack` are too old. It is recommended to follow the generic instructions or to use stack to update stack (`stack upgrade`).
+
+_Note*: The packaged versions of `haskell-stack` are too old. It is recommended to follow the generic instructions or to use stack to update stack (`stack upgrade`).
 
 ```bash
 sudo apt install haskell-stack -y
@@ -140,6 +146,7 @@ sudo apt install haskell-stack -y
 ## Rust
 
 ### Ubuntu / Debian
+
 ```bash
 sudo apt install rustc cargo -y
 ```
@@ -170,6 +177,7 @@ dpkg -i target/release/cryptobox*.deb
 ```
 
 ### Generic
+
     ```bash
     export TARGET_LIB="$HOME/.wire-dev/lib"
     export TARGET_INCLUDE="$HOME/.wire-dev/include"
@@ -199,9 +207,10 @@ extra-lib-dirs:
 
 ## Docker
 
-_Note_: While it is possible to use non-docker solutions to set up and configure this software, we recommend using docker and our provided docker images to configure dependent services rapidly, and ensure a consistent environment for all potential developers.
+*Note*: While it is possible to use non-docker solutions to set up and configure this software, we recommend using docker and our provided docker images to configure dependent services rapidly, and ensure a consistent environment for all potential developers.
 
-### Ubuntu / Debian Testing/Unstable:
+### Ubuntu / Debian Testing/Unstable
+
 ```bash
 sudo apt install docker.io docker-compose
 ```
@@ -209,11 +218,12 @@ sudo apt install docker.io docker-compose
 After installing docker-io, add your user to the docker group, and restart your shell (usually involving a restart of your graphical environment).
 
 once you've logged in again, if you would like to upload any docker images (optional):
+
 ```bash
 docker login --username=<MY_DOCKER_USERNAME>
 ```
 
-### Generic:
+### Generic
 
 * [Install docker](https://docker.com)
 * [Install docker-compose](https://docs.docker.com/compose/install/)
@@ -228,7 +238,7 @@ Requirements:
 * you need access to a kubernetes cluster
 * you need a namespace in which you have installed something (e.g. `make kube-integration-setup` will do this)
 
-### Telepresence example usage:
+### Telepresence example usage
 
     ```
     # terminal 1
@@ -240,14 +250,14 @@ Requirements:
     curl http://elasticsearch-ephemeral:9200
     ```
 
-### Telepresence example usage 2:
+### Telepresence example usage 2
 
     ```
     # just one terminal
     telepresence --namespace "$NAMESPACE" --also-proxy cassandra-ephemeral --run bash -c "curl http://elasticsearch-ephemeral:9200"
     ```
 
-### Telepresence usage discussion:
+### Telepresence usage discussion
 
 * If you have `fake-aws` and `databases-ephemeral` helm charts set up, you can run either `brig` and other services locally (they connect to cassandra-inside-kubernetes)
 * If you also have `brig` and other haskell services running in kubernetes (e.g. you ran `make kube-integration-setup`, you can use telepresence to only run test executables (like `brig-integration`) locally which connect to services inside kubernetes.
@@ -256,4 +266,4 @@ In both cases, you need to adjust the various integration configuration files an
 
 ## Helm chart development, integration tests in kubernetes
 
-You need `kubectl`, `helm`, `helmfile`, and a valid kubernetes context. Refer to https://docs.wire.com for details.
+You need `kubectl`, `helm`, `helmfile`, and a valid kubernetes context. Refer to <https://docs.wire.com> for details.

@@ -71,7 +71,7 @@ forwards ports 443 and 80 to these respective ports. Any traffic hitting the htt
 
 Downsides of this approach: The NodePort approach always requires manual configuration of some external load balancer/firewall to round-robin between node IPs and is error-prone. It's also a bit annoying to have to decide on some global ports that may not be used otherwise.
 
-Most managed K8s clusters have support for LoadBalancers, you can also get this for your own clusters in hcloud etc. It's even possible to do it for pure bare metal, without any "load balancer hardware", by using BGP or some leadership election over who's announcing the "load balancer ip" via ARP (https://metallb.universe.tf/configuration/_advanced_l2_configuration/).
+Most managed K8s clusters have support for LoadBalancers, you can also get this for your own clusters in hcloud etc. It's even possible to do it for pure bare metal, without any "load balancer hardware", by using BGP or some leadership election over who's announcing the "load balancer ip" via ARP (<https://metallb.universe.tf/configuration/_advanced_l2_configuration/>).
 
 ### Using NodePort (not the default) with externalTrafficPolicy=Local (the default)
 
@@ -95,8 +95,9 @@ redirect them to the correct service, whilst maintaining the source ip
 address. The ingress controller is sort of taking over the role of what
 kube-proxy was doing before.
 More information:
-- https://kubernetes.io/docs/tutorials/services/source-ip/#source-ip-for-services-with-typenodeport
-- https://kubernetes.github.io/ingress-nginx/deploy/baremetal/
+
+- <https://kubernetes.io/docs/tutorials/services/source-ip/#source-ip-for-services-with-typenodeport>
+- <https://kubernetes.github.io/ingress-nginx/deploy/baremetal/>
 
 There are also downsides to setting `externalTrafficPolicy: Local`, please look at the [following blog post](https://www.asykim.com/blog/deep-dive-into-kubernetes-external-traffic-policies), which very clearly explains the upsides and
 downsides of this setting

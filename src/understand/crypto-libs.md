@@ -14,7 +14,7 @@ complete.
 - scim access tokens
 - rust libraries for proteus, mls, e2eid
 
-The following libraries that can be found on https://hackage.haskell.org/.  (It would probably be nice to drop some of these dependencies and replace them by others.)
+The following libraries that can be found on <https://hackage.haskell.org/>.  (It would probably be nice to drop some of these dependencies and replace them by others.)
 
 - cryptobox-haskell
 - cryptohash-md5

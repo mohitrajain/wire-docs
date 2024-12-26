@@ -4,7 +4,7 @@ The wire-server repo has a process for changelog editing that prevents
 merge conflicts and enforces a consistent structure to the release
 notes.
 
-*Introduced in https://github.com/wireapp/wire-server/pull/1749.*
+*Introduced in <https://github.com/wireapp/wire-server/pull/1749>.*
 
 ## tl;dr
 

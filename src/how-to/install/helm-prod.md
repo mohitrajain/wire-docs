@@ -17,8 +17,8 @@ Some of the instructions here will present you with two options: No AWS, and wit
 
 - wire-server (API)
   : - user accounts, authentication, conversations
-    - assets handling (images, files, ...)
-    - notifications over websocket
+  - assets handling (images, files, ...)
+  - notifications over websocket
 - wire-webapp, a fully functioning web client (like `https://app.wire.com/`)
 - wire-account-pages, user account management (a few pages relating to e.g. password reset procedures)
 

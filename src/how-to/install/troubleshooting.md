@@ -263,7 +263,7 @@ Question: Are the connection values for bad networks/disconnect configurable on 
 
 Answer: The values are not currently configurable, they are built into the clients at compile time, we do have a mechanism for sending calling configs to the clients but these values are not currently there.
 
-## Diagnosing issues with installation steps.
+## Diagnosing issues with installation steps
 
 Some steps of the installation (for example `helm` commands) provide less feedback than others in the case errors are encountered.
 
@@ -332,7 +332,6 @@ Error from server (BadRequest): container "job-done" in pod "cassandra-migration
 ```
 
 Note the name `job-done`, this is the name of the last step (container) of the pod, which is not yet running.
-
 
 We can get even more information about the pod by running `d kubectl describe pod cassandra-migration-qgn7r`:
 
@@ -436,26 +435,26 @@ LAST SEEN   TYPE      REASON                    OBJECT                          
 
 Here we can see that the `cassandra-migrations-qgn7r` pod was created, then the warnings about the «`BackOff`» and reaching the backoff limit.
 
-## Verifying correct deployment of DNS / DNS troubleshooting.
+## Verifying correct deployment of DNS / DNS troubleshooting
 
 After installation, or if you meet some functionality problems, you should check that your DNS setup is correct.
 
 You'll do this from either your own computer (any public computer connected to the Internet), or from the Wire backend itself.
 
-### Testing public domains.
+### Testing public domains
 
 From your own computer (not from the Wire backend), test that you can reach all sub-domains you setup during the Wire installation:
 
-* `assets.<domain>`
-* `teams.<domain>`
-* `webapp.<domain>`
-* `accounts.<domain>`
-* `nginz-https.<domain>`
-* `nginz-ssl.<domain>`
-* `sftd.<domain>`
-* `restund01.<domain>`
-* `restund02.<domain>`
-* `federator.<domain>`
+- `assets.<domain>`
+- `teams.<domain>`
+- `webapp.<domain>`
+- `accounts.<domain>`
+- `nginz-https.<domain>`
+- `nginz-ssl.<domain>`
+- `sftd.<domain>`
+- `restund01.<domain>`
+- `restund02.<domain>`
+- `federator.<domain>`
 
 Some domains (such as the federator) might not apply to your setup. Refer to the domains you configured during installation, and act accordingly.
 
@@ -489,13 +488,13 @@ Do this for each and every of the domains you configured, make sure each of them
 
 If a domain can not be reached, check your DNS configuration and make sure to solve the issue.
 
-### Testing internal domain resolution.
+### Testing internal domain resolution
 
 Open a shell inside the SNS pod, and make sure you can resolve the following three domains:
 
-* `minio-external`
-* `cassandra-external`
-* `elasticsearch-external`
+- `minio-external`
+- `cassandra-external`
+- `elasticsearch-external`
 
 First get a list of all pods:
 
@@ -539,9 +538,9 @@ Address:        127.0.0.53#53
 
 If you can not resolve any of the three domains, please request support.
 
-### Testing reachability of AWS.
+### Testing reachability of AWS
 
-First off, use the Amazon AWS documentation to determine your region code: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-regions-availability-zones.html
+First off, use the Amazon AWS documentation to determine your region code: <https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-regions-availability-zones.html>
 
 Here we will use `us-west-1` but please change this to whichever value you set in your `values.yaml` file during installation.
 
@@ -595,4 +594,3 @@ ssh kubernetes-server
 Then try the same thing using `nslookup`.
 
 If either of these steps fail, please request support.
-

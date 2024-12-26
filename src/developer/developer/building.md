@@ -31,6 +31,7 @@
 
 1. clone the git repo, it can be found at [the wireapp/wire-server github](https://github.com/wireapp/wire-server)
 2. initialize this repo's submodules with
+
    ```bash
    git submodule update --init --recursive
    ```
@@ -51,9 +52,11 @@ spend some time fetching things from different caches.
 ### initializing the cabal mirrors
 
 There are a few dependencies that are not provided by the nix env, for these, please run
+
 ```bash
 cabal update
 ```
+
 now that you're in the devshell.
 
 ### building wire-server
@@ -88,6 +91,7 @@ and then executing
 ulimit 10240 # set your resource limit to some high number
 make ci-safe # run the ci
 ```
+
 If the former command fails, make sure you have a working installation of `docker`
 or continue to the troubleshooting section right below.
 
@@ -109,7 +113,7 @@ nix build -Lv \
   -f ./nix wireServer.haskellPackages.<library>
 ```
 
-you may build all the images that would be deployed by running 
+you may build all the images that would be deployed by running
 
 ```bash
 nix build -Lv \
@@ -118,7 +122,7 @@ nix build -Lv \
 ```
 
 > ℹ️  Info
-> 
+>
 > if you don't want to pass the `--experimental-features` flag to nix, you may as well
 > add this to your `nix.conf` which is documented [in the nix manual](https://nixos.org/manual/nix/unstable/command-ref/conf-file.html)
 
@@ -156,22 +160,21 @@ Sometimes abording cabal mid-update can corrupt its index. Deleting `~/.cabal/pa
 
 As a side-note: `make c` doesn't run `cabal update`, but `make` does, so keep that in mind.
 
-
 ## How to run integration tests
 
 Integration tests require all of the haskell services (brig, galley, cannon, gundeck, proxy, cargohold, spar) to be correctly configured and running, before being able to execute e.g. the `brig-integration` binary. The test for brig also starts nginz, so make sure it has been built before.
 These services require most of the deployment dependencies as seen in the architecture diagram to also be available:
 
 - Required internal dependencies:
-    - cassandra (with the correct schema)
-    - elasticsearch (with the correct schema)
-    - redis
+  - cassandra (with the correct schema)
+  - elasticsearch (with the correct schema)
+  - redis
 - Required external dependencies are the following configured AWS services (or "fake" replacements providing the same API):
-    - SES
-    - SQS
-    - SNS
-    - S3
-    - DynamoDB
+  - SES
+  - SQS
+  - SNS
+  - S3
+  - DynamoDB
 
 Furthermore, testing federation requires a local DNS server set up with appropriate SRV records.
 
@@ -185,34 +188,42 @@ Also make sure your system is able to resolve the fully qualified domain `localh
 
 After all containers are up you can use these Makefile targets to run the tests locally:
 
-0. Set your resource limits to a high enough number: 
+0. Set your resource limits to a high enough number:
+
    ```bash
    ulimit 10240
    ```
 
 1. Build and run all integration tests
+
    ```bash
    make ci-safe
    ```
 
 2. Build and run integration tests for a service (say galley)
+
    ```bash
    make ci package=galley
    ```
 
 3. Run integration tests written using `tasty` for a service (say galley) that match a pattern
+
    ```bash
    TASTY_PATTERN="/MLS/" make ci-safe package=galley
    ```
-   For more details on pattern formats, see tasty docs: https://github.com/UnkindPartition/tasty#patterns
+
+   For more details on pattern formats, see tasty docs: <https://github.com/UnkindPartition/tasty#patterns>
 
 4. Run integration tests written using `hspec` for a service (say spar) that match a pattern
+
    ```bash
    HSPEC_MATCH='Scim' make ci-safe package=spar
    ```
-   For more details on match formats, see hspec docs: https://hspec.github.io/match.html
+
+   For more details on match formats, see hspec docs: <https://hspec.github.io/match.html>
 
 5. Run integration tests without any parallelism
+
    ```bash
    TASTY_NUM_THREADS=1 make ci-safe package=brig
    ```

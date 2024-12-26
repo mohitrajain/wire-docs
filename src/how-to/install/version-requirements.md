@@ -14,7 +14,7 @@ the installation guide. If you have never used `poetry` to install Wire, please 
 - Elasticsearch: 6.6.0
 - Minio
   : - server: latest (tested v2020-03-25)
-    - client: latest (tested v2020-03-14)
+  - client: latest (tested v2020-03-14)
 
 ### Infrastructure
 

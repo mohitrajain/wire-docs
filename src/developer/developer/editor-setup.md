@@ -63,6 +63,7 @@ Install the [projectile][] package for Emacs and do `M-x projectile-add-known-pr
 
 To use HLS bundled in direnv setup, here is a sample `.dir-locals.el` that can
 be put in the root directory of the project:
+
 ```
 ((haskell-mode . ((haskell-completion-backend . lsp)
                   (lsp-haskell-server-path . "/home/haskeller/code/wire-server/hack/bin/nix-hls.sh")
@@ -108,10 +109,11 @@ This gives type checking, code completion, HLint hints, formatting with Ormolu, 
 All needed dependencies (like the `haskell-language-server` and `stack` binaries) are provided by `shell.nix`.
 
 Setup steps:
-- Install the plugins `Haskell` (Haskell Language Server support), `Haskell Syntax` and `Nix Environment Selector`
-- Generate the `hie.yaml` file: `make hie.yaml`
-- Select the nix environment from `shell.nix` with the command `Nix-Env: Select environment`.
-- Reload the window as proposed by the `Nix Environment Selector` plugin
+
+* Install the plugins `Haskell` (Haskell Language Server support), `Haskell Syntax` and `Nix Environment Selector`
+* Generate the `hie.yaml` file: `make hie.yaml`
+* Select the nix environment from `shell.nix` with the command `Nix-Env: Select environment`.
+* Reload the window as proposed by the `Nix Environment Selector` plugin
 
 An alternative way to make these dependencies accessible to VSCode is to start it in the `direnv` environment.
 I.e. from a shell that's current working directory is in the project. The drawbacks of this approach are
@@ -133,4 +135,5 @@ If you are using emacs user linting can be configured by adding
                  ))
 )
 ```
+
 to `.dir-locals.el` .

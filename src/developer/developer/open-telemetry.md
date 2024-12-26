@@ -3,6 +3,7 @@
 ## Current Status
 
 The following components have been instrumented:
+
 - brig
 - galley
 - gundeck
@@ -14,12 +15,12 @@ The following components have been instrumented:
 - Some parts of the service, such as background jobs, may need additional instrumentation. It's currently unclear if these are appearing in the tracing data.
 - we need to ingest the data into grafana tempo
 
-
 ## Setup instructions for local use
 
 To view the tracing data:
 
 1. Start Jaeger using Docker:
+
    ```bash
    docker run --rm --name jaeger \
      -e COLLECTOR_ZIPKIN_HOST_PORT=:9411 \
