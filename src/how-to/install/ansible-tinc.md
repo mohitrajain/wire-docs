@@ -1,4 +1,4 @@
-(tinc)=
+<a id="tinc"></a>
 
 # tinc
 
@@ -6,14 +6,12 @@ Installing [tinc mesh vpn](http://tinc-vpn.org/) is *optional and
 experimental*. It allows having a private network interface `vpn0` on
 the target VMs.
 
-```{warning}
+#### WARNING
 We currently only use tinc for test clusters and have not made sure if the default settings it comes with provide adequate security to protect your data. If using tinc and the following tinc.yml playbook, make your own checks first!
-```
 
-```{note}
+#### NOTE
 Ensure to run the tinc.yml playbook first if you use tinc, before
 other playbooks.
-```
 
 From `wire-server-deploy/ansible`, where you created a `hosts.ini` file.
 
@@ -49,6 +47,6 @@ redis_network_interface = vpn0
 Configure the physical network interface inside tinc.yml if it is not
 `eth0`. Then:
 
-```
+```default
 ansible-playbook -i hosts.ini tinc.yml -vv
 ```

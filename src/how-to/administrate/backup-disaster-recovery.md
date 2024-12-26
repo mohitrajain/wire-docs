@@ -20,7 +20,7 @@ By nature, a significant part of a Wire installation is ephemeral, and not meant
 
 The exceptions to this rule, are what you want to back up. In particular:
 
-* Your "wire-server" installation folder (used during the installation procedure)
+* Your “wire-server” installation folder (used during the installation procedure)
 * Your Cassandra database
 * Your Minio data
 
@@ -32,7 +32,9 @@ Here is how to back up each:
 
 To backup the wire-server folder, we simply use ssh to read it from the server in which it is installed:
 
-    ssh user@my-wire-server.your-domain.com 'cd /path/to/my/folder/for/wire-server/ && tar -cf - wire-server | gzip -9' > wire-server-backup.tar.gz
+```none
+ssh user@my-wire-server.your-domain.com 'cd /path/to/my/folder/for/wire-server/ && tar -cf - wire-server | gzip -9' > wire-server-backup.tar.gz
+```
 
 Where :
 
@@ -44,9 +46,11 @@ Where :
 
 Once the command is done executing, make sure the file exists and is not empty with:
 
-    file wire-server-backup.tar.gz       # Should say the file type is a TAR archive
-    ls -lh wire-server-backup.tar.gz     # Should show a file size other than 0
-    tar tvf wire-server-backup.tar.gz    # Should list the files inside your wire-server folder correctly
+```none
+file wire-server-backup.tar.gz       # Should say the file type is a TAR archive
+ls -lh wire-server-backup.tar.gz     # Should show a file size other than 0
+tar tvf wire-server-backup.tar.gz    # Should list the files inside your wire-server folder correctly
+```
 
 Now simply save this file in multiple locations as per your normal company backup procedures, and repeat this procedure on a regular basis as is appropriate.
 
@@ -56,11 +60,13 @@ Cassandra stores things such as user profiles/accounts, conversations, etc. It i
 
 To backup your Cassandra database, do as follows:
 
-You can read general information about connecting to your Cassandra node on [this page](/how-to/administrate/cassandra)
+You can read general information about connecting to your Cassandra node on [this page](cassandra.md)
 
 In particular, SSH into the Cassandra Virtual Machine with:
 
-    ssh user@cassandra-vm.your-domain.com
+```none
+ssh user@cassandra-vm.your-domain.com
+```
 
 Where:
 
@@ -69,63 +75,87 @@ Where:
 
 Make sure (while connected via ssh) your Cassandra installation is doing well with:
 
-    nodetool status
+```none
+nodetool status
+```
 
 or (in newer versions)
 
-    nodetool -h ::FFFF:127.0.0.1 status
+```none
+nodetool -h ::FFFF:127.0.0.1 status
+```
 
 You should see a list of nodes like this:
 
-    Datacenter: datacenter1
-    =======================
-    Status=Up/Down
-    |/ State=Normal/Leaving/Joining/Moving
-    --  Address         Load       Tokens          Owns (effective)   Host ID                                Rack
-    UN  192.168.220.13  9.51MiB    256             100.0%             3dba71c8-eea7-4e35-8f35-4386e7944894   rack1
-    UN  192.168.220.23  9.53MiB    256             100.0%             3af56f1f-7685-4b5b-b73f-efdaa371e96e   rack1
-    UN  192.168.220.33  9.55MiB    256             100.0%             RANDOMLY-MADE-UUID-GOES-INTHISPLACE!   rack1
+```none
+Datacenter: datacenter1
+=======================
+Status=Up/Down
+|/ State=Normal/Leaving/Joining/Moving
+--  Address         Load       Tokens          Owns (effective)   Host ID                                Rack
+UN  192.168.220.13  9.51MiB    256             100.0%             3dba71c8-eea7-4e35-8f35-4386e7944894   rack1
+UN  192.168.220.23  9.53MiB    256             100.0%             3af56f1f-7685-4b5b-b73f-efdaa371e96e   rack1
+UN  192.168.220.33  9.55MiB    256             100.0%             RANDOMLY-MADE-UUID-GOES-INTHISPLACE!   rack1
+```
 
 As per the [Cassandra documentation](https://cassandra.apache.org/doc/latest/cassandra/operating/backups.html) to backup your database, you will use the `nodetool snapshot` command.
 
 First we need to edit the `cassandra.yaml` file (which you can if needed find with `find -name cassandra.yaml`) has `auto_snapshot` set to `false`:
 
-    auto_snapshot: false
+```none
+auto_snapshot: false
+```
 
 Same with: `snapshot_before_compaction`
 
-    snapshot_before_compaction: false
+```none
+snapshot_before_compaction: false
+```
 
 After editing the file, make sure you restart cassandra with:
 
-    sudo service cassandra restart
+```none
+sudo service cassandra restart
+```
 
 You can find a list of all keyspaces by doing:
 
-    ls /mnt/cassandra/data/
+```none
+ls /mnt/cassandra/data/
+```
 
 Now (while connected via ssh, as per above), use nodetool to actually generate a snapshot of all tables:
 
-    nodetool snapshot --tag catalog-ks catalogkeyspace
+```none
+nodetool snapshot --tag catalog-ks catalogkeyspace
+```
 
 This should succesfully save the snapshots to the disk.
 
 You should now be able to find your snapshots in the snapshots list with:
 
-    nodetool listsnapshots
+```none
+nodetool listsnapshots
+```
 
-To actually save the files, you'll need to locate them with:
+To actually save the files, you’ll need to locate them with:
 
-    find -name snapshots
+```none
+find -name snapshots
+```
 
 Which should give you a list of paths to snapshots, such as:
 
-    /mnt/cassandra/data/data/catalogkeyspace/journal-296a2d30c22a11e9b1350d927649052c/snapshots
-    /mnt/cassandra/data/data/catalogkeyspace/magazine-446eae30c22a11e9b1350d927649052c/snapshots
+```none
+/mnt/cassandra/data/data/catalogkeyspace/journal-296a2d30c22a11e9b1350d927649052c/snapshots
+/mnt/cassandra/data/data/catalogkeyspace/magazine-446eae30c22a11e9b1350d927649052c/snapshots
+```
 
 Now to create a (local) backup of these snapshots, we use `ssh` the same way we did above for `wire-server`:
 
-    ssh user@cassandra-vm.your-domain.com 'cd /mnt/cassandra/data/data/catalogkeyspace/journal-296a2d30c22a11e9b1350d927649052c/ && tar -cf - snapshots | gzip -9' > cassandra-catalogkeyspace-journal-backup.tar.gz
+```none
+ssh user@cassandra-vm.your-domain.com 'cd /mnt/cassandra/data/data/catalogkeyspace/journal-296a2d30c22a11e9b1350d927649052c/ && tar -cf - snapshots | gzip -9' > cassandra-catalogkeyspace-journal-backup.tar.gz
+```
 
 Where :
 
@@ -143,7 +173,9 @@ The backup procedure above presumes manually backing up each Cassandra snapshot 
 
 If you want to back all files at once, you can use the `find` command to find all snapshots and pack them into a single archive:
 
-    ssh user@cassandra-vm.your-domain.com 'find /mnt/cassandra/ -name "snapshots" -print0 | tar -cvf - --null -T - | gzip -9 ' > cassandra-batch.tar.gz
+```none
+ssh user@cassandra-vm.your-domain.com 'find /mnt/cassandra/ -name "snapshots" -print0 | tar -cvf - --null -T - | gzip -9 ' > cassandra-batch.tar.gz
+```
 
 * `user` is the user you used to install Wire on this server, typically `wire` or `root`
 * `cassandra-vm.your-domain.com` is the domain name or IP address for the server with your Wire install
@@ -160,11 +192,13 @@ If your specific installation is using the actual Amazon file storage (and not a
 
 Similarly to Cassandra, to create a backup you need to SSH into the Virtual Machine running MinIO in your installation:
 
-You can read general information about your MinIO node on [this page](/how-to/administrate/minio).
+You can read general information about your MinIO node on [this page](minio.md).
 
 SSH into the MinIO Virtual Machine with:
 
-    ssh user@minio-vm.your-domain.com
+```none
+ssh user@minio-vm.your-domain.com
+```
 
 Where:
 
@@ -173,8 +207,10 @@ Where:
 
 To backup the MinIO data, we need to backup two servers over SSH, the same way we did for Cassandra and wire-server:
 
-    ssh user@my-minio-server.your-domain.com 'cd /var/lib/ && tar -cf - minio-server1 | gzip -9' > minio-server1-backup.tar.gz
-    ssh user@my-minio-server.your-domain.com 'cd /var/lib/ && tar -cf - minio-server2 | gzip -9' > minio-server2-backup.tar.gz
+```none
+ssh user@my-minio-server.your-domain.com 'cd /var/lib/ && tar -cf - minio-server1 | gzip -9' > minio-server1-backup.tar.gz
+ssh user@my-minio-server.your-domain.com 'cd /var/lib/ && tar -cf - minio-server2 | gzip -9' > minio-server2-backup.tar.gz
+```
 
 Where:
 
@@ -188,46 +224,54 @@ It is important to back up as often as possible. You can use `cron` to automatic
 
 For example, you can create the following shell script, and write it to `/home/myuser/backup/wire-backup.sh`:
 
-    #!/bin/sh
-    # Make the folder if it does not exist yet
-    mkdir -p /home/myuser/backup/data/
+```none
+#!/bin/sh
+# Make the folder if it does not exist yet
+mkdir -p /home/myuser/backup/data/
 
-    # Back up wire-server folder
-    ssh user@my-wire-server.your-domain.com 'cd /path/to/my/folder/for/wire-server/ && tar -cf - wire-server | gzip -9' > /home/myuser/backup/data/wire-server-backup.tar.gz
+# Back up wire-server folder
+ssh user@my-wire-server.your-domain.com 'cd /path/to/my/folder/for/wire-server/ && tar -cf - wire-server | gzip -9' > /home/myuser/backup/data/wire-server-backup.tar.gz
 
-    # Cause Cassandra to generate new snapshots
-    ssh user@cassandra-vm.your-domain.com 'nodetool snapshot --tag catalog-ks catalogkeyspace`
+# Cause Cassandra to generate new snapshots
+ssh user@cassandra-vm.your-domain.com 'nodetool snapshot --tag catalog-ks catalogkeyspace`
 
-    # Backup Cassandra snapshots to a file
-    ssh user@cassandra-vm.your-domain.com 'find /mnt/cassandra/ -name "snapshots" -print0 | tar -cvf - --null -T - | gzip -9 ' > /home/myuser/backup/data/cassandra-batch.tar.gz
+# Backup Cassandra snapshots to a file
+ssh user@cassandra-vm.your-domain.com 'find /mnt/cassandra/ -name "snapshots" -print0 | tar -cvf - --null -T - | gzip -9 ' > /home/myuser/backup/data/cassandra-batch.tar.gz
 
-    # Backup MinIO files
-    ssh user@my-minio-server.your-domain.com 'cd /var/lib/ && tar -cf - minio-server1 | gzip -9' > /home/myuser/backup/data/minio-server1-backup.tar.gz
-    ssh user@my-minio-server.your-domain.com 'cd /var/lib/ && tar -cf - minio-server2 | gzip -9' > /home/myuser/backup/data/minio-server2-backup.tar.gz
+# Backup MinIO files
+ssh user@my-minio-server.your-domain.com 'cd /var/lib/ && tar -cf - minio-server1 | gzip -9' > /home/myuser/backup/data/minio-server1-backup.tar.gz
+ssh user@my-minio-server.your-domain.com 'cd /var/lib/ && tar -cf - minio-server2 | gzip -9' > /home/myuser/backup/data/minio-server2-backup.tar.gz
 
-    # Tar all backup files into a single unified archive
-    tar -cf /home/myuser/backup/full-backup.tar /home/myuser/backup/data/*
+# Tar all backup files into a single unified archive
+tar -cf /home/myuser/backup/full-backup.tar /home/myuser/backup/data/*
 
-    # Make remote copies of this single file to remote hosts for redundancy
-    scp /home/myuser/backup/full-backup.tar user@remote-redundancy-host-one.your-domain.com:/path/to/backup/folder/
-    scp /home/myuser/backup/full-backup.tar user@remote-redundancy-host-two.your-domain.com:/path/to/backup/folder/
+# Make remote copies of this single file to remote hosts for redundancy
+scp /home/myuser/backup/full-backup.tar user@remote-redundancy-host-one.your-domain.com:/path/to/backup/folder/
+scp /home/myuser/backup/full-backup.tar user@remote-redundancy-host-two.your-domain.com:/path/to/backup/folder/
+```
 
 Make the file executable with:
 
-    chmod +x /home/myuser/backup/wire-backup.sh
+```none
+chmod +x /home/myuser/backup/wire-backup.sh
+```
 
 You can then manually run the file with:
 
-    ./home/myuser/backup/wire-backup.sh
+```none
+./home/myuser/backup/wire-backup.sh
+```
 
 As a test, run the script manually to make sure it actually properly does its job without any errors.
 
 Then, you can add this to your cron file (by running `crontab -e`) to make sure this commands gets executed on a regular basis (here we will use an hourly backup):
 
-    # Edit this file to introduce tasks to be run by cron.
-    # 
-    # m h  dom mon dow   command
-    @hourly /home/myuser/backup/wire-backup.sh
+```none
+# Edit this file to introduce tasks to be run by cron.
+# 
+# m h  dom mon dow   command
+@hourly /home/myuser/backup/wire-backup.sh
+```
 
 Your backup should now happen every hour automatically, ensuring you always have a backup at least an hour fresh in case of an emergency.
 
@@ -252,7 +296,9 @@ If you correctly backup up your `wire-server` installation, you should have acce
 
 You can extract this file to the remote machine with the following command:
 
-    cat wire-server-backup.tar.gz | ssh user@my-wire-server.your-domain.com "cd /path/to/my/folder/for/wire-server/ && tar zxvf -"
+```none
+cat wire-server-backup.tar.gz | ssh user@my-wire-server.your-domain.com "cd /path/to/my/folder/for/wire-server/ && tar zxvf -"
+```
 
 Where :
 
@@ -265,7 +311,7 @@ Now all files should be in their proper place, with the proper values, and you s
 
 ### Restoring Cassandra from a backup
 
-If you correctly backed up your Cassandra database, you should have a series of `snapshot` files, which you now need to restore over your "fresh" (ie. empty) Cassandra installation.
+If you correctly backed up your Cassandra database, you should have a series of `snapshot` files, which you now need to restore over your “fresh” (ie. empty) Cassandra installation.
 
 [This page from the Cassandra documentation](https://docs.datastax.com/en/cassandra-oss/3.0/cassandra/operations/opsBackupSnapshotRestore.html) goes over how to restore from snapshots.
 
@@ -273,29 +319,39 @@ You should have lots of snapshots from the backup process. This example will go 
 
 First, transfer and extract the snapshot to the Cassandra Virtual Machine:
 
-    cat cassandra-catalogkeyspace-journal-backup.tar.gz | ssh user@cassandra-vm.your-domain.com "cd /mnt/cassandra/data/data/catalogkeyspace/journal-296a2d30c22a11e9b1350d927649052c/ && tar zxvf -"
+```none
+cat cassandra-catalogkeyspace-journal-backup.tar.gz | ssh user@cassandra-vm.your-domain.com "cd /mnt/cassandra/data/data/catalogkeyspace/journal-296a2d30c22a11e9b1350d927649052c/ && tar zxvf -"
+```
 
 Now the folder `/mnt/cassandra/data/data/catalogkeyspace/journal-296a2d30c22a11e9b1350d927649052c/snapshots/` should contain your snapshot.
 
 Next, ssh into the Cassandra Virtual Machine and cd to the snapshot folder:
 
-    ssh user@cassandra-vm.your-domain.com
-    cd /mnt/cassandra/data/data/catalogkeyspace/journal-296a2d30c22a11e9b1350d927649052c/
+```none
+ssh user@cassandra-vm.your-domain.com
+cd /mnt/cassandra/data/data/catalogkeyspace/journal-296a2d30c22a11e9b1350d927649052c/
+```
 
 Next run
 
-    ls -lh
+```none
+ls -lh
+```
 
 This will show you a list of the snapshots available:
 
-    drwxr-xr-x 2 cassandra cassandra 4.0K May 26 14:45 1653752714460
-    drwxr-xr-x 2 cassandra cassandra 4.0K May 28 17:46 1653752759667
+```none
+drwxr-xr-x 2 cassandra cassandra 4.0K May 26 14:45 1653752714460
+drwxr-xr-x 2 cassandra cassandra 4.0K May 28 17:46 1653752759667
+```
 
 Select the most recent one (here it is `1653752759667`).
 
 Finally, use the `sstableloader` file to load the snapshot to Cassandra:
 
-    sstableloader -d localhost /mnt/cassandra/data/data/catalogkeyspace/journal-296a2d30c22a11e9b1350d927649052c/snapshots/1653752759667/
+```none
+sstableloader -d localhost /mnt/cassandra/data/data/catalogkeyspace/journal-296a2d30c22a11e9b1350d927649052c/snapshots/1653752759667/
+```
 
 This should load the snapshot.
 
@@ -303,7 +359,9 @@ Repeat this for all snapshots you saved, and you should have a fully restored Ca
 
 Finally, restart Cassandra:
 
-    sudo service cassandra restart
+```none
+sudo service cassandra restart
+```
 
 And ensure that it is working properly.
 
@@ -313,8 +371,10 @@ Restoring MinIO from a backup is as simple as extracting the files (`minio-serve
 
 First run:
 
-    cat minio-server1-backup.tar.gz | ssh user@my-minio-server.your-domain.com "cd /var/lib/  && tar zxvf -"
-    cat minio-server2-backup.tar.gz | ssh user@my-minio-server.your-domain.com "cd /var/lib/  && tar zxvf -"
+```none
+cat minio-server1-backup.tar.gz | ssh user@my-minio-server.your-domain.com "cd /var/lib/  && tar zxvf -"
+cat minio-server2-backup.tar.gz | ssh user@my-minio-server.your-domain.com "cd /var/lib/  && tar zxvf -"
+```
 
 Where:
 
@@ -324,8 +384,10 @@ Where:
 
 Finally SSH into the server and restart MinIO:
 
-    ssh user@minio-vm.your-domain.com
-    sudo service minio restart
+```none
+ssh user@minio-vm.your-domain.com
+sudo service minio restart
+```
 
 Where:
 

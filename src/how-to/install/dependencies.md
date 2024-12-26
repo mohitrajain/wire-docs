@@ -1,8 +1,8 @@
-(dependencies)=
+<a id="dependencies"></a>
 
-# Dependencies on operator's machine
+# Dependencies on operator’s machine
 
-In order to operate a wire-server installation, you'll need a bunch of software
+In order to operate a wire-server installation, you’ll need a bunch of software
 like Ansible, `kubectl` and Helm.
 
 Together with a matching checkout of the wire-server-deploy repository,
@@ -10,7 +10,7 @@ containing the Ansible Roles and Playbooks, you should be good to go.
 
 Checkout the repository, including its submodules:
 
-```
+```default
 git clone --branch master https://github.com/wireapp/wire-server-deploy.git
 cd wire-server-deploy
 git submodule update --init --recursive
@@ -30,7 +30,7 @@ checkout into it.
 Replace the container image tag with the commit id your `wire-server-deploy`
 checkout is pointing to.
 
-```
+```default
 WSD_COMMIT_ID=cdc1c84c1a10a4f5f1b77b51ee5655d0da7f9518 # set me
 WSD_CONTAINER=quay.io/wire/wire-server-deploy:$WSD_COMMIT_ID
 
@@ -46,13 +46,12 @@ bash-4.4# ansible --version
 ansible 2.9.12
 ```
 
-Once you're in there, you can move on to {ref}`installing kubernetes <ansible-kubernetes>`.
+Once you’re in there, you can move on to [installing kubernetes](kubernetes.md#ansible-kubernetes).
 
 ## (Alternative) Installing dependencies using Direnv and Nix
 
-```{warning}
-This is an alternative approach to the above "wrapping container" one, which you should only use if you can't get above setup to work.
-```
+#### WARNING
+This is an alternative approach to the above “wrapping container” one, which you should only use if you can’t get above setup to work.
 
 1. [Install Nix](https://nixos.org/download.html)
 2. [Install Direnv](https://direnv.net/docs/installation.html)
@@ -61,7 +60,7 @@ This is an alternative approach to the above "wrapping container" one, which you
 Now, enabling `direnv` should install all the dependencies and add them to your `PATH`. Every time you `cd` into
 the `wire-server-deploy` directory, the right dependencies will be available.
 
-```
+```default
 direnv allow
 
 ansible --version

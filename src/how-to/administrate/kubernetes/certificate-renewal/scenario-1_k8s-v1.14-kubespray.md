@@ -6,11 +6,8 @@ This page explains how to renew certificates.
 ## Assumptions
 
 - Kubernetes version 1.14.x
-
 - installed with the help of [Kubespray](https://github.com/kubernetes-sigs/kubespray)
-
   - This page was tested using kubespray release 2.10 branch from 2019-05-20, i.e. commit `e2f5a9748e4dbfe2fdba7931198b0b5f1f4bdc7e`.
-
 - setup: 3 scheduled nodes, each hosting master (control plane) +
   worker (kubelet) + etcd (cluster state, key-value database)
 
@@ -75,7 +72,7 @@ echo -n | openssl s_client -connect localhost:10259 2>&1 | sed -ne '/-BEGIN CERT
 echo -n | openssl s_client -connect localhost:10250 2>&1 | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' | openssl x509 -text -noout | grep Not
 ```
 
-2. Allocate a terminal session on one node and backup existing
+1. Allocate a terminal session on one node and backup existing
    certificates & configurations
 
 ```bash
@@ -89,7 +86,7 @@ cp scheduler.conf scheduler.conf.bkp
 cp kubelet.conf kubelet.conf.bkp
 ```
 
-3. Renew certificates on that very node
+1. Renew certificates on that very node
 
 ```bash
 kubeadm alpha certs renew apiserver
@@ -100,7 +97,7 @@ kubeadm alpha certs renew front-proxy-client
 *Looking at the timestamps of the certificates, it is indicated, that apicerver, kubelet & proxy-client have been
 renewed. This can be confirmed, by executing parts of (1).*
 
-```
+```default
 root@kubenode01:/etc/kubernetes$ ls -al ./ssl
 total 56
 drwxr-xr-x 2 kube root 4096 Mar 20 17:09 .
@@ -119,9 +116,9 @@ drwxr-xr-x 5 kube root 4096 Mar 20 17:08 ..
 -rw------- 1 root root  451 Sep 23 14:53 sa.pub
 ```
 
-4. Based on those renewed certificates, generate new kubeconfig files
+1. Based on those renewed certificates, generate new kubeconfig files
 
-The first command assumes it's being executed on a master node. You may need to swap `masters` with `nodes` in
+The first command assumes it’s being executed on a master node. You may need to swap `masters` with `nodes` in
 case you are on a different sort of machines.
 
 ```bash
@@ -133,7 +130,7 @@ kubeadm alpha kubeconfig user --client-name system:kube-scheduler > /etc/kuberne
 *Again, check if ownership and permission for these files are the same
 as all the others around them.*
 
-And, in case you are operating the cluster from the current node, you may want to replace the user's kubeconfig.
+And, in case you are operating the cluster from the current node, you may want to replace the user’s kubeconfig.
 Afterwards, compare the backup version with the new one, to see if any configuration (e.g. pre-configured *namespace*)
 might need to be moved over, too.
 
@@ -144,7 +141,7 @@ chown $(id -u):$(id -g) ~/.kube/config
 chmod 770 ~/.kube/config
 ```
 
-5. Now that certificates and configuration files are in place, the
+1. Now that certificates and configuration files are in place, the
    control plane must be restarted. They typically run in containers, so
    the easiest way to trigger a restart, is to kill the processes
    running in there. Use (1) to verify, that the expiration dates indeed
@@ -156,52 +153,52 @@ kill -s SIGHUP $(pidof kube-controller-manager)
 kill -s SIGHUP $(pidof kube-scheduler)
 ```
 
-6. Make *kubelet* aware of the new certificate
+1. Make *kubelet* aware of the new certificate
 
-1) Drain the node
+1. Drain the node
 
-```
+```default
 kubectl drain --delete-local-data --ignore-daemonsets $(hostname)
 ```
 
-2. Stop the kubelet process
+1. Stop the kubelet process
 
-```
+```default
 systemctl stop kubelet
 ```
 
-3. Remove old certificates and configuration
+1. Remove old certificates and configuration
 
-```
+```default
 mv /var/lib/kubelet/pki{,old}
 mkdir /var/lib/kubelet/pki
 ```
 
-4. Generate new kubeconfig file for the kubelet
+1. Generate new kubeconfig file for the kubelet
 
-```
+```default
 kubeadm alpha kubeconfig user --org system:nodes --client-name system:node:$(hostname) > /etc/kubernetes/kubelet.conf
 ```
 
-5. Start kubelet again
+1. Start kubelet again
 
-```
+```default
 systemctl start kubelet
 ```
 
-6. \[Optional\] Verify kubelet has recognized certificate rotation
+1. [Optional] Verify kubelet has recognized certificate rotation
 
-```
+```default
 sleep 5 && systemctl status kubelet
 ```
 
-7. Allow workload to be scheduled again on the node
+1. Allow workload to be scheduled again on the node
 
-```
+```default
 kubectl uncordon $(hostname)
 ```
 
-7. Copy certificates over to all the other nodes
+1. Copy certificates over to all the other nodes
 
 Option A - you can ssh from one kubernetes node to another
 
@@ -220,7 +217,7 @@ scp ./ssl/front-proxy-client.* "${NODE2}:/etc/kubernetes/ssl/"
 scp ./ssl/front-proxy-client.* "${NODE3}:/etc/kubernetes/ssl/"
 ```
 
-Option B - copy via local administrator's machine
+Option B - copy via local administrator’s machine
 
 ```bash
 # set the ip or hostname:
@@ -238,4 +235,4 @@ scp -3 "${NODE1}:/etc/kubernetes/ssl/front-proxy-client.*" "${NODE2}:/etc/kubern
 scp -3 "${NODE1}:/etc/kubernetes/ssl/front-proxy-client.*" "${NODE3}:/etc/kubernetes/ssl/"
 ```
 
-8. Continue again with (4) for each node that is left
+1. Continue again with (4) for each node that is left

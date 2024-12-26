@@ -1,10 +1,16 @@
 # Restund (TURN)
 
-```{eval-rst}
-.. include:: includes/intro.rst
+This section is about **how to perform a specific task**. If you want to **understand how a certain component works, please see** [Reference](../../understand/index.md#understand)
+
+The rest of the page assumes you installed using the ansible playbooks from [wire-server-deploy](https://github.com/wireapp/wire-server-deploy/tree/master/ansible)
+
+For any command below, first ssh into the server:
+
+```default
+ssh <name or IP of the VM>
 ```
 
-(allocations)=
+<a id="allocations"></a>
 
 ## Wire-Server Configuration
 
@@ -63,7 +69,7 @@ every 10 seconds:
 
 Entries with weight 0 will be ignored. Example:
 
-```
+```default
 dig +retries=3 +short SRV _turn._udp.prod.example.com
 
 0 0 3478 turn36.prod.example.com
@@ -75,15 +81,14 @@ At least one of these 3 lookups must succeed for the wire-server to be able to
 respond correctly when `GET /calls/config/v2` is called. All successful
 responses are served in the result.
 
-In addition, if there are any clients using the legacy endpoint, `GET
-/calls/config`, (all versions of all mobile apps since 2018 no longer use this) they will be served by the servers listed in the
+In addition, if there are any clients using the legacy endpoint, `GET /calls/config`, (all versions of all mobile apps since 2018 no longer use this) they will be served by the servers listed in the
 `_turn._udp.prod.example.com` SRV record. This endpoint, however, will not
 serve the domain names received inside the SRV record, instead it will serve the
 first `A` record that is associated with each domain name in the SRV record.
 
 ## How to see how many people are currently connected to the restund server
 
-You can see the count of currently ongoing calls (also called "allocations"):
+You can see the count of currently ongoing calls (also called “allocations”):
 
 ```sh
 echo turnstats | nc -u 127.0.0.1 33000 -q1 | grep allocs_cur | cut -d' ' -f2
@@ -91,25 +96,23 @@ echo turnstats | nc -u 127.0.0.1 33000 -q1 | grep allocs_cur | cut -d' ' -f2
 
 ## How to restart restund (with downtime)
 
-With downtime, it's very easy:
+With downtime, it’s very easy:
 
-```
+```default
 systemctl restart restund
 ```
 
-```{warning}
+#### WARNING
 Restarting `restund` means any user that is currently connected to it (i.e. having a call) will lose its audio/video connection. If you wish to have no downtime, check the next section\*
-```
 
-(rebooting-a-restund-node)=
+<a id="rebooting-a-restund-node"></a>
 
 ## Rebooting a Restund node
 
 If you want to reboot a restund node, you need to make sure the other restund nodes in the cluster are running, so that services are not interrupted by the reboot.
 
-```{warning}
+#### WARNING
 This procedure as described here will cause downtime, even if a second restund server is up; and kill any ongoing audio/video calls. The sections further up describe a downtime and a no-downtime procedure.
-```
 
 Presuming your two restund nodes are called:
 
@@ -131,7 +134,7 @@ CONTAINER ID         IMAGE                                COMMAND         STATUS
 <random hash>        quay.io/wire/restund:v0.4.16b1.0.53  22 seconds ago  Up 18 seconds          restund
 ```
 
-Make sure you see this restund container, and it is running ("Up").
+Make sure you see this restund container, and it is running (“Up”).
 
 If it is not, you need to do troubleshooting work, if it is running, you can move forward and reboot restund-1.
 
@@ -158,7 +161,7 @@ CONTAINER ID         IMAGE                                COMMAND         STATUS
 <random hash>        quay.io/wire/restund:v0.4.16b1.0.53  22 seconds ago  Up 18 seconds          restund
 ```
 
-Here again, make sure you see a restund container, and it is running ("Up").
+Here again, make sure you see a restund container, and it is running (“Up”).
 
 If it is, you have succesfully reboot the restund server, and can if you need to apply the same procedure to the other restund servers in your cluster.
 
@@ -220,9 +223,9 @@ You then need to restart the `brig` pods if your code is older than September 20
 kubectl delete pod -l app=brig
 ```
 
-2. Wait for traffic to drain. This can take up to 12 hours after the configuration change. Wait until current allocations (people connected to the restund server) return 0. See {ref}`allocations`.
-3. It's now safe to `systemctl stop restund`, and take any necessary actions.
-4. `systemctl start restund` and then add the restund server back to configuration of advertised nodes (see step 1, put the server back).
+1. Wait for traffic to drain. This can take up to 12 hours after the configuration change. Wait until current allocations (people connected to the restund server) return 0. See [Wire-Server Configuration](#allocations).
+2. It’s now safe to `systemctl stop restund`, and take any necessary actions.
+3. `systemctl start restund` and then add the restund server back to configuration of advertised nodes (see step 1, put the server back).
 
 ## How to renew a certificate for restund
 
@@ -240,11 +243,11 @@ kubectl delete pod -l app=brig
 -----END PRIVATE KEY-----
 ```
 
-2. Restart restund (see sections above)
+1. Restart restund (see sections above)
 
 ## How to check which restund/TURN servers will be used by clients
 
-The list of turn servers contacted by clients *should* match what you added to your `turnStatic` configuration. But if you'd like to double-check, here's how:
+The list of turn servers contacted by clients *should* match what you added to your `turnStatic` configuration. But if you’d like to double-check, here’s how:
 
 Terminal one:
 

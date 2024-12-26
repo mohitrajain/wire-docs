@@ -1,4 +1,4 @@
-(aws-prod)=
+<a id="aws-prod"></a>
 
 # Configuring AWS and wire-server (production) components
 
@@ -10,7 +10,7 @@ The following procedures are for configuring wire-server on top of AWS. They are
 
 AWS SNS is required to send notification events to clients via [FCM](https://firebase.google.com/docs/cloud-messaging/)/[APNS](https://developer.apple.com/notifications/) . These notification channels are useable only for clients that are connected from the public internet. Using these vendor provided communication channels allows client devices (phones) running a wire client to save a considerable amount of battery life, compared to the websockets approach.
 
-For details on how to set up SNS in cooperation with us (We - Wire - will proxy push notifications through Amazon for you), see {ref}`push-sns`.
+For details on how to set up SNS in cooperation with us (We - Wire - will proxy push notifications through Amazon for you), see [Enable push notifications using the public appstore / playstore mobile Wire clients](infrastructure-configuration.md#push-sns).
 
 ## Using real AWS services for SES / SQS
 
@@ -23,13 +23,13 @@ FIXME: detail this step.
 S3-style services are used by cargohold to store encrypted files that users are sharing amongst each other, profile pics, etc.
 
 Defining S3 services:
-Create an S3 bucket in the region you are hosting your wire servers in. For example terraform code, see: <https://github.com/wireapp/wire-server-deploy/tree/develop/terraform/modules/aws-cargohold-asset-storage>
+Create an S3 bucket in the region you are hosting your wire servers in. For example terraform code, see: [https://github.com/wireapp/wire-server-deploy/tree/develop/terraform/modules/aws-cargohold-asset-storage](https://github.com/wireapp/wire-server-deploy/tree/develop/terraform/modules/aws-cargohold-asset-storage)
 
-The S3 bucket you create should have it's contents downloadable from the internet, as clients get the content directly from S3, rather than having to talk through the wire backend.
+The S3 bucket you create should have it’s contents downloadable from the internet, as clients get the content directly from S3, rather than having to talk through the wire backend.
 
 Using S3 services:
 
-There are three values in the `cargohold.config.aws` section of your 'values.yaml' that you need to provide while deploying wire-server:
+There are three values in the `cargohold.config.aws` section of your ‘values.yaml’ that you need to provide while deploying wire-server:
 
 - s3Bucket: the name of the S3 bucket you have created.
 - s3Endpoint: the S3 service endpoint cargohold should talk to, to place files in the S3 bucket. On AWS, this takes the form of: `https://<bucket_name>.s3-<region_name>.amazonaws.com`.

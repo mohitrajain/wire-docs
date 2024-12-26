@@ -1,7 +1,13 @@
 # General - Linux
 
-```{eval-rst}
-.. include:: includes/intro.rst
+This section is about **how to perform a specific task**. If you want to **understand how a certain component works, please see** [Reference](../../understand/index.md#understand)
+
+The rest of the page assumes you installed using the ansible playbooks from [wire-server-deploy](https://github.com/wireapp/wire-server-deploy/tree/master/ansible)
+
+For any command below, first ssh into the server:
+
+```default
+ssh <name or IP of the VM>
 ```
 
 ## Which ports and network interface is my process running on?
@@ -18,13 +24,12 @@ which may yield output like this:
 tcp        0      0 0.0.0.0:22              0.0.0.0:*               LISTEN      1536/sshd
 ```
 
-(how-to-see-tls-certs)=
+<a id="how-to-see-tls-certs"></a>
 
 ## How can I see if my TLS certificates are configured the way I expect?
 
-```{note}
-The following assumes you're querying a server from outside (e.g. your laptop). See the next section if operating on a server from an SSH session.
-```
+#### NOTE
+The following assumes you’re querying a server from outside (e.g. your laptop). See the next section if operating on a server from an SSH session.
 
 You can use openssl to check, with e.g.
 

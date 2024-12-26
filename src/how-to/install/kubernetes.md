@@ -1,4 +1,4 @@
-(ansible-kubernetes)=
+<a id="ansible-kubernetes"></a>
 
 # Installing kubernetes for a demo installation (on a single virtual machine)
 
@@ -14,15 +14,14 @@ cd ansible/
 
 Then:
 
-```{eval-rst}
-.. include:: includes/ansible-authentication-blob.rst
-```
+#### NOTE
+If you use ssh *keys*, and the user you login with is either root or can elevate to root without a password, you don’t need to do anything further to use ansible. If, however, you use password authentication for ssh access, and/or your login user needs a password to become root, see [Manage ansible authentication settings](ansible-authentication.md#ansible-authentication).
 
 ## Passwordless authentication
 
 Presuming a fresh default Ubuntu 18.04 installation, the following steps will enable the Ansible playbook to run without specifying passwords.
 
-This presumes you named your default Ubuntu user "wire", and X.X.X.X is the IP or domain name of the target server Ansible will install Kubernetes on.
+This presumes you named your default Ubuntu user “wire”, and X.X.X.X is the IP or domain name of the target server Ansible will install Kubernetes on.
 
 On the client (from `wire-server-deploy/ansible`), run:
 
@@ -59,13 +58,13 @@ by replacing `example.com` with your own domain.
 
 From `wire-server-deploy/ansible`:
 
-```
+```default
 ansible-playbook -i inventory/demo/hosts.ini kubernetes.yml -vv
 ```
 
 When the playbook finishes correctly (which can take up to 20 minutes), you should have a folder `artifacts` containing a file `admin.conf`. Copy this file:
 
-```
+```default
 mkdir -p ~/.kube
 cp artifacts/admin.conf ~/.kube/config
 KUBECONFIG=~/.kube/config
@@ -73,13 +72,13 @@ KUBECONFIG=~/.kube/config
 
 Make sure you can reach the server:
 
-```
+```default
 kubectl version
 ```
 
 should give output similar to this:
 
-```
+```default
 Client Version: version.Info{Major:"1", Minor:"14", GitVersion:"v1.14.2", GitCommit:"66049e3b21efe110454d67df4fa62b08ea79a19b", GitTreeState:"clean", BuildDate:"2019-05-16T16:23:09Z", GoVersion:"go1.12.5", Compiler:"gc", Platform:"linux/amd64"}
 Server Version: version.Info{Major:"1", Minor:"14", GitVersion:"v1.14.2", GitCommit:"66049e3b21efe110454d67df4fa62b08ea79a19b", GitTreeState:"clean", BuildDate:"2019-05-16T16:14:56Z", GoVersion:"go1.12.5", Compiler:"gc", Platform:"linux/amd64"}
 ```

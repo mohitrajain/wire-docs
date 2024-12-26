@@ -13,14 +13,12 @@ As a result the following questions arise:
 
 Depending on the deployment method, the upgrade procedure may vary. It may be reasonable to test
 the upgrade in a non-production environment first.
-Regardless of the deployment method, it is recommended to {ref}`back up the cluster state
-<etcd-backup-and-restore>` before starting to upgrade the cluster. Additional background knowledge
-can be found in the section about {ref}`restarting a machine in an kubernetes cluster <restarting-a-machine-in-a-kubernetes-cluster>`.
+Regardless of the deployment method, it is recommended to [back up the cluster state](../../etcd.md#etcd-backup-and-restore) before starting to upgrade the cluster. Additional background knowledge
+can be found in the section about [restarting a machine in an kubernetes cluster](../restart-machines/index.md#restarting-a-machine-in-a-kubernetes-cluster).
 
-```{warning}
+#### WARNING
 For an in-place upgrade, it is *NOT* recommended to go straight to the latest Kubernetes
 version. Instead, one should upgrade step by step between each minor version.
-```
 
 ## Manually
 
@@ -29,12 +27,12 @@ automation for this procedure. The high-level steps would be:
 
 1. upgrade the control plane (also see a more detailed [list](https://kubernetes.io/docs/tasks/administer-cluster/cluster-upgrade/#manual-deployments))
    : 1. all *etcd* instances
-     2. api-server on each control-plane host
-     3. controllers, scheduler,
+   2. api-server on each control-plane host
+   3. controllers, scheduler,
 2. upgrade the nodes (order may vary, depending on whether the kube-components run in containers)
    : - kubelet
-     - kube-proxy
-     - container runtime
+   - kube-proxy
+   - container runtime
 3. then upgrade the clients (`kubectl`, e.g. on workstations or in pipelines)
 
 *For more details, please refer to the official documentation:*
@@ -60,9 +58,8 @@ ${EDITOR} roles/kubespray-defaults/defaults/main.yaml
 ansible-playbook -i ./../path/my/inventory-dir -e kube_version=v1.19.7 ./upgrade-cluster.yml
 ```
 
-% TODO: adjust the example showing how to run this with wire-server-deploy a/o the offline toolchain container image
-
-% TODO: add ref to the part of this documentation that talks about the air-gapped installation
+<!-- TODO: adjust the example showing how to run this with wire-server-deploy a/o the offline toolchain container image -->
+<!-- TODO: add ref to the part of this documentation that talks about the air-gapped installation -->
 
 Kubespray takes care of bringing the new binaries into position on each machine, restarting
 the components, and draining/uncordon nodes.
@@ -80,9 +77,9 @@ Please refer to the *official documentation:* [Upgrading kubeadm clusters](https
 
 If you upgrade to new versions of kubernetes while wire-server is deployed, you may find that after that version update, deploying a new version of wire-server or nginx-ingress-services (or another helm chart we provide) using `helm update` or `helmfile apply/sync` gives an error like this:
 
-> Error: UPGRADE FAILED: current release manifest contains removed kubernetes api(s) for this kubernetes version and it is therefore unable to build the kubernetes objects for performing the diff. error from kubernetes: unable to recognize "": no matches for kind "Ingress" in version "extensions/v1beta1"
+> Error: UPGRADE FAILED: current release manifest contains removed kubernetes api(s) for this kubernetes version and it is therefore unable to build the kubernetes objects for performing the diff. error from kubernetes: unable to recognize “”: no matches for kind “Ingress” in version “extensions/v1beta1”
 
-What's happening here is that some [deprecated](https://kubernetes.io/docs/reference/using-api/deprecation-guide/)  kubernetes API versions may potentially have been removed. While we strive to keep maximum compatibility of kubernetes versions in our helm charts, that's not sufficient when doing k8s upgrades while wire-server helm charts are in use: you need to tell a helm release about the difference in API version.
+What’s happening here is that some [deprecated](https://kubernetes.io/docs/reference/using-api/deprecation-guide/)  kubernetes API versions may potentially have been removed. While we strive to keep maximum compatibility of kubernetes versions in our helm charts, that’s not sufficient when doing k8s upgrades while wire-server helm charts are in use: you need to tell a helm release about the difference in API version.
 
 In which case you can use the [helm mapkubeapis plugin](https://github.com/helm/helm-mapkubeapis) to upgrade an existing release with the following command:
 
