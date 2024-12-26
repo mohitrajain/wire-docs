@@ -145,4 +145,4 @@ the definitions of the actual payloads, please see the [federation API](api.md#f
 The scenario is that the brig at `infra.a.com` has received a user
 search request from *Alice*, one of its clients.
 
-![image](understand/federation/img/federation-flow.png)
+![image](img/federation-flow.png)

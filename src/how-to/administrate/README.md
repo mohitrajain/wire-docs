@@ -1,10 +1,10 @@
 # Administration
 
-* [Kubernetes](kubernetes/index.md)
-  * [Certificate renewal](kubernetes/certificate-renewal/index.md)
-  * [How to restart a machine that is part of a Kubernetes cluster?](kubernetes/restart-machines/index.md)
-  * [Upgrading a Kubernetes cluster](kubernetes/upgrade-cluster/index.md)
-  * [Troubleshooting problems arising after kubernetes cluster upgrades](kubernetes/upgrade-cluster/index.md#troubleshooting-problems-arising-after-kubernetes-cluster-upgrades)
+* [Kubernetes](kubernetes/README.md)
+  * [Certificate renewal](kubernetes/certificate-renewal/README.md)
+  * [How to restart a machine that is part of a Kubernetes cluster?](kubernetes/restart-machines/README.md)
+  * [Upgrading a Kubernetes cluster](kubernetes/upgrade-cluster/README.md)
+  * [Troubleshooting problems arising after kubernetes cluster upgrades](kubernetes/upgrade-cluster/README.md#troubleshooting-problems-arising-after-kubernetes-cluster-upgrades)
 * [Backup and disaster recovery](backup-disaster-recovery.md)
   * [Introduction](backup-disaster-recovery.md#introduction)
   * [Backing up](backup-disaster-recovery.md#backing-up)

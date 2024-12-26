@@ -6,7 +6,7 @@
 
 In a simplified way, the server components for Wire involve the following:
 
-![image](understand/img/architecture-server-simplified.png)
+![image](img/architecture-server-simplified.png)
 
 The Wire clients (such as the Wire app on your phone) connect either directly (or via a load balancer) to the “Wire Server”. By “Wire Server” we mean multiple API server components that connect to each other, and which also connect to a few databases. Both the API components and the databases are each in a “cluster”, which means copies of the same program code runs multiple times. This allows any one component to fail without users noticing that there is a problem (also called
 “high-availability”).
@@ -18,13 +18,13 @@ are installed with the rest and therefore included.
 
 ### Focus on internet protocols
 
-![image](understand/img/architecture-tls-on-prem-2020-09.png)
+![image](img/architecture-tls-on-prem-2020-09.png)
 
 ### Focus on high-availability
 
 The following diagram shows a usual setup with multiple VMs (Virtual Machines):
 
-![image](how-to/install/img/architecture-server-ha.png)
+![image](../how-to/install/img/architecture-server-ha.png)
 
 Wire clients (such as the Wire app on your phone) connect to a load balancer.
 

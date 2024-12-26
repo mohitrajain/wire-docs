@@ -105,7 +105,7 @@ If the only thing you need demo-smtp for is sending yourself verification codes 
 
 To do this, click create a user/account/team, or if you already have, click on `Resend Code`:
 
-![image](how-to/install/img/code-input.png)
+![image](img/code-input.png)
 
 Then run the following command
 

@@ -14,7 +14,7 @@ As a result the following questions arise:
 Depending on the deployment method, the upgrade procedure may vary. It may be reasonable to test
 the upgrade in a non-production environment first.
 Regardless of the deployment method, it is recommended to [back up the cluster state](../../etcd.md#etcd-backup-and-restore) before starting to upgrade the cluster. Additional background knowledge
-can be found in the section about [restarting a machine in an kubernetes cluster](../restart-machines/index.md#restarting-a-machine-in-a-kubernetes-cluster).
+can be found in the section about [restarting a machine in an kubernetes cluster](../restart-machines/README.md#restarting-a-machine-in-a-kubernetes-cluster).
 
 #### WARNING
 For an in-place upgrade, it is *NOT* recommended to go straight to the latest Kubernetes

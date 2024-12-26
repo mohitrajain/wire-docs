@@ -57,7 +57,7 @@ components across backends . The components talk to each other via the
 *Federator* in the originating domain and *Federator Ingress* in the receiving
 domain (for details see [Backend to backend communication](backend-communication.md#backend-to-backend-communication)).
 
-![image](understand/federation/img/federation-apis-flow.png)
+![image](img/federation-apis-flow.png)
 
 ### API From Components to Federator
 

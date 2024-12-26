@@ -4,7 +4,7 @@
 
 E.g. in the following screen shot of the RabbitMQ management UI you can see that a message is stuck in the `backend-notifications.d1.example.com` queue:
 
-![rabbitmqadmin](developer/reference/rabbitmq-consumer/rabbitmqadmin.png)
+![rabbitmqadmin](rabbitmqadmin.png)
 
 ## Interactively inspect/drop messages
 

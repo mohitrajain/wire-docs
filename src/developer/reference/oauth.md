@@ -64,7 +64,7 @@ The authorization server does the authentication of the user and establishes whe
 
 `wire-server` currently only supports the [Authorization Code Flow with Proof Key for Code Exchange (PKCE)](https://www.rfc-editor.org/rfc/rfc7636) which is optimized for public clients such as Outlook Calendar Extension.
 
-![image](developer/reference/oauth.svg)
+![image](oauth.svg)
 
 ## OAuth client developer reference
 

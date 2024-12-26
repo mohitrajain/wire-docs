@@ -11,7 +11,7 @@ help you.
 
 # Contents:
 
-* [Developer](developer/index.md)
+* [Developer](developer/README.md)
   * [API versioning](developer/api-versioning.md)
   * [How to build wire-server](developer/building.md)
   * [Writing code interacting with cassandra](developer/cassandra-interaction.md)
@@ -32,7 +32,7 @@ help you.
   * [Servant](developer/servant.md)
   * [Testing the wire-server Haskell code base](developer/testing.md)
   * [Upgrading](developer/upgrading.md)
-* [Reference](reference/index.md)
+* [Reference](reference/README.md)
   * [Config Options](reference/config-options.md)
   * [Creating and populating conversations](reference/conversation.md)
   * [Maintaining ElasticSearch](reference/elastic-search.md)

@@ -88,7 +88,7 @@ export IDP_ID=...
 
 Copy the new metadata file to one of your spar instances.
 
-Ssh into it.  If you can’t, [the sso docs](../../understand/single-sign-on/index.md#sso-main-documentation) explain how you can create a
+Ssh into it.  If you can’t, [the sso docs](../../understand/single-sign-on/README.md#sso-main-documentation) explain how you can create a
 bearer token if you have the admin’s login credentials.  If you follow
 that approach, you need to replace all mentions of `-H'Z-User ...'`
 with `-H'Authorization: Bearer ...'` in the following, and you won’t need

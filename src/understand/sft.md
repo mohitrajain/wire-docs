@@ -27,7 +27,7 @@ as a mere client proxy and its relation to and interaction with a client is expl
 [here](restund.md#understand-restund). The diagram shows that a call resides on a single SFT instance
 and that the instance allocates at least one port for media transport per participant in the call.
 
-![image](understand/img/architecture-sft.png)
+![image](img/architecture-sft.png)
 
 ## Establishing a call
 
@@ -111,7 +111,7 @@ to the anchor SFT using the anchor SFT tuple and provides the SFT URL. (Bob’s 
 also sets up media with SFT B1 normally.)  At this point all paths are established
 and the conference call can happen normally.
 
-![image](understand/img/multi-sft-noturn.png)
+![image](img/multi-sft-noturn.png)
 
 Because some customers do not wish to expose their SFTs directly to hosts on the public
 Internet, the SFTs can allocate a port on a TURN server. In this way, only the IP
@@ -121,7 +121,7 @@ this scenario.  In this configuration, SFT A2 requests an allocation from the fe
 TURN server in domain A before responding to Alice. The anchor SFT tuple is the address
 allocated on the federation TURN server in domain A.
 
-![image](understand/img/multi-sft-turn.png)
+![image](img/multi-sft-turn.png)
 
 Finally, for extremely restrictive firewall environments, the TURN servers used for
 federated SFT traffic can be further secured with a TURN to TURN mutually
@@ -136,7 +136,7 @@ this scenario.  Note that this TURN DTLS multiplexing is only used for SFT to SF
 communication into federated group calls, and does not affect the connectivity requirements for normal one-on-one
 calls.
 
-![image](understand/img/multi-sft-turn-dtls.png)
+![image](img/multi-sft-turn-dtls.png)
 
 ---
 * <a id='footnote-1'>**[1]**</a> STUN & TURN are both part of a [Restund server](restund.md#understand-restund)

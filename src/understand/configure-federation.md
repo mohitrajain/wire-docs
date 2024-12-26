@@ -2,7 +2,7 @@
 
 # Federation
 
-See also [Wire Federation](federation/index.md#federation-understand), which explains the architecture and concepts.
+See also [Wire Federation](federation/README.md#federation-understand), which explains the architecture and concepts.
 
 #### NOTE
 The Federation development is work in progress.

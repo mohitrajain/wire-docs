@@ -67,7 +67,7 @@ For two users to be considered “connected”, both A->B and B->A connections h
 
 <a id="refconnectiontransitions"></a>
 
-![Connection state transitions](developer/reference/user/connection-transitions.png)
+![Connection state transitions](connection-transitions.png)
 
 (To edit this diagram, open [connection-transitions.xml](connection-transitions.xml) with [https://draw.io](https://draw.io).)
 
@@ -83,7 +83,7 @@ Since there is no explicit connection state between two team members, changing t
 
 In the regular case of a single backend (no federation involved), and in the easiest case of two users Alice and Adham which want to start talking, the simplified internals involving the services brig and galley and cassandra can be seen as follows: (as of 2021-08)
 
-![Connection backend internal flow](developer/reference/user/connections-flow-1-backend.png)
+![Connection backend internal flow](connections-flow-1-backend.png)
 
 <details>
 <summary>(To edit this diagram, copy the code in this details block to https://swimlanes.io )</summary>

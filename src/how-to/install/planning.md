@@ -23,7 +23,7 @@ What you need:
 
 A demo installation will look a bit like this:
 
-![image](how-to/install/img/architecture-demo.png)
+![image](img/architecture-demo.png)
 
 ### Next steps for demo installation
 
@@ -71,7 +71,7 @@ Conference Calling Hardware Requirements
 
 A production installation will look a bit like this:
 
-![image](how-to/install/img/architecture-server-ha.png)
+![image](img/architecture-server-ha.png)
 
 If you use a private datacenter (not a cloud provider), the easiest is
 to have three physical servers, each with one virtual machine for each

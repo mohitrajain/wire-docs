@@ -29,13 +29,13 @@ Restund instance may communicate with other Restund instances.
 You can either have restund servers directly exposed to the public
 internet:
 
-![image](understand/img/architecture-restund.png)
+![image](img/architecture-restund.png)
 
 Or you can have them reachable by fronting them with a firewall or load
 balancer machine that may have a different IP than the server where
 restund is installed:
 
-![image](understand/img/architecture-restund-lb.png)
+![image](img/architecture-restund-lb.png)
 
 ## What is it used for
 
@@ -142,7 +142,7 @@ switch their server if it fails.
 A simplified flow of how restund servers, along with the wire-server are
 used to establish a call:
 
-![image](understand/img/flow-restund.png)
+![image](img/flow-restund.png)
 
 ## DNS
 
