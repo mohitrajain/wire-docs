@@ -8,13 +8,20 @@ This outage concerns **only wire.com** website and none of the services provided
 
 ## Timeline
 
-*06:00*: wire.com being down was detected by the Security Team\
-*06:46*: Our Hosting Provider was informed about wire.com being down\
-*07:03*: Our Hosting Provider initiated a server restart to mitigate\
-*07:08*: Restart of wire.com server failed due to problems on hypervisor (no additional details provided by upstream provider)\
-*07:23*: We changed the DNS record for wire.com to an old backup to restore basic functionality\
-*10:30*: Our Hosting Provider restored wire.com server\
-*11:20*: Our Hosting Provider informed us that the recent version of wire.com is reliably available again\
+*06:00*: wire.com being down was detected by the Security Team<br />
+\\\\
+*06:46*: Our Hosting Provider was informed about wire.com being down<br />
+\\\\
+*07:03*: Our Hosting Provider initiated a server restart to mitigate<br />
+\\\\
+*07:08*: Restart of wire.com server failed due to problems on hypervisor (no additional details provided by upstream provider)<br />
+\\\\
+*07:23*: We changed the DNS record for wire.com to an old backup to restore basic functionality<br />
+\\\\
+*10:30*: Our Hosting Provider restored wire.com server<br />
+\\\\
+*11:20*: Our Hosting Provider informed us that the recent version of wire.com is reliably available again<br />
+\\\\
 *12:02*: We reverted the DNS changes, to point back to the recent version of wire.com
 
 ## Are Wire installations affected?
