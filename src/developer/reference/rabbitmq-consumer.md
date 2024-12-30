@@ -10,8 +10,7 @@ E.g. in the following screen shot of the RabbitMQ management UI you can see that
 
 Follow these steps to inspect (and/or drop) the message:
 
-1. Stop the background-worker because the queues are single active consumer queues. One way to do this is to set the background-worker's `replicas` count to 0 in the k8s deployment. The number of unacked messages should then switch to 0.
-
+1. Stop the background-worker because the queues are single active consumer queues. One way to do this is to set the background-worker’s `replicas` count to 0 in the k8s deployment. The number of unacked messages should then switch to 0.
 2. Run:
 
 ```shell
@@ -35,7 +34,7 @@ docker run -it --network=host "quay.io/wire/rabbitmq-consumer:$WIRE_VERSION" \
 
 The output will look similar to:
 
-```
+```default
 vhost: backendA
 queue: backend-notifications.d1.example.com
 timestamp: Nothing
@@ -86,7 +85,7 @@ WIRE_VERSION=<version>
 docker run -it --network=host "quay.io/wire/rabbitmq-consumer:$WIRE_VERSION" --help
 ```
 
-```
+```default
 rabbitmq-consumer
 
 Usage: rabbitmq-consumer [-s|--host HOST] [-p|--port PORT]

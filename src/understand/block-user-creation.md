@@ -15,9 +15,8 @@ If `setRestrictUserCreation` is `true`, creating new personal users or new teams
 
 On instances with restricted user creation, the site operator with access to the internal REST API can still circumvent the restriction: just log into a brig service pod and run the curl commands like `hack/bin/create_test_team_admins.sh` does it.  (Running the script is also an option: this will give you a team with a random admin account, and you can use that account to give yourself access under the desired credentials.)
 
-```{note}
+#### NOTE
 Once the creation of new users and teams has been disabled, it will still be possible to use the [team creation process](https://support.wire.com/hc/en-us/articles/115003858905-Create-a-team) (enter the new team name, email, password, etc), but it will fail/refuse creation late in the creation process (after the «Create team» button is clicked).
-```
 
 ## In the WebApp
 
@@ -27,6 +26,5 @@ Another way of disabling user registration is by this webapp setting, in `values
 FEATURE_ENABLE_ACCOUNT_REGISTRATION: "false"
 ```
 
-```{note}
+#### NOTE
 If you only disable the creation of users in the webapp, but do not do so in Brig/the backend, a malicious user would be able to use the API to create users, so make sure to disable both.
-```

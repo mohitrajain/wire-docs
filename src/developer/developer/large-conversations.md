@@ -7,7 +7,7 @@ endeavor.
 ## Call hierarchy
 
 See [large-conversations.yaml](https://github.com/wireapp/wire-server/blob/develop/docs/src/developer/developer/large-conversations.yaml) for
- call hierarchy of functions that load the full member list into memory.
+call hierarchy of functions that load the full member list into memory.
 
 ## Galley Endpoints
 
@@ -47,7 +47,7 @@ For type `CreateGroupConversationResponse`:
 - `create-self-conversation@v2`
 - `create-self-conversation`
 
-For type `Wire.API.Event.Conversation.Event` (`EventData` might contain a `Conversation` object, but it's not clear from API type alone if it contains one)
+For type `Wire.API.Event.Conversation.Event` (`EventData` might contain a `Conversation` object, but it’s not clear from API type alone if it contains one)
 
 - `add-members-to-conversation-unqualified`
 - `add-members-to-conversation-unqualified2`
@@ -72,4 +72,4 @@ In the `MLSAPI`:
 - `mls-commit-bundle` returns a `MLSMessageSendingStatus` which contains list of `Event`, as well a list of unreachable users.
 - `mls-message-v1` and `mls-message` returns list of `Event`
 
-The `MessagingAPI` (Proetus) is not listed here, assuming that Proteus conversations won't support large conversations.
+The `MessagingAPI` (Proetus) is not listed here, assuming that Proteus conversations won’t support large conversations.

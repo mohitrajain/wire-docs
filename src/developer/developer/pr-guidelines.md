@@ -18,7 +18,7 @@ See `docs/legacy/developer/changelog.md` for more information.
 
 ## Schema migrations
 
-Don't delete columns that are still used by versions that are deployed. If you delete columns then the old version will fail in the deployment process. Rather than deleting keep the unused columns around and comment them as being discontinued in the schema migration code.
+Don’t delete columns that are still used by versions that are deployed. If you delete columns then the old version will fail in the deployment process. Rather than deleting keep the unused columns around and comment them as being discontinued in the schema migration code.
 
 If a cassandra schema migration has been added then add this to the checklist:
 
@@ -34,7 +34,7 @@ If the PR contains a cassandra *schema* migration which is backwards incompatibl
 
 When adding new endpoints in the Haskell code in wire-server, correct routing needs to be applied at the nginz level.
 
-NB: The nginz paths are interpreted as *prefixes*.  If you add a new end-point that is identical to an existing one except for the path of the latter being a proper prefix of the former, and if the nginz configuration of the two paths should be the same, nothing needs to be done.  Exception: if you see a path like `/self$`, you know it doesn't match `/self/sub/what`.
+NB: The nginz paths are interpreted as *prefixes*.  If you add a new end-point that is identical to an existing one except for the path of the latter being a proper prefix of the former, and if the nginz configuration of the two paths should be the same, nothing needs to be done.  Exception: if you see a path like `/self$`, you know it doesn’t match `/self/sub/what`.
 
 The following needs to be done, as part of a PR adding endpoints or changing endpoint paths.
 
@@ -46,7 +46,7 @@ The following needs to be done, as part of a PR adding endpoints or changing end
 
 For internal endpoints for QA access on staging environments, copy a block with `/i/` containing
 
-```
+```default
   - path: /some/path
     envs:
     - staging
@@ -64,7 +64,7 @@ New entris should include `common_response_no_zauth.conf;` for public endpoints 
 
 If the following endpoints are added to galley:
 
-```
+```default
 GET /new/endpoint
 POST /turtles
 PUT /turtles/<turtleId>/name
@@ -72,7 +72,7 @@ PUT /turtles/<turtleId>/name
 
 Add to `charts/nginz/values.yaml`, under the `galley` section:
 
-```
+```default
 - path: /new/endpoint
 - path: ^/turtles(.*)
 ```
@@ -81,21 +81,21 @@ Add to `charts/nginz/values.yaml`, under the `galley` section:
 
 If a PR adds new configuration options for say brig, the following files need to be edited:
 
-- [ ] The parser under `services/brig/src/Brig/Options.hs`
-- [ ] The integration test config: `services/brig/brig.integration.yaml`
-- [ ] The charts: `charts/brig/templates/configmap.yaml`
-- [ ] The default values: `charts/brig/values.yaml`
-- [ ] The values files for CI: `hack/helm_vars/wire-server/values.yaml.gotmpl`
-- [ ] The configuration docs: `docs/src/developer/reference/config-options.md`
+* [ ] The parser under `services/brig/src/Brig/Options.hs`
+* [ ] The integration test config: `services/brig/brig.integration.yaml`
+* [ ] The charts: `charts/brig/templates/configmap.yaml`
+* [ ] The default values: `charts/brig/values.yaml`
+* [ ] The values files for CI: `hack/helm_vars/wire-server/values.yaml.gotmpl`
+* [ ] The configuration docs: `docs/src/developer/reference/config-options.md`
 
 Additional configuration may also exist for services in the following locations.
 
-- [ ] `charts/$SERVICE/templates/tests/configmap.yaml`
+* [ ] `charts/$SERVICE/templates/tests/configmap.yaml`
 
 If any new configuration value is required and has no default, then:
 
-- [ ] Write a changelog entry in `0-release-notes` advertising the new configuration value
-- [ ] Update all the relevant environments
+* [ ] Write a changelog entry in `0-release-notes` advertising the new configuration value
+* [ ] Update all the relevant environments
 
 For wire Cloud, look into all the relevant environments (look for `helm_vars/wire-server/values.yaml.gotmpl` files in cailleach). Ideally, these configuration updates should be merged **before** merging the corresponding wire-server PR.
 
@@ -105,9 +105,9 @@ Remove them with the PR from wire-server `./charts` folder, as charts are linked
 
 ### Renaming configuration flags
 
-Avoid doing this, it's usually viable to introduce an at-least-equally-good name and remove the old one, that admins can first add the new options, then uprade the software, then remove the old ones.
+Avoid doing this, it’s usually viable to introduce an at-least-equally-good name and remove the old one, that admins can first add the new options, then uprade the software, then remove the old ones.
 
-If you must, see Removing/adding sections above. But please note that all people who have an installation of wire also may have overridden any of the configuration option you may wish to change the name of. As this is not type checked, it's very error prone and people may find themselves with default configuration values being used instead of their intended configuration settings. Guideline: only rename for good reasons, not for aesthetics; or be prepared to spend a significant amount on documenting and communication about this change.
+If you must, see Removing/adding sections above. But please note that all people who have an installation of wire also may have overridden any of the configuration option you may wish to change the name of. As this is not type checked, it’s very error prone and people may find themselves with default configuration values being used instead of their intended configuration settings. Guideline: only rename for good reasons, not for aesthetics; or be prepared to spend a significant amount on documenting and communication about this change.
 
 ## Changes to developer workflow
 

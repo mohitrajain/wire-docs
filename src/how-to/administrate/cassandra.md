@@ -1,22 +1,19 @@
 # Cassandra
 
-```{eval-rst}
-.. include:: includes/intro.rst
+This section is about **how to perform a specific task**. If you want to **understand how a certain component works, please see** [Reference](../../understand/README.md#understand)
 
+The rest of the page assumes you installed using the ansible playbooks from [wire-server-deploy](https://github.com/wireapp/wire-server-deploy/tree/master/ansible)
+
+For any command below, first ssh into the server:
+
+```default
+ssh <name or IP of the VM>
 ```
 
-```{eval-rst}
-{% include "includes/intro.rst" %}
+This section only covers the bare minimum, for more information, see the [cassandra
+documentation](https://cassandra.apache.org/doc/latest/)
 
-```
-
-{% include "includes/intro.rst" %}
-
-This section only covers the bare minimum, for more information, see the [cassandra documentation](https://cassandra.apache.org/doc/latest/)
-
-(check-the-health-of-a-cassandra-node)=
-
-{% include "includes/intro.rst" %}
+<a id="check-the-health-of-a-cassandra-node"></a>
 
 ## Check the health of a Cassandra node
 
@@ -49,7 +46,7 @@ A `UN` at the begginng of the line, refers to a node that is `Up` and `Normal`.
 
 You can also check the logs of the cassandra server with
 
-```
+```default
 journalctl -u cassandra.service 
 ```
 
@@ -66,7 +63,7 @@ select * from <tablename> WHERE <primarykey>=<some-value> LIMIT 10;
 
 If your local install does not have cqlsh available, you can use docker instead:
 
-```
+```default
 sudo docker run -it --rm cassandra:3.11 cqlsh 172.16.0.132 9042
 ```
 

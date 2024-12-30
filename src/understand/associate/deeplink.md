@@ -18,9 +18,8 @@ Supported client apps:
 - iOS
 - Android
 
-```{note}
+#### NOTE
 Wire deeplinks can be used to redirect a mobile (Android, iOS) Wire app to a specific backend URL. Deeplinks have no further ability implemented at this stage.
-```
 
 ## Connecting to a custom backend utilizing a Deep Link
 
@@ -30,23 +29,23 @@ A deep link is a special link a user can click on after installing wire, but bef
 
 In addition to connect to a custom backend a user can specify a socks proxy to add another layer to the network and make the api calls go through the proxy.
 
-## From a user's perspective
+## From a user’s perspective:
 
 1. First, a user installs the app from the store
 2. The user clicks on a deep link, which is formatted similar to: `wire://access/?config=https://eu-north2.mycustomdomain.de/configs/backend1.json` (notice the protocol prefix: `wire://`)
 3. The app will ask the user to confirm that they want to connect to a custom backend. If the user cancels, the app exits.
-4. Assuming the user did not cancel, the app will download the file `eu-north2.mycustomdomain.de/configs/backend1.json` via HTTPS. If it can't download the file or the file doesn't match the expected structure, the wire client will display an error message (*'sInvalid link'*).
+4. Assuming the user did not cancel, the app will download the file `eu-north2.mycustomdomain.de/configs/backend1.json` via HTTPS. If it can’t download the file or the file doesn’t match the expected structure, the wire client will display an error message ( *‘sInvalid link’*).
 5. The app will memorize the various hosts (REST, websocket, team settings, website, support) specified in the JSON and use those when talking to your backend.
-6. In the welcome page of the app, a "pill" (header) is shown at the top, to remind the user that they are now on a custom backend. A button "Show more" shows the URL of where the configuration was fetched from.
+6. In the welcome page of the app, a “pill” (header) is shown at the top, to remind the user that they are now on a custom backend. A button “Show more” shows the URL of where the configuration was fetched from.
 
 ### With Added Proxy
 
 In addition to the previous points
 
-7. The app will remember the (proxy host, proxy port, if the proxy need authentication)
-8. In the login page the user will see new section to add the proxy credentials if the proxy need authentication
+1. The app will remember the (proxy host, proxy port, if the proxy need authentication)
+2. In the login page the user will see new section to add the proxy credentials if the proxy need authentication
 
-## From the administrator's (your) perspective
+## From the administrator’s (your) perspective:
 
 You need to host two static files, then let your users know how to connect. There are three options listed (in order of recommendation) for hosting the static files.
 
@@ -70,7 +69,7 @@ Note on the meaning of the URLs used below:
 
 `blackListURL`
 
-: is used to disable old versions of Wire clients (mobile apps). It's a prefix URL to which e.g. `/ios` or `/android` is appended. Example URL for the wire.com production servers: `https://clientblacklist.wire.com/prod` and example json files: [android](https://clientblacklist.wire.com/prod/android) and [iPhone](https://clientblacklist.wire.com/prod/ios) .
+: is used to disable old versions of Wire clients (mobile apps). It’s a prefix URL to which e.g. `/ios` or `/android` is appended. Example URL for the wire.com production servers: `https://clientblacklist.wire.com/prod` and example json files: [android](https://clientblacklist.wire.com/prod/android) and [iPhone](https://clientblacklist.wire.com/prod/ios) .
 
 `websiteURL`
 
@@ -118,7 +117,7 @@ nginz:
       title: "My Custom Wire Backend"
 ```
 
-(As with any configuration changes, you need to apply them following your usual way of updating configuration (e.g. 'helm upgrade...'))
+(As with any configuration changes, you need to apply them following your usual way of updating configuration (e.g. ‘helm upgrade…’))
 
 Now both static files should become accessible at the backend domain under `/deeplink.json` and `deeplink.html`:
 
@@ -129,7 +128,7 @@ Now both static files should become accessible at the backend domain under `/dee
 
 *If possible, prefer the option in the subsection above or below. This subsection is kept for backwards compatibility.*
 
-**If you're using minio** installed using the ansible code from [wire-server-deploy](https://github.com/wireapp/wire-server-deploy/blob/master/ansible/), then the [minio ansible playbook](https://github.com/wireapp/wire-server-deploy/blob/master/ansible/minio.yml#L75-L88) (make sure to override these variables) creates a json and a html file in the right format, and makes it accessible at `https://assets.<domain>/public/deeplink.json` and at `https://assets.<domain>/public/deeplink.html`
+**If you’re using minio** installed using the ansible code from [wire-server-deploy](https://github.com/wireapp/wire-server-deploy/blob/master/ansible/), then the [minio ansible playbook](https://github.com/wireapp/wire-server-deploy/blob/master/ansible/minio.yml#L75-L88) (make sure to override these variables) creates a json and a html file in the right format, and makes it accessible at `https://assets.<domain>/public/deeplink.json` and at `https://assets.<domain>/public/deeplink.html`
 
 #### Host a deeplink file using your own web server
 
@@ -154,7 +153,7 @@ Otherwise you need to create a `.json` file, and host it somewhere users can get
 }
 ```
 
-**IMPORTANT NOTE:** Clients require **ALL** keys to be present in the JSON file; if some of these keys are irrelevant to your installation (e.g., you don't have a websiteURL) you can leave these values as indicated in the above example.
+**IMPORTANT NOTE:** Clients require **ALL** keys to be present in the JSON file; if some of these keys are irrelevant to your installation (e.g., you don’t have a websiteURL) you can leave these values as indicated in the above example.
 
 There is no requirement for these hosts to be consistent, e.g. the REST endpoint could be `wireapp.pineapple.com` and the team setting `teams.banana.com`. If you have been following this documentation closely, these hosts will likely be consistent in naming, regardless.
 

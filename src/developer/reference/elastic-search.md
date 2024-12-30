@@ -82,7 +82,7 @@ This is needed if we want to migrate to a new index. It could be for updating
 analysis settings or to change any other settings on the index which cannot be
 done without restarting the index. Analysis settings can also be updated by
 recreating the index. Recreating the index is simpler to do, but requires
-downtime, the process is documented [below](#recreate-an-index-requires-downtime)
+downtime, the process is documented [below]()
 
 This can be done in 4 steps:
 
@@ -100,7 +100,6 @@ REFRESH_INTERVAL=<REFRESH_INTERVAL_IN_SECONDS>
 ```
 
 1. Create the new index
-
    ```bash
    docker run "quay.io/wire/brig-index:$WIRE_VERSION" create \
        --elasticsearch-server "http://$ES_HOST:$ES_PORT" \
@@ -109,10 +108,8 @@ REFRESH_INTERVAL=<REFRESH_INTERVAL_IN_SECONDS>
        --elasticsearch-replicas "$REPLICAS" \
        --elasticsearch-refresh-interval "$REFRESH_INTERVAL"
    ```
-
-1. Redeploy brig with `elasticsearch.additionalWriteIndex` set to the name of new index. Make sure no old brigs are running.
-1. Reindex data to the new index
-
+2. Redeploy brig with `elasticsearch.additionalWriteIndex` set to the name of new index. Make sure no old brigs are running.
+3. Reindex data to the new index
    ```bash
    docker run "quay.io/wire/brig-index:$WIRE_VERSION" reindex-from-another-index \
        --elasticsearch-server "http://$ES_HOST:$ES_PORT" \
@@ -121,16 +118,16 @@ REFRESH_INTERVAL=<REFRESH_INTERVAL_IN_SECONDS>
    ```
 
    Optionally, `--timeout <NUMBER_OF_SECONDS>` can be added to increase/decrease from the default timeout of 10 minutes.
-1. Redeploy brig without `elasticsearch.additionalWriteIndex` and with `elasticsearch.index` set to the name of new index
+4. Redeploy brig without `elasticsearch.additionalWriteIndex` and with `elasticsearch.index` set to the name of new index
 
 Now you can delete the old index.
 
-**NOTE**: There is a bug hidden when using this way. Sometimes a user won't get
+**NOTE**: There is a bug hidden when using this way. Sometimes a user won’t get
 deleted from the index. Attempts at reproducing this issue in a simpler
 environment have failed. As a workaround, there is a tool in
 [tools/db/find-undead](https://github.com/wireapp/wire-server/tree/develop/tools/db/find-undead) which can be used to find the
 undead users right after the migration. If they exist, please run refill the ES
-documents from cassandra as described [above](#refill-es-documents-from-cassandra)
+documents from cassandra as described [above]()
 
 ## Migrate to a new cluster
 
@@ -163,7 +160,6 @@ BRIG_CASSANDRA_KEYSPACE=<YOUR_C*_KEYSPACE>
 ```
 
 1. Create the new index
-
    ```bash
    docker run "quay.io/wire/brig-index:$WIRE_VERSION" create \
        --elasticsearch-server "http://$ES_NEW_HOST:$ES_NEW_PORT" \
@@ -172,13 +168,11 @@ BRIG_CASSANDRA_KEYSPACE=<YOUR_C*_KEYSPACE>
        --elasticsearch-replicas "$REPLICAS" \
        --elasticsearch-refresh-interval "$REFRESH_INTERVAL"
    ```
-
-1. Redeploy brig with `elasticsearch.additionalWriteIndexUrl` set to the URL of
+2. Redeploy brig with `elasticsearch.additionalWriteIndexUrl` set to the URL of
    the new cluster and `elasticsearch.additionalWriteIndex` set to
    `$ES_NEW_INDEX`.
-1. Make sure no old instances of brig are running.
-1. Reindex data to the new index
-
+3. Make sure no old instances of brig are running.
+4. Reindex data to the new index
    ```bash
    docker run "quay.io/wire/brig-index:$WIRE_VERSION" migrate-data \
        --elasticsearch-server "http://$ES_NEW_HOST:$ES_NEW_PORT" \
@@ -189,8 +183,7 @@ BRIG_CASSANDRA_KEYSPACE=<YOUR_C*_KEYSPACE>
        --galley-host "$GALLEY_HOST"
        --galley-port "$GALLEY_PORT"
    ```
-
-1. Remove `elasticsearch.additionalWriteIndex` and
+5. Remove `elasticsearch.additionalWriteIndex` and
    `elasticsearch.additionalWriteIndexUrl` from brig config. Set
    `elasticsearch.url` to the URL of the new cluster and `elasticsearch.index`
    to the name of new index. Deploy brig with these settings.
@@ -202,7 +195,7 @@ introduced in [#1052](https://github.com/wireapp/wire-server/pull/1052),
 it is not possible to keep the index running while the changes are applied.
 
 To tackle this, a wire-server operator must either migrate to a new index as
-documented [above](#migrate-to-a-new-index) or allow for some downtime. One
+documented [above]() or allow for some downtime. One
 might want to choose downtime for simplicity. These steps are especially simple
 to do when using [wire-server-deploy](https://github.com/wireapp/wire-server-deploy/).
 
@@ -242,7 +235,6 @@ REFRESH_INTERVAL=<REFRESH_INTERVAL_FOR_THE_INDEX>
 ```
 
 1. Create the index
-
    ```bash
    docker run "quay.io/wire/brig-index:$WIRE_VERSION" create \
        --elasticsearch-server "http://$ES_HOST:$ES_PORT" \
@@ -251,5 +243,4 @@ REFRESH_INTERVAL=<REFRESH_INTERVAL_FOR_THE_INDEX>
        --elastcsearch-replicas "$REPLICAS" \
        --elastcsearch-refresh-interval "$REFRESH_INTERVAL"
    ```
-
-1. Refill the index as documented [above](#refill-es-documents-from-cassandra)
+2. Refill the index as documented [above]()

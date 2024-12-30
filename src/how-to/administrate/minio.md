@@ -1,7 +1,13 @@
 # Minio
 
-```{eval-rst}
-.. include:: includes/intro.rst
+This section is about **how to perform a specific task**. If you want to **understand how a certain component works, please see** [Reference](../../understand/README.md#understand)
+
+The rest of the page assumes you installed using the ansible playbooks from [wire-server-deploy](https://github.com/wireapp/wire-server-deploy/tree/master/ansible)
+
+For any command below, first ssh into the server:
+
+```default
+ssh <name or IP of the VM>
 ```
 
 This section only covers the bare minimum, for more information, see the [minio documentation](https://docs.min.io/)
@@ -25,20 +31,20 @@ to point to this loadbalancer instead.
 Our ansible playbooks will also configure the minio client and adds the locally
 reachable API under the `local` alias:
 
-```
+```default
 mc config host list
 ```
 
 If it is not there, it can be added manually as follows:
 
-```
+```default
 mc config host add local http://localhost:9000 <YOUR-ACCESS-KEY> <YOUR-SECRET-KEY>
 ```
 
 The status of the cluster can be requested by contacting any of the servers. In
 our case we will contact the locally running server:
 
-```
+```default
 mc admin info local
 ```
 
@@ -66,7 +72,7 @@ cluster.
 
 To stop a server, type:
 
-```
+```default
 systemctl stop minio-server
 ```
 
@@ -83,13 +89,13 @@ restart any other instances.
 Now that the server is offline, perform any maintenance that you want to do.
 Afterwards, restart it with:
 
-```
+```default
 systemctl start minio-server
 ```
 
 Now check:
 
-```
+```default
 mc admin info local
 ```
 
@@ -99,13 +105,13 @@ Now that the server is back online, it has missed writes that have happened whil
 it was offline. Because of this we must heal the cluster now
 A heal of the cluster is performed as follows:
 
-```
+```default
 mc admin heal -r local
 ```
 
 Which will show a result page that looks like this:
 
-```
+```default
 ◑  bunny
    0/0 objects; 0 B in 2s
    ┌────────┬───┬─────────────────────┐
@@ -166,7 +172,7 @@ Note that there are other reasons but servers restarts that can cause nodes to
 become out of sync.  For example, if there is a network failure that causes
 some of the nodes to not be reachable, writes will be less durable too. It is
 thus important to have good monitoring in place and respond accordingly.  Minio
-itself will auto-heal the cluster every month if the administrator doesn't
+itself will auto-heal the cluster every month if the administrator doesn’t
 trigger a heal themselves.
 
 ## Rotate root credentials
@@ -179,11 +185,11 @@ role.
 
 For more information, please refer to the *Credentials* section in the [official documentation](https://docs.min.io/docs/minio-server-configuration-guide.html).
 
-(check-the-health-of-a-minio-node)=
+<a id="check-the-health-of-a-minio-node"></a>
 
 ## Check the health of a MinIO node
 
-This is the procedure to check a minio node's health
+This is the procedure to check a minio node’s health
 
 First log into the minio server
 
@@ -249,7 +255,7 @@ sudo reboot
 
 Then wait at least a minute.
 
-If you go to ssh in, and get 'Connection refused', it just means you need to wait a bit longer.
+If you go to ssh in, and get ‘Connection refused’, it just means you need to wait a bit longer.
 
 Tip: You can automatically ask SSH to attempt to connect until it is succesful, by using the following command:
 
@@ -261,4 +267,4 @@ Log into minio ( repeat the steps above ), and check again.
 
 You should see a very low uptime value on two hosts now.
 
-This is because we install minio 'twice' on each host.
+This is because we install minio ‘twice’ on each host.

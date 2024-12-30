@@ -2,13 +2,13 @@
 
 Reference: {#RefScimToken}
 
-_Author: Artyom Kazak_
+*Author: Artyom Kazak*
 
 ---
 
-A _SCIM token_ is a bearer token used to authorize SCIM operations.
+A *SCIM token* is a bearer token used to authorize SCIM operations.
 
-A team owner can create SCIM tokens for the team. Each of those tokens can be used to provision new members to the team, modify members' profile attributes, etc. Tokens have unlimited duration, but can be revoked.
+A team owner can create SCIM tokens for the team. Each of those tokens can be used to provision new members to the team, modify members’ profile attributes, etc. Tokens have unlimited duration, but can be revoked.
 
 ## Using a SCIM token {#RefScimTokenUsage}
 
@@ -16,7 +16,7 @@ SCIM tokens are not general-purpose API tokens. They only apply to the `/scim/v2
 
 SCIM tokens are intended to be used by provisioning tools, such as Okta, OneLogin, Active Directory, and so on. If you have your own provisioning utility, you can use a token by adding an `Authorization` header to all `/scim/v2/` requests:
 
-```
+```default
 Authorization: Bearer <token>
 ```
 
@@ -32,7 +32,7 @@ There is a reasonable limit on the number of tokens a single team can have, set 
 
 Sample request and response:
 
-```
+```default
 POST /scim/auth-tokens
 
 {
@@ -45,7 +45,7 @@ POST /scim/auth-tokens
 }
 ```
 
-```
+```default
 201 Created
 
 {
@@ -75,15 +75,15 @@ Note that SCIM can only be used with teams that have either no or exactly one SA
 
 Listing tokens requires the user to be a team owner.
 
-We don't ever send tokens themselves, only the metadata (which can be used, for instance, to decide which tokens to revoke).
+We don’t ever send tokens themselves, only the metadata (which can be used, for instance, to decide which tokens to revoke).
 
 Sample request and response:
 
-```
+```default
 GET /scim/auth-tokens
 ```
 
-```
+```default
 200 OK
 
 {
@@ -107,10 +107,10 @@ To revoke a token, the user has to provide the token ID (not the token itself). 
 
 Sample request and response:
 
-```
+```default
 DELETE /scim/auth-tokens?id=514613de-9fde-4aab-a704-c57af7a3366e
 ```
 
-```
+```default
 204 No Content
 ```

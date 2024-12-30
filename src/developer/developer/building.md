@@ -4,17 +4,14 @@
 
 ### nix
 
-0. make sure you have `git` installed. It will be
+1. make sure you have `git` installed. It will be
    assumed by `nix`. Also make sure to run on an amd64
    machine, `wire-server` is not yet compatible with arm64.
-
-1. Install the [nix package manager](https://nixos.org/download.html).
+2. Install the [nix package manager](https://nixos.org/download.html).
    Please follow the install instruction provided on their website.
-
-2. Add the `wire-server` `cachix` cache to your system.
+3. Add the `wire-server` `cachix` cache to your system.
    This is best done by using the `cachix` executable, which, as soon as you have
    `nix` itself installed can be run with this (a bit unwieldy) command:
-
    ```bash
    nix run \
      --experimental-features 'nix-command flakes' \
@@ -30,15 +27,14 @@
 ### checking out the repo
 
 1. clone the git repo, it can be found at [the wireapp/wire-server github](https://github.com/wireapp/wire-server)
-2. initialize this repo's submodules with
-
+2. initialize this repo’s submodules with
    ```bash
    git submodule update --init --recursive
    ```
 
 ### run direnv
 
-Now it's time to let nix fetch all dependencies. Enter the `wire-server` checkout, run
+Now it’s time to let nix fetch all dependencies. Enter the `wire-server` checkout, run
 
 ```bash
 direnv allow
@@ -57,7 +53,7 @@ There are a few dependencies that are not provided by the nix env, for these, pl
 cabal update
 ```
 
-now that you're in the devshell.
+now that you’re in the devshell.
 
 ### building wire-server
 
@@ -122,8 +118,8 @@ nix build -Lv \
 ```
 
 > ℹ️  Info
->
-> if you don't want to pass the `--experimental-features` flag to nix, you may as well
+
+> if you don’t want to pass the `--experimental-features` flag to nix, you may as well
 > add this to your `nix.conf` which is documented [in the nix manual](https://nixos.org/manual/nix/unstable/command-ref/conf-file.html)
 
 `nix` puts all the build outputs into the nix store but leaves a link in the `result` directory
@@ -136,7 +132,7 @@ ls -l result
 
 ## Troubleshooting
 
-### If the PR doesn't pass the CI (read check marks on github)
+### If the PR doesn’t pass the CI (read check marks on github)
 
 ```bash
 make sanitize-pr
@@ -154,11 +150,11 @@ The easiest course of action is to to remove these directories via:
 make full-clean
 ```
 
-### Cabal can't read index (Did you call checkForUpdates?)
+### Cabal can’t read index (Did you call checkForUpdates?)
 
 Sometimes abording cabal mid-update can corrupt its index. Deleting `~/.cabal/packages/hackage.haskell.org` will usually do the trick.
 
-As a side-note: `make c` doesn't run `cabal update`, but `make` does, so keep that in mind.
+As a side-note: `make c` doesn’t run `cabal update`, but `make` does, so keep that in mind.
 
 ## How to run integration tests
 
@@ -169,7 +165,7 @@ These services require most of the deployment dependencies as seen in the archit
   - cassandra (with the correct schema)
   - elasticsearch (with the correct schema)
   - redis
-- Required external dependencies are the following configured AWS services (or "fake" replacements providing the same API):
+- Required external dependencies are the following configured AWS services (or “fake” replacements providing the same API):
   - SES
   - SQS
   - SNS
@@ -178,7 +174,7 @@ These services require most of the deployment dependencies as seen in the archit
 
 Furthermore, testing federation requires a local DNS server set up with appropriate SRV records.
 
-Setting up these real, but in-memory internal and "fake" external dependencies is done easiest using [`docker-compose`](https://docs.docker.com/compose/install/). Run the following in a separate terminal (it will block that terminal, C-c to shut all these docker images down again):
+Setting up these real, but in-memory internal and “fake” external dependencies is done easiest using [`docker-compose`](https://docs.docker.com/compose/install/). Run the following in a separate terminal (it will block that terminal, C-c to shut all these docker images down again):
 
 ```bash
 deploy/dockerephemeral/run.sh
@@ -188,44 +184,56 @@ Also make sure your system is able to resolve the fully qualified domain `localh
 
 After all containers are up you can use these Makefile targets to run the tests locally:
 
-0. Set your resource limits to a high enough number:
-
+1. Set your resource limits to a high enough number:
    ```bash
    ulimit 10240
    ```
-
-1. Build and run all integration tests
-
+2. Build and run all integration tests
    ```bash
    make ci-safe
    ```
-
-2. Build and run integration tests for a service (say galley)
-
+3. Build and run integration tests for a service (say galley)
    ```bash
    make ci package=galley
    ```
-
-3. Run integration tests written using `tasty` for a service (say galley) that match a pattern
-
+4. Run integration tests written using `tasty` for a service (say galley) that match a pattern
    ```bash
    TASTY_PATTERN="/MLS/" make ci-safe package=galley
    ```
 
-   For more details on pattern formats, see tasty docs: <https://github.com/UnkindPartition/tasty#patterns>
-
-4. Run integration tests written using `hspec` for a service (say spar) that match a pattern
-
+   For more details on pattern formats, see tasty docs: https://github.com/UnkindPartition/tasty#patterns
+5. Run integration tests written using `hspec` for a service (say spar) that match a pattern
    ```bash
    HSPEC_MATCH='Scim' make ci-safe package=spar
    ```
 
-   For more details on match formats, see hspec docs: <https://hspec.github.io/match.html>
-
-5. Run integration tests without any parallelism
-
+   For more details on match formats, see hspec docs: https://hspec.github.io/match.html
+6. Run integration tests without any parallelism
    ```bash
    TASTY_NUM_THREADS=1 make ci-safe package=brig
    ```
 
    `TASTY_NUM_THREADS` can also be set to other values, it defaults to number of cores available.
+
+## How to run the webapp locally against locally running backend
+
+1. Clone the webapp from: https://github.com/wireapp/wire-webapp
+2. Install these depedencies needed for the webapp:
+   1. nodejs
+   2. yarn
+   3. mkcert
+3. Copy `.env.localhost` to `.env` and uncomment the local section
+4. Run the webapp using:
+   ```bash
+   yarn
+   yarn start
+   ```
+5. From wire-server repo start the dependencies using:
+   ```bash
+   ./deploy/dockerephemeral/run.sh
+   ```
+6. From wire-server repo start the backend using:
+   ```bash
+   make crm
+   ```
+7. Go to http://localhost:8081 in the browser.

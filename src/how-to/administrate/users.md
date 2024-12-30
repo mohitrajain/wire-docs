@@ -1,4 +1,4 @@
-(investigative-tasks)=
+<a id="investigative-tasks"></a>
 
 # Investigative tasks (e.g. searching for users as server admin)
 
@@ -6,7 +6,7 @@ This page requires that you have root access to the machines where kubernetes ru
 
 If you have the `backoffice` pod installed, see also the [backoffice README](https://github.com/wireapp/wire-server/tree/develop/charts/backoffice).
 
-If you don't have `backoffice`, see below for some options:
+If you don’t have `backoffice`, see below for some options:
 
 ## Manually searching for users in cassandra
 
@@ -67,7 +67,7 @@ Which should give you output like:
 
 The interesting part is the `id` (in the example case `9122e5de-b4fb-40fa-99ad-1b5d7d07bae5`):
 
-(user-deletion)=
+<a id="user-deletion"></a>
 
 ## Deleting a user which is not a team user
 
@@ -104,7 +104,7 @@ null |       null | 1b5ca44a-aeb4-4a68-861b-48612438c4cc
 null |        bob | 701b4eab-6df2-476d-a818-90dc93e8446e
 ```
 
-You can then {ref}`delete each user with these instructions <user-deletion>`.
+You can then [delete each user with these instructions](#user-deletion).
 
 ## Manual search on elasticsearch (via brig, recommended)
 
@@ -175,9 +175,8 @@ The `id` (UUID) returned can be used when deleting (see below).
 
 ## How to manually delete a user from elasticsearch only
 
-```{warning}
-This is NOT RECOMMENDED. Be sure you know what you're doing. This only deletes the user from elasticsearch, but not from cassandra. Any change of e.g. the username or displayname of that user means this user will re-appear in the elasticsearch database. Instead, either fully delete a user: {ref}`user-deletion` or make use of the internal GET/PUT `/i/searchable` endpoint on brig to make this user prefix-unsearchable.
-```
+#### WARNING
+This is NOT RECOMMENDED. Be sure you know what you’re doing. This only deletes the user from elasticsearch, but not from cassandra. Any change of e.g. the username or displayname of that user means this user will re-appear in the elasticsearch database. Instead, either fully delete a user: [Deleting a user which is not a team user](#user-deletion) or make use of the internal GET/PUT `/i/searchable` endpoint on brig to make this user prefix-unsearchable.
 
 If, despite the warning, you wish to continue?
 
@@ -234,8 +233,8 @@ The exact format for the parameters passed to the script is [as follows](https:/
 
 - `-a <admin uuid>`: [User ID](https://docs.wire.com/understand/federation/api.html?highlight=user%20id#qualified-identifiers-and-names) in [UUID format](https://en.wikipedia.org/wiki/Universally_unique_identifier) of the inviting admin. For example `9122e5de-b4fb-40fa-99ad-1b5d7d07bae5`.
 - `-t <team uuid>`: ID of the inviting team, same format.
-- `-h <host>`: Base URI of brig's internal endpoint.
-- `-c <input file>`: file containing info on the invitees in format 'Email,UserName'.
+- `-h <host>`: Base URI of brig’s internal endpoint.
+- `-c <input file>`: file containing info on the invitees in format ‘Email,UserName’.
 
 For example, one such execution of the script could look like:
 
@@ -243,7 +242,7 @@ For example, one such execution of the script could look like:
 sh create_team_members.sh -a 9122e5de-b4fb-40fa-99ad-1b5d7d07bae5 -t 123e4567-e89b-12d3-a456-426614174000 -h http://localhost:9999 -c users_to_invite.csv
 ```
 
-Note: the '<http://localhost:9999>' implies you are running the 'kubectl port-forward' given at the top of this document
+Note: the ‘[http://localhost:9999](http://localhost:9999)’ implies you are running the ‘kubectl port-forward’ given at the top of this document
 .
 Once the script is run, invitations will be sent to each user in the file every second until all invitations have been sent.
 
@@ -259,12 +258,12 @@ In order to obtain client logs on the Android Wire client, follow this procedure
 
 - Open the Wire app (client) on your Android device
 - Click on the round user icon in the top left of the screen, leading to your user Profile.
-- Click on "Settings" at the bottom of the screen
-- Click on "Advanced" in the menu
-- Check/activate "Collect usage data"
+- Click on “Settings” at the bottom of the screen
+- Click on “Advanced” in the menu
+- Check/activate “Collect usage data”
 - Now go back to using your client normally, so usage data is generated. If you have been asked to follow a specific testing regime, or log a specific problem, this is the time to do so.
-- Once enough usage data is generated, go back to the "Advanced" screen (User profile > Settings > Advanced)
-- Click on "Create debug report"
+- Once enough usage data is generated, go back to the “Advanced” screen (User profile > Settings > Advanced)
+- Click on “Create debug report”
 - A menu will open allowing you to share the debug report, you can now save it or send it via email/any other means to the Wire team.
 
 ## How to obtain logs from an iOS client to investigate issues
@@ -277,12 +276,12 @@ In order to obtain client logs on the iOS Wire client, follow this procedure:
 
 - Open the Wire app (client) on your iOS device
 - Click on the round user icon in the top left of the screen, leading to your user Profile.
-- Click on "Settings" at the bottom of the screen
-- Click on "Advanced" in the menu
-- Check/activate "Collect usage data"
+- Click on “Settings” at the bottom of the screen
+- Click on “Advanced” in the menu
+- Check/activate “Collect usage data”
 - Now go back to using your client normally, so usage data is generated. If you have been asked to follow a specific testing regime, or log a specific problem, this is the time to do so.
-- Once enough usage data is generated, go back to the "Advanced" screen (User profile > Settings > Advanced)
-- Click on "Send report to wire"
+- Once enough usage data is generated, go back to the “Advanced” screen (User profile > Settings > Advanced)
+- Click on “Send report to wire”
 - A menu will open to share the debug report via email, allowing you to send it to the Wire team.
 
 ## How to retrieve metric values manually
@@ -300,7 +299,7 @@ Some of the pods allow you to grab metrics by accessing their `/i/metrics` endpo
 - `gundeck`: Push Notifications API
 - `spar`: Single-Sign-ON and SCIM
 
-For more details on the various services/pods, you can check out {ref}`this link <overview>`.
+For more details on the various services/pods, you can check out [this link](../../understand/overview.md#overview).
 
 Before you can grab metrics from a pod, you need to find its IP address. You do this by running the following command:
 
@@ -312,7 +311,7 @@ d kubectl get pods -owide
 
 Which will give you an output that looks something like this:
 
-```
+```default
 demo@Ubuntu-1804-bionic-64-minimal:~/Wire-Server$ d kubectl get pods -owide
 NAME                               READY   STATUS      RESTARTS   AGE     IP              NODE        NOMINATED NODE   READINESS GATES
 account-pages-784f9b547c-cp444     1/1     Running     0          6d23h   10.233.113.5    kubenode3   <none>           <none>
@@ -359,7 +358,7 @@ We can therefore connect to node `kubenode2` on which this pod runs with `ssh ku
 curl 10.233.110.6:8080/i/metrics
 ```
 
-Alternatively, if you don't want to, or can't for some reason, connect to kubenode2, you can use port redirect instead:
+Alternatively, if you don’t want to, or can’t for some reason, connect to kubenode2, you can use port redirect instead:
 
 ```sh
 # Allow Gundeck to be reached via the port 7777
@@ -388,7 +387,7 @@ gc_bytes_used_max 2685312.0
 gc_bytes_allocated_total 4.949156056e9
 ```
 
-This example is for Gundeck, but you can also get metrics for other services. All k8s services are listed at {ref}`this link <overview>`.
+This example is for Gundeck, but you can also get metrics for other services. All k8s services are listed at [this link](../../understand/overview.md#overview).
 
 This is an example adapted for Cannon:
 
@@ -399,15 +398,14 @@ curl -v http://127.0.0.1:7777/i/metrics
 
 In the output of this command, `net_websocket_clients` is roughly the number of connected clients.
 
-(reset-session-cookies)=
+<a id="reset-session-cookies"></a>
 
 ## Reset session cookies
 
 Remove session cookies on your system to force users to login again within the next 15 minutes (or whenever they come back online):
 
-```{warning}
+#### WARNING
 This will cause interruptions to ongoing calls and should be timed properly.
-```
 
 ### Reset cookies of all users
 
@@ -431,7 +429,7 @@ delete from brig.user_cookies where user in (c0d64244-8ab4-11ec-8fda-37788be3a4e
 
 (Keep reading if you want to find out which users on your system are using SSO.)
 
-(identify-sso-users)=
+<a id="identify-sso-users"></a>
 
 ## Identify all users using SSO
 
@@ -476,13 +474,12 @@ scp <name or IP of brig-cassandra>:users_with_idp.csv .
 tr '\n' ',' < users_with_idp.csv; echo
 ```
 
-```{note}
-Don't forget to dellete the created csv files after you have downloaded/processed them.
-```
+#### NOTE
+Don’t forget to dellete the created csv files after you have downloaded/processed them.
 
 ## Create a team using the SCIM API
 
-If you need to create a team manually, maybe because team creation was blocked in the "teams" interface, follow this procedure:
+If you need to create a team manually, maybe because team creation was blocked in the “teams” interface, follow this procedure:
 
 First download or locate this bash script: `wire-server/hack/bin/create_test_team_scim.sh <https://github.com/wireapp/wire-server/blob/develop/hack/bin/create_test_team_scim.sh>`
 
@@ -563,13 +560,13 @@ This script can be run the following way:
 
 Where:
 
-- -h \<host>: Base URI of brig. default: `http://localhost:8080`
-- -o \<owner_name>: user display name of the owner of the team to be created.  default: "owner name n/a"
-- -e \<owner_email>: email address of the owner of the team to be created.  default: "owner email n/a"
-- -p \<owner_password>: owner password.  default: "owner pass n/a"
-- -v \<email_code>: validation code received by email after running the previous script/commands.  default: "email code n/a"
-- -t \<team_name>: default: "team name n/a"
-- -c \<team_currency>: default: "USD"
+- -h <host>: Base URI of brig. default: `http://localhost:8080`
+- -o <owner_name>: user display name of the owner of the team to be created.  default: “owner name n/a”
+- -e <owner_email>: email address of the owner of the team to be created.  default: “owner email n/a”
+- -p <owner_password>: owner password.  default: “owner pass n/a”
+- -v <email_code>: validation code received by email after running the previous script/commands.  default: “email code n/a”
+- -t <team_name>: default: “team name n/a”
+- -c <team_currency>: default: “USD”
 
 Alternatively, you can manually run the command:
 

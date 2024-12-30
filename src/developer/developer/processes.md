@@ -10,7 +10,7 @@ The following processes only apply to Wire employees working on this code base.
 
 *See the `CHARTS` variable in the top-level Makefile for the current default list of charts.*
 
-(run-wire-server-integration-tests-inside-kubernetes-using-helm)=
+<a id="run-wire-server-integration-tests-inside-kubernetes-using-helm"></a>
 
 ## Run wire-server integration tests inside kubernetes using helm
 
@@ -27,9 +27,9 @@ export DOCKER_TAG=<desired tag used on quay.io.>
 make kube-integration
 ```
 
-When you're done, you can run
+When you’re done, you can run
 
-```
+```default
 make kube-integration-teardown
 ```
 

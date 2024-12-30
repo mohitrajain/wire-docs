@@ -6,11 +6,11 @@ This page explains how to connect the Wire desktop client to a custom Backend, w
 
 ## Prerequisites
 
-Install Wire either from the App Store, or download it from our website at (<https://wire.com/en/download/>)
+Install Wire either from the App Store, or download it from our website at ([https://wire.com/en/download/](https://wire.com/en/download/))
 
 Have a running Wire backend in your infrastructure/cloud.
 
-Note down the full URL of the webapp served by that backend (e.g. <https://app.custom-wire.com> )
+Note down the full URL of the webapp served by that backend (e.g. [https://app.custom-wire.com](https://app.custom-wire.com) )
 
 ## Using start-up parameters
 
@@ -26,7 +26,7 @@ To create the application
 
 - Open Automator
 - Click New application
-- Add the "Run shell script" phase
+- Add the “Run shell script” phase
 - Type in the script panel the following command: `open -b com.wearezeta.zclient.mac --args --env {URL}`, where `{URL}` is the URL of your webapp as noted down above
 - Save the application from Automator (e.g. on your desktop or in Application)
 - To run the application: Just open the application you created in the first step
@@ -52,9 +52,8 @@ Create a file named `init.json` and set `customWebAppURL` and optionally `proxyS
 
 The `env` setting must be set to `CUSTOM` for this to work.
 
-```{note}
+#### NOTE
 Consult your site admin to learn what goes into these settings. The value of `customWebAppURL` can be found [here](https://github.com/wireapp/wire-server/blob/e6aa50913cdcfde1200114787baabf7896394a2f/charts/webapp/templates/deployment.yaml#L40-L41) or [resp. here](https://github.com/wireapp/wire-server/blob/e6aa50913cdcfde1200114787baabf7896394a2f/charts/webapp/values.yaml#L26).  The value of `proxyServerURL` is your browser proxy.  It depends on the configuration of the network your client is running in.
-```
 
 ### Windows
 
@@ -64,7 +63,7 @@ Move the `init.json` file to `%APPDATA%\Wire\config\init.json` if it does not al
 
 Move the `init.json` file to
 
-```
+```default
 ~/Library/Containers/com.wearezeta.zclient.mac/Data/Library/Application\ Support/Wire/config/init.json
 ```
 
@@ -74,6 +73,6 @@ if it does not already exist. Otherwise, update it accordingly.
 
 On Linux the `init.json` file should be located in the following directory:
 
-```
+```default
 $HOME/.config/Wire/config/init.json
 ```

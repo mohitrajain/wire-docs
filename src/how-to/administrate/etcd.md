@@ -1,12 +1,18 @@
 # Etcd
 
-```{eval-rst}
-.. include:: includes/intro.rst
+This section is about **how to perform a specific task**. If you want to **understand how a certain component works, please see** [Reference](../../understand/README.md#understand)
+
+The rest of the page assumes you installed using the ansible playbooks from [wire-server-deploy](https://github.com/wireapp/wire-server-deploy/tree/master/ansible)
+
+For any command below, first ssh into the server:
+
+```default
+ssh <name or IP of the VM>
 ```
 
 This section only covers the bare minimum, for more information, see the [etcd documentation](https://etcd.io/)
 
-(how-to-see-cluster-health)=
+<a id="how-to-see-cluster-health"></a>
 
 ## How to see cluster health
 
@@ -18,7 +24,7 @@ etcd-health.sh
 
 which should produce an output similar to:
 
-```
+```default
 Cluster-Endpoints: https://127.0.0.1:2379
 cURL Command: curl -X GET https://127.0.0.1:2379/v2/members
 member 7c37f7dc10558fae is healthy: got healthy result from https://10.10.1.11:2379
@@ -45,7 +51,7 @@ and then make it executable: `chmod +x /usr/local/bin/etcd-health.sh`
 TODO
 ```
 
-(how-to-rolling-restart-an-etcd-cluster)=
+<a id="how-to-rolling-restart-an-etcd-cluster"></a>
 
 ## How to rolling-restart an etcd cluster
 
@@ -58,8 +64,8 @@ place.  During the leadership election, the cluster might be briefly
 unavailable for writes.  Writes during this period are queued up until a new
 leader is elected.  Any writes that were happening during the crash of the
 leader that were not acknowledged by the leader and the followers yet will be
-'lost'.  The client that performed this write will experience this as a write
-timeout. (Source: <https://etcd.io/docs/v3.4.0/op-guide/failures/>).  Client
+‘lost’.  The client that performed this write will experience this as a write
+timeout. (Source: [https://etcd.io/docs/v3.4.0/op-guide/failures/](https://etcd.io/docs/v3.4.0/op-guide/failures/)).  Client
 applications (like kubernetes) are expected to deal with this failure scenario
 gracefully.
 
@@ -68,12 +74,12 @@ starting up  etcd servers one by one.  In Etcd 3.1 and up, when the leader is
 cleanly shut down, it will hand over leadership gracefully to another node,
 which will minimize the impact of write-availability as election time is
 reduced. (Source :
-<https://kubernetes.io/blog/2018/12/11/etcd-current-status-and-future-roadmap/>)
+[https://kubernetes.io/blog/2018/12/11/etcd-current-status-and-future-roadmap/](https://kubernetes.io/blog/2018/12/11/etcd-current-status-and-future-roadmap/))
 Restarting follower nodes has no impact to availability.
 
 Etcd does load-balancing between servrvers on the client-side. This means that
 if a server you were talking to is being restarted, etcd will transparently
-redirect the request to another server. It's is thus safe to shut them down at
+redirect the request to another server. It’s is thus safe to shut them down at
 any point.
 
 Now to perform a rolling restart of the cluster, do the following steps:
@@ -87,7 +93,7 @@ Now to perform a rolling restart of the cluster, do the following steps:
 
 *For more details please refer to the official documentation:* [Replacing a failed etcd member](https://kubernetes.io/docs/tasks/administer-cluster/configure-upgrade-etcd/#replacing-a-failed-etcd-member)
 
-(etcd-backup-and-restore)=
+<a id="etcd-backup-and-restore"></a>
 
 ## Backing up and restoring
 
@@ -98,7 +104,7 @@ you might have to restore from an old backup.
 Luckily, etcd can take periodic snapshots of your cluster and these can be used
 in cases of disaster recovery. Information about how to do snapshots and
 restores can be found here:
-<https://github.com/etcd-io/etcd/blob/master/Documentation/op-guide/recovery.md>
+[https://github.com/etcd-io/etcd/blob/master/Documentation/op-guide/recovery.md](https://github.com/etcd-io/etcd/blob/master/Documentation/op-guide/recovery.md)
 
 *For more details please refer to the official documentation:* [Backing up an etcd cluster](https://kubernetes.io/docs/tasks/administer-cluster/configure-upgrade-etcd/#backing-up-an-etcd-cluster)
 
@@ -108,16 +114,16 @@ restores can be found here:
 
 After restoring an etcd machine from an earlier snapshot of the machine disk, etcd members may become unable to join.
 
-Symptoms: That etcd process is unable to start and crashes, and other etcd nodes can't reach it:
+Symptoms: That etcd process is unable to start and crashes, and other etcd nodes can’t reach it:
 
-```
+```default
 failed to check the health of member e767162297c84b1e on https://10.10.1.12:2379: Get https://10.10.1.12:2379/health: dial tcp 10.10.1.12:2379: getsockopt: connection refused
 member e767162297c84b1e is unreachable: [https://10.10.1.12:2379] are all unreachable
 ```
 
 Logs from the crashing etcd:
 
-```
+```default
 (...)
 Sep 25 09:27:05 node2 etcd[20288]: 2019-09-25 07:27:05.691409 I | raft: e767162297c84b1e [term: 28] received a MsgHeartbeat message with higher term from cca4e6f315097b3b [term: 30]
 Sep 25 09:27:05 node2 etcd[20288]: 2019-09-25 07:27:05.691620 I | raft: e767162297c84b1e became follower at term 30
@@ -145,7 +151,7 @@ a healthy state.
 It is not recommended to restore an etcd node from a vm snapshot, as that will
 cause these kind of time-travelling behaviours which will make the node
 unhealthy. To recover from this situation anyway,
-I quote from the etcdv2 admin guide <https://github.com/etcd-io/etcd/blob/master/Documentation/v2/admin_guide.md>
+I quote from the etcdv2 admin guide [https://github.com/etcd-io/etcd/blob/master/Documentation/v2/admin_guide.md](https://github.com/etcd-io/etcd/blob/master/Documentation/v2/admin_guide.md)
 
 > If a member’s data directory is ever lost or corrupted then the user should
 > remove the etcd member from the cluster using etcdctl tool.  A user should
@@ -158,13 +164,13 @@ I quote from the etcdv2 admin guide <https://github.com/etcd-io/etcd/blob/master
 
 Note that this piece of documentation is from etcdv2 and not etcdv3. However
 the etcdv3 docs describe a similar procedure here
-<https://github.com/etcd-io/etcd/blob/master/Documentation/op-guide/runtime-configuration.md#replace-a-failed-machine>
+[https://github.com/etcd-io/etcd/blob/master/Documentation/op-guide/runtime-configuration.md#replace-a-failed-machine](https://github.com/etcd-io/etcd/blob/master/Documentation/op-guide/runtime-configuration.md#replace-a-failed-machine)
 
 The procedure to remove and add a member is documented here:
-<https://github.com/etcd-io/etcd/blob/master/Documentation/op-guide/runtime-configuration.md#remove-a-member>
+[https://github.com/etcd-io/etcd/blob/master/Documentation/op-guide/runtime-configuration.md#remove-a-member](https://github.com/etcd-io/etcd/blob/master/Documentation/op-guide/runtime-configuration.md#remove-a-member)
 
 It is also documented in the kubernetes documentation:
-<https://kubernetes.io/docs/tasks/administer-cluster/configure-upgrade-etcd/#replacing-a-failed-etcd-member>
+[https://kubernetes.io/docs/tasks/administer-cluster/configure-upgrade-etcd/#replacing-a-failed-etcd-member](https://kubernetes.io/docs/tasks/administer-cluster/configure-upgrade-etcd/#replacing-a-failed-etcd-member)
 
 So following the above guides step by step, we can recover our cluster to be
 healthy again.
@@ -200,7 +206,7 @@ etcd-health.sh
 
 And we expect only two nodes to be in the cluster:
 
-```
+```default
 Cluster-Endpoints: https://127.0.0.1:2379
 cURL Command: curl -X GET https://127.0.0.1:2379/v2/members
 member 7c37f7dc10558fae is healthy: got healthy result from https://10.10.1.11:2379
@@ -217,7 +223,7 @@ etcdctl3.sh member add etcd_2 --peer-urls https://10.10.1.12:2380
 
 And it should report that it has been added:
 
-```
+```default
 Member e13b1d076b2f9344 added to cluster 432c10551aa096af
 
 ETCD_NAME="etcd_2"
@@ -225,7 +231,7 @@ ETCD_INITIAL_CLUSTER="etcd_1=https://10.10.1.11:2380,etcd_0=https://10.10.1.10:2
 ETCD_INITIAL_CLUSTER_STATE="existing"
 ```
 
-it should now be in the list as "unstarted"  instead of it not being in the list at all.
+it should now be in the list as “unstarted”  instead of it not being in the list at all.
 
 ```sh
 etcdctl3.sh member list
@@ -251,7 +257,7 @@ etcd-health.sh
 
 And indeed it outputs so:
 
-```
+```default
 Cluster-Endpoints: https://127.0.0.1:2379
 cURL Command: curl -X GET https://127.0.0.1:2379/v2/members
 member 7c37f7dc10558fae is healthy: got healthy result from https://10.10.1.11:2379
