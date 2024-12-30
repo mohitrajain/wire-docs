@@ -35,4 +35,35 @@ Visit <https://docs.wire.com/>
     find . -type f -name '*.md' | sort | awk -F '/' '{print "- ["$NF"]("$0")"}' > ./SUMMARY.md
     ```
 
-- old: contains old Sphinx files to be deleted later
+## Self hosting using mkdocs
+
+    ```bash
+    #!/bin/bash
+
+    # Create Dockerfile
+    cat <<EOF > Dockerfile
+    FROM python:3.12-slim
+
+    RUN apt-get update && apt-get install -y \\
+        build-essential \\
+        git
+
+    RUN pip install mkdocs mkdocs-material mike mkdocs-exclude mkdocs-minify-plugin mkdocs-redirects mkdocs-macros-plugin pymdown-extensions
+
+    WORKDIR /app
+
+    CMD ["bash"]
+    EOF
+
+    # Build Docker Image
+    docker build -t python-mkdocs .
+
+    # Run Docker Container and Start MkDocs Server
+    docker run -ti --net host -v $(pwd):/app python-mkdocs mkdocs serve
+    ```
+
+### Check in local browser
+    ```bash
+    elinks 127.0.0.1:8000
+    firefox 127.0.0.1:8000
+    ```
