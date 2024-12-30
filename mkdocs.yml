@@ -93,7 +93,7 @@ nav:
         - Legal hold: developer/reference/team/legalhold.md
         - User Activation: developer/reference/user/activation.md
         - Connection: developer/reference/user/connection.md
-        - Connection backend internals: developer/reference/user/connection/#connection-backend-internals)
+        - Connection backend internals: developer/reference/user/connection/#connection-backend-internals
         - User Registration: developer/reference/user/registration.md
         - User Rich info: developer/reference/user/rich-info.md
   - Security Responses:
