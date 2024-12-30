@@ -37,33 +37,34 @@ Visit <https://docs.wire.com/>
 
 ## Self hosting using mkdocs
 
-    ```bash
-    #!/bin/bash
+```bash
+#!/bin/bash
+# Create Dockerfile
+cat <<EOF > Dockerfile
 
-    # Create Dockerfile
-    cat <<EOF > Dockerfile
-    FROM python:3.12-slim
+FROM python:3.12-slim
+RUN apt-get update && apt-get install -y \\
+    build-essential \\
+    git
 
-    RUN apt-get update && apt-get install -y \\
-        build-essential \\
-        git
+RUN pip install mkdocs mkdocs-material mike mkdocs-exclude mkdocs-minify-plugin mkdocs-redirects mkdocs-macros-plugin pymdown-extensions
 
-    RUN pip install mkdocs mkdocs-material mike mkdocs-exclude mkdocs-minify-plugin mkdocs-redirects mkdocs-macros-plugin pymdown-extensions
+RUN git clone https://github.com/mohitrajain/wire-docs.git
 
-    WORKDIR /app
+WORKDIR /wire-docs
+CMD ["mkdocs", "serve"]
+EOF
 
-    CMD ["bash"]
-    EOF
+# Build Docker Image
+docker build -t python-mkdocs .
 
-    # Build Docker Image
-    docker build -t python-mkdocs .
-
-    # Run Docker Container and Start MkDocs Server
-    docker run -ti --net host -v $(pwd):/app python-mkdocs mkdocs serve
-    ```
+# Run Docker Container and Start MkDocs Server
+docker run -ti --net host python-mkdocs mkdocs serve
+```  
 
 ### Check in local browser
-    ```bash
-    elinks 127.0.0.1:8000
-    firefox 127.0.0.1:8000
-    ```
+```bash
+# open in your browser
+elinks 127.0.0.1:8000
+firefox 127.0.0.1:8000
+```
