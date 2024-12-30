@@ -1,7 +1,3 @@
-# Reference
-
-# Contents:
-
 * [Config Options](config-options.md)
 * [Creating and populating conversations](conversation.md)
 * [Maintaining ElasticSearch](elastic-search.md)

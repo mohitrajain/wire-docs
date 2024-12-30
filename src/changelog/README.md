@@ -1,7 +1,3 @@
-# Releases
-
-# Contents:
-
 * [[2024-12-11] (Chart Release 5.8.0)](changelog.md)
 * [[2024-11-04] (Chart Release 5.7.0)](changelog.md#chart-release-5-7-0)
 * [[2024-10-30] (Chart Release 5.6.0)](changelog.md#chart-release-5-6-0)

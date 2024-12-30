@@ -1,7 +1,3 @@
-# Developer
-
-# Contents:
-
 * [API versioning](api-versioning.md)
 * [How to build wire-server](building.md)
 * [Writing code interacting with cassandra](cassandra-interaction.md)
